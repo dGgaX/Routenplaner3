@@ -10,7 +10,9 @@ import de.abring.routenplaner.gui.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
     
@@ -22,7 +24,6 @@ import org.apache.logging.log4j.Logger;
 public class Routenplaner {
     
     private static final Logger LOGGER = LogManager.getLogger(Routenplaner.class.getName());
-    private static final String VERSION = "v2.2.14";
     
     private final Main main;
     private final Properties properties;
@@ -36,7 +37,7 @@ public class Routenplaner {
         
         LOGGER.info("Programmstart...");
         
-        this.splashScreen = new SplashScreen(VERSION);
+        this.splashScreen = new SplashScreen(getVersionNumber());
         this.splashThread = new Thread(() -> {
             splashScreen.setVisible(true);
             try {
@@ -143,4 +144,23 @@ public class Routenplaner {
         Routenplaner planer = new Routenplaner();
         planer.start(fileToOpen);
     }
+    
+    
+    public static final String getVersionNumber() { 
+        String version = "v"; 
+        try { 
+            ResourceBundle rb = ResourceBundle.getBundle("version"); 
+            version += rb.getString("MAIN");
+            version += ".";
+            version += rb.getString("MINOR");
+            version += ".";
+            version += rb.getString("REVISION");
+            version += " build ";
+            version += rb.getString("BUILD"); 
+        } catch (MissingResourceException e) { 
+            LOGGER.error("Token ".concat("BUILD").concat(" not in Propertyfile!"), e); 
+            version = "vXX.XX.XX build XXX";
+        } 
+        return version; 
+    } 
 }

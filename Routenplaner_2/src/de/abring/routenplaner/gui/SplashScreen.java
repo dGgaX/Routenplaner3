@@ -9,7 +9,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
     public SplashScreen(String version) {
         initComponents();
-        jLabel2.setText(version);
+        jLabel2.setText(version + " ");
     }
 
     @SuppressWarnings("unchecked")
@@ -38,6 +38,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 102));
         jLabel2.setFont(new java.awt.Font("Sylfaen", 3, 36)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("vX.Y.ZZ");
         jLabel2.setAlignmentX(1.0F);
 
@@ -47,8 +48,8 @@ public class SplashScreen extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(573, 573, 573)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(477, 477, 477)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

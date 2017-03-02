@@ -730,6 +730,9 @@ public class Main extends javax.swing.JFrame {
         MenuEintraege = new javax.swing.JMenu();
         MenuEintraegeNeu = new javax.swing.JMenuItem();
         MenuEintraegeEntfernen = new javax.swing.JMenuItem();
+        MenuHilfe = new javax.swing.JMenu();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        About = new javax.swing.JMenuItem();
 
         SearchPaneChild.setBackground(new Color(0, 0, 0, 0));
 
@@ -1111,6 +1114,19 @@ public class Main extends javax.swing.JFrame {
 
         MenuMain.add(MenuEintraege);
 
+        MenuHilfe.setText("Hilfe");
+        MenuHilfe.add(jSeparator1);
+
+        About.setText("Über ...");
+        About.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AboutActionPerformed(evt);
+            }
+        });
+        MenuHilfe.add(About);
+
+        MenuMain.add(MenuHilfe);
+
         setJMenuBar(MenuMain);
 
         pack();
@@ -1136,6 +1152,10 @@ public class Main extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         exitProgramActionPerformed(null);
     }//GEN-LAST:event_formWindowClosing
+
+    private void AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutActionPerformed
+        JOptionPane.showMessageDialog(this, "Routenplaner\nVersion: " + Routenplaner.getVersionNumber() + "\n\n by AndyB ...", "Über ...", JOptionPane.DEFAULT_OPTION);
+    }//GEN-LAST:event_AboutActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="My Generated Code">
     /**
@@ -1294,6 +1314,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem About;
     private javax.swing.JPanel Console;
     private javax.swing.JDesktopPane Desktop_Pane;
     private org.jdesktop.swingx.JXTaskPane FavoritePane;
@@ -1323,6 +1344,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu MenuEintraege;
     private javax.swing.JMenuItem MenuEintraegeEntfernen;
     private javax.swing.JMenuItem MenuEintraegeNeu;
+    private javax.swing.JMenu MenuHilfe;
     private javax.swing.JMenuBar MenuMain;
     private javax.swing.JMenu MenuOptionen;
     private javax.swing.JMenuItem MenuOptionenCenterMap;
@@ -1351,6 +1373,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jPopupMenuRoutejMenuItemRouteMapVisible;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jTB;
     private javax.swing.JButton jTbBtnCalcRoute;
     private javax.swing.JButton jTbBtnNew;

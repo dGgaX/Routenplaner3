@@ -57,8 +57,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="jLabel1" min="-2" pref="830" max="-2" attributes="0"/>
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="573" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" pref="168" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="477" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" pref="296" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -96,6 +96,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Sylfaen" size="36" style="3"/>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="vX.Y.ZZ"/>
             <Property name="alignmentX" type="float" value="1.0"/>
           </Properties>
