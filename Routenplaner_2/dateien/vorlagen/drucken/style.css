@@ -1,0 +1,79 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 11.05.2016, 14:03:27
+    Author     : Karima
+*/
+
+@media screen {
+  body {
+		font-size: 12pt;
+	}
+}
+
+@media print {
+  body {
+		font-size: 12pt;
+	}
+}
+@media screen, print {
+	body {
+		font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		line-height: 1em;
+		text-align: left;
+		font-style: inherit;
+		font-weight: inherit;
+	}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+	table#header tr td {
+	   padding: 0.25em 0.5em;
+	}
+	table#header {
+		margin: 0 auto 2em;
+		border-bottom: 2px solid black;
+	}
+	table#content {
+		border: 2px solid black;
+
+	}
+	table#content tr td {
+	   padding: 0.25em;
+           vertical-align: top;
+	}
+        table#content tr td img {
+            padding-left: 2px;
+            height: 1em;
+	}
+	
+	table#content tr td table#order tr td,
+	table#content tr td table#product tr td {
+           padding-top: 0;
+           
+	   border-top: none;
+	}
+	table#content tr.address td {
+	   border-top: 1px solid black;
+	}
+	table#content tr td:nth-child(even) {
+		background-color: #eee;
+	}
+        .left {
+            text-align: left;
+        }
+        .right {
+            text-align: right;
+        }
+        p {
+            padding-right: 0.5em;
+        }
+        table#content tr td p {
+            padding-right: 0;
+            
+        }
+}

@@ -1,0 +1,112 @@
+<!-- BEGIN: main --> 
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <title>{TITLE}</title>
+        <style type="text/css">
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-size: 8pt;
+		font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		line-height: 1em;
+		text-align: left;
+		font-style: inherit;
+		font-weight: inherit;
+            }
+            table#header tr td {
+               padding: 0.25em 0.5em;
+            }
+            table#header {
+                margin: 0 auto 2em;
+                border-bottom: 2px solid black;
+            }
+            table#content {
+                border: 2px solid black;
+
+            }
+            table#content tr td {
+                padding: 0.25em;
+                vertical-align: top;
+            }
+            table#content tr td img {
+                padding-left: 2px;
+                height: 1em;
+            }
+            table#content tr td table#order tr td,
+            table#content tr td table#product tr td {
+                padding-top: 0;
+                border-top: none;
+            }
+            table#content tr.address td {
+               border-top: 1px solid black;
+            }
+            table#content tr td:nth-child(even) {
+                background-color: #eee;
+            }
+            .left {
+                text-align: left;
+            }
+            .right {
+                text-align: right;
+            }
+            p {
+                padding-right: 0.5em;
+            }
+            table#content tr td p {
+                padding-right: 0;
+            }
+        </style>
+    </head>
+    <body dir="LTR" lang="de-DE">
+        <div id="wrapper">
+            <table id="header" border="0" cellpadding="0" cellspacing="0" width="70%">
+                <tbody>
+                    <tr>
+                        <td>Datum:</td>
+                        <td colspan="3"><b>{DATUM}</b></td>
+                        <td>Tour:</td>
+                        <td><b>{TOUR}</b></td>
+
+                    </tr>
+                    <tr>
+                        <td>Fahrer:</td>
+                        <td><b>{FAHRER}</b></td>
+                        <td>Beifahrer:</td>
+                        <td><b>{BEIFAHRER}</b></td>
+                        <td>Fahrzeug:</td>
+                        <td><b>{FAHRZEUG}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            &nbsp;
+            <table id="content" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="20"></td>
+                        <td>Uhrzeit/Dauer</td>
+                        <td>Termin</td>
+                        <td>Aktion</td>
+                        <td>Adresse</td>
+                        <td>Produkte</td>
+                        <td>Extras</td>
+                    </tr>
+                <!-- BEGIN: address --> 
+                    <tr class="address">
+                        <td><img src="file:dateien/vorlagen/drucken/images/{BILD}" alt="" width="20" height="20"></td>
+                        <td>{UHRZEIT}<br>&nbsp;<br>{DAUER}</td>
+                        <td align="center">{TERMIN}</td>
+                        <td>{NAME}</td>
+                        <td>{ADRESSE}</td>
+                        <td>{PRODUKTE}</td>
+                        <td style="max-width: 50%; min-width: 100px;"><p class="left">{EXTRAS}</p></td>
+                    </tr>
+                <!-- END: address -->
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+<!-- END: main -->
