@@ -14,7 +14,8 @@ import javax.swing.JFileChooser;
  * @author Karima
  */
 public class FileIO {
-    
+    private static final String FILE_ENDING = ".serialroute";
+    private static final String FAVORIT_ENDING = ".serialroutefavorit";
     public static final File getOpenRouteFile(Component frame, String workingDir) {
         JFileChooser chooser = new JFileChooser(workingDir);
         javax.swing.filechooser.FileFilter PDFFilter = new javax.swing.filechooser.FileFilter() {
@@ -22,7 +23,7 @@ public class FileIO {
             public boolean accept(java.io.File f) {
                 if (f.isDirectory())
                     return true;
-                return f.getName().toLowerCase().endsWith(".serlcroute");
+                return f.getName().toLowerCase().endsWith(FILE_ENDING);
             }
             @Override
             public String getDescription() {
@@ -57,7 +58,7 @@ public class FileIO {
             public boolean accept(java.io.File f) {
                 if (f.isDirectory())
                     return true;
-                return f.getName().toLowerCase().endsWith(".serlcfav");
+                return f.getName().toLowerCase().endsWith(FAVORIT_ENDING);
             }
             @Override
             public String getDescription() {
@@ -92,7 +93,7 @@ public class FileIO {
             public boolean accept(java.io.File f) {
                 if (f.isDirectory())
                     return true;
-                return f.getName().toLowerCase().endsWith(".serlcroute");
+                return f.getName().toLowerCase().endsWith(FILE_ENDING);
             }
             @Override
             public String getDescription() {
@@ -116,7 +117,11 @@ public class FileIO {
         chooser.setMultiSelectionEnabled(false);
         chooser.setSelectedFile(fileName);
         if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) { 
-            return chooser.getSelectedFile();
+            File saveFile = chooser.getSelectedFile();
+            if (!saveFile.getName().endsWith(FILE_ENDING)) {
+                saveFile = new File(saveFile.getAbsolutePath() + FILE_ENDING);
+            }
+            return saveFile;
         } else {
             return null;
         }
@@ -128,7 +133,7 @@ public class FileIO {
             public boolean accept(java.io.File f) {
                 if (f.isDirectory())
                     return true;
-                return f.getName().toLowerCase().endsWith(".serlcfav");
+                return f.getName().toLowerCase().endsWith(FAVORIT_ENDING);
             }
             @Override
             public String getDescription() {
@@ -152,7 +157,11 @@ public class FileIO {
         chooser.setMultiSelectionEnabled(false);
         chooser.setSelectedFile(fileName);
         if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) { 
-            return chooser.getSelectedFile();
+            File saveFile = chooser.getSelectedFile();
+            if (!saveFile.getName().endsWith(FAVORIT_ENDING)) {
+                saveFile = new File(saveFile.getAbsolutePath() + FAVORIT_ENDING);
+            }
+            return saveFile;
         } else {
             return null;
         }

@@ -47,4 +47,11 @@ public class MSG {
         return (JOptionPane.showConfirmDialog(frame, "Sollen die Änderungen vorher gespeichert werden?", "Achtung!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
     }
     
+    public static final boolean msgSaveBeforeClose(Component frame, String name) {
+        return JOptionPane.showConfirmDialog(null, "Die Route \"" + name + "\" wurde nicht gespeichert.\nWollen Sie dies nachholen?", "Route speichern?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }  
+    
+    public static final boolean msgOverwriteFile(Component frame, String name) {
+        return JOptionPane.showConfirmDialog(null, "Die Datei \"" + name + "\" existiert.\nWollen Sie diese Datei überschreiben?", "Route speichern?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
 }

@@ -29,6 +29,8 @@ import org.jdesktop.swingx.*;
 import javax.swing.*;
 import static javax.swing.TransferHandler.COPY;
 import de.abring.helfer.maproute.LookupAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -206,10 +208,16 @@ public class Main extends javax.swing.JFrame {
     public boolean saveTour(JXTreeRouteTour tour, File file, boolean overwrite) {
         LOGGER.debug("Speichere Routedatei...");
         try {
+            if (file == null)
+                return false;
+            if (file.exists() && !overwrite)
+                if(!MSG.msgOverwriteFile(this, file.getName()))
+                    return false;
             FileOutputStream fileOut = new FileOutputStream(file);
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                 out.writeObject(tour);
             }
+            
         } catch(IOException ex) {
             LOGGER.warn(ex);
             return false;
@@ -487,7 +495,7 @@ public class Main extends javax.swing.JFrame {
      */
      void tourOpenActionPerformed(java.awt.event.ActionEvent evt) {                                           
         File file = FileIO.getOpenRouteFile(this, this.workingDir);
-        if (file.exists()) {
+        if (file != null && file.exists()) {
             this.loadTour(file);
         }
     }
@@ -495,15 +503,25 @@ public class Main extends javax.swing.JFrame {
     /**
      * AL to save the actual Tour
      */
-    private void tourSaveActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        saveThisTour(FileIO.getSaveRouteFile(this, new File(""), this.programDir));
+    private void tourSaveActionPerformed(java.awt.event.ActionEvent evt) {
+        String fileName = "";
+        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
+            fileName = ((Route)this.Desktop_Pane.getSelectedFrame()).getRouteName();
+        }
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
+        saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + fileName), this.workingDir));
     }
     
     /**
      * AL to save a new Copy of the actual Tour
      */
     private void tourSaveAsActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        saveThisTour(FileIO.getSaveRouteFile(this, new File(""), this.programDir), false);
+        String fileName = "";
+        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
+            fileName = ((Route)this.Desktop_Pane.getSelectedFrame()).getRouteName();
+        }
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
+        saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + fileName), this.workingDir), false);
     }
     
     /**
@@ -602,12 +620,9 @@ public class Main extends javax.swing.JFrame {
      * AL to open a Tour
      */
     private void favoriteOpenActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        File file = new File("");
-        
-        
-        
-        if (file.exists()) {
-            this.loadTour(file);
+        File file = FileIO.getOpenFavoritenFile(this, this.workingDir);
+        if (file != null && file.exists()) {
+            loadFavorite(file);
         }
     }
     
@@ -644,8 +659,9 @@ public class Main extends javax.swing.JFrame {
             if (frame instanceof Route) {
                 Route route = (Route) frame;
                 if (!route.isCurrentStateSaved()) {
-                    if (JOptionPane.showConfirmDialog(null, "Die Route " + route.getName() + " wurde nicht gespeichert.\nWollen Sie dies nachholen?", "Route speichern?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        this.saveTour(route.getTour(), FileIO.getSaveRouteFile(this, new File(""), this.programDir), true);
+                    if (MSG.msgSaveBeforeClose(this, route.getRouteName())) {
+                        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
+                        saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + route.getRouteName()), this.workingDir), false);
                     }
                 }
             }
@@ -1294,13 +1310,13 @@ public class Main extends javax.swing.JFrame {
      */
     public void loadProperties() {
         this.programDir = PathFinder.getAbsolutePath() + parent.getProperties().getProperty("programpathpart", "");
-        File favorite = new File(this.programDir + parent.getProperties().getProperty("favoritenfile", "\\vorlagen\\favoriten.serlcfav"));
+        File favorite = new File(this.programDir + parent.getProperties().getProperty("favoritenfile", "\\vorlagen\\favoriten.serialroutefavorit"));
         if (favorite.exists()) {
             loadFavorite(favorite);
         } else {
             createFavorite();
         }
-        File favFile = new File(parent.getProperties().getProperty("favoritenfile", "\\vorlagen\\favoriten.serlcfav"));
+        File favFile = new File(parent.getProperties().getProperty("favoritenfile", "\\vorlagen\\favoriten.serialroutefavorit"));
         this.FavoritenFile = new File(this.programDir + favFile.getPath());
         this.workingDir = parent.getProperties().getProperty("workingpath", System.getProperty("user.home"));
     }// </editor-fold>

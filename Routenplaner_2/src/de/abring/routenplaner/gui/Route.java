@@ -51,7 +51,7 @@ public class Route extends javax.swing.JInternalFrame {
     }
             
     /**
-     * @return the Driver
+     * @return the Name
      */
     public String getRouteName() {
         return this.tour.getName();
@@ -631,7 +631,7 @@ public class Route extends javax.swing.JInternalFrame {
         jBtn_.setMinimumSize(new java.awt.Dimension(20, 20));
         jBtn_.setPreferredSize(new java.awt.Dimension(20, 20));
 
-        setBorder(null);
+        setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.SystemColor.activeCaption, 2));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -665,11 +665,11 @@ public class Route extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backPane, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
+            .addComponent(backPane, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backPane, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addComponent(backPane, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
         );
 
         pack();

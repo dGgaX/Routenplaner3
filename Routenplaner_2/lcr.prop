@@ -3,8 +3,8 @@
 <properties>
 <comment>nocomment</comment>
 <entry key="lookandfeel">Windows</entry>
-<entry key="recentfile">\vorlagen\route.serlcroute</entry>
-<entry key="favoritenfile">\vorlagen\favoriten.serlcfav</entry>
+<entry key="recentfile">\vorlagen\route.serialroute</entry>
+<entry key="favoritenfile">\vorlagen\favoriten.serialroutefavorit</entry>
 <entry key="programpathpart">\dateien</entry>
-<entry key="workingpath">c:\</entry>
+<entry key="workingpath">D:\Eigene Dateien - Andreas\Routen\</entry>
 </properties>
