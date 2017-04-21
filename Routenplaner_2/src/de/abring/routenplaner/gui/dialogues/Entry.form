@@ -111,6 +111,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="jTxtName">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="*"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTxtNameActionPerformed"/>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTxtNameKeyPressed"/>

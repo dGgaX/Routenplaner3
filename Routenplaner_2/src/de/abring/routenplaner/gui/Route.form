@@ -78,6 +78,9 @@
               <Value id="ON_OR_INSERT_ROWS"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="componentResized" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="tablePaneComponentResized"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

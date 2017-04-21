@@ -110,6 +110,7 @@ public class Route extends javax.swing.JInternalFrame {
     Main parent;
     JPanelTour jPaneTour;
     private boolean markerVisible;
+    int[] tableColumns;
     /**
      * Creates new dialog Route
      * @param name
@@ -166,7 +167,7 @@ public class Route extends javax.swing.JInternalFrame {
             refreshTable();
         });
         
-        int[] columns = {
+        tableColumns =  new int[] {
             JXNoRootTreeTableModelAddress.EMPTY,
             JXNoRootTreeTableModelAddress.ID,
             JXNoRootTreeTableModelAddress.NAME,
@@ -177,7 +178,7 @@ public class Route extends javax.swing.JInternalFrame {
             JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
             JXNoRootTreeTableModelAddress.FAVORIT,
         };
-        this.tablePane.handleColumns(columns);
+        this.tablePane.handleColumns(tableColumns);
         
         setTourColor(Color.RED);
 
@@ -233,7 +234,7 @@ public class Route extends javax.swing.JInternalFrame {
             refreshTable();
         });
         
-        int[] columns = {
+        tableColumns =  new int[] {
             JXNoRootTreeTableModelAddress.EMPTY,
             JXNoRootTreeTableModelAddress.ID,
             JXNoRootTreeTableModelAddress.NAME,
@@ -244,7 +245,7 @@ public class Route extends javax.swing.JInternalFrame {
             JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
             JXNoRootTreeTableModelAddress.FAVORIT,
         };
-        this.tablePane.handleColumns(columns);
+        this.tablePane.handleColumns(tableColumns);
         
         for (JXTreeRouteEntry entry : this.tour.getEntryList()) {
             if (entry instanceof JXTreeRouteAddress)
@@ -631,7 +632,7 @@ public class Route extends javax.swing.JInternalFrame {
         jBtn_.setMinimumSize(new java.awt.Dimension(20, 20));
         jBtn_.setPreferredSize(new java.awt.Dimension(20, 20));
 
-        setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.SystemColor.activeCaption, 2));
+        setBorder(javax.swing.BorderFactory.createLineBorder(null, 2));
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -659,6 +660,11 @@ public class Route extends javax.swing.JInternalFrame {
         });
 
         tablePane.setDropMode(javax.swing.DropMode.ON_OR_INSERT_ROWS);
+        tablePane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                tablePaneComponentResized(evt);
+            }
+        });
         backPane.setViewportView(tablePane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -706,6 +712,44 @@ public class Route extends javax.swing.JInternalFrame {
 //            System.out.println(evt.getPropertyName());
 //        }
     }//GEN-LAST:event_formPropertyChange
+
+    private void tablePaneComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tablePaneComponentResized
+        if (tablePane.getWidth() > 800 && tableColumns.length != 9) {
+            tableColumns =  new int[] {
+                JXNoRootTreeTableModelAddress.EMPTY,
+                JXNoRootTreeTableModelAddress.ID,
+                JXNoRootTreeTableModelAddress.NAME,
+                JXNoRootTreeTableModelAddress.TIME,
+                JXNoRootTreeTableModelAddress.DURATION,
+                JXNoRootTreeTableModelAddress.APPOINTMENT,
+                JXNoRootTreeTableModelAddress.ITEMS,
+                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
+                JXNoRootTreeTableModelAddress.FAVORIT,
+            };
+            this.tablePane.handleColumns(tableColumns);
+        
+        } else if (tablePane.getWidth() > 500 && tablePane.getWidth() <= 800 && tableColumns.length != 6) {
+            tableColumns =  new int[] {
+                JXNoRootTreeTableModelAddress.EMPTY,
+                JXNoRootTreeTableModelAddress.ID,
+                JXNoRootTreeTableModelAddress.NAME,
+                JXNoRootTreeTableModelAddress.TIME,
+                JXNoRootTreeTableModelAddress.APPOINTMENT,
+                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
+            };
+            this.tablePane.handleColumns(tableColumns);
+        
+        } else if (tablePane.getWidth() <= 500 && tableColumns.length != 4) {
+            tableColumns =  new int[] {
+                JXNoRootTreeTableModelAddress.EMPTY,
+                JXNoRootTreeTableModelAddress.ID,
+                JXNoRootTreeTableModelAddress.TIME,
+                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
+            };
+            this.tablePane.handleColumns(tableColumns);
+        
+        }
+    }//GEN-LAST:event_tablePaneComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane backPane;
