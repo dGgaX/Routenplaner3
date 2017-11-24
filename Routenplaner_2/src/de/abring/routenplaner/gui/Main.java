@@ -889,10 +889,10 @@ public class Main extends javax.swing.JFrame {
         ConsoleLayout.setHorizontalGroup(
             ConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ConsoleLayout.createSequentialGroup()
-                .addContainerGap(632, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnConsoleClear)
                 .addContainerGap())
-            .addComponent(jScrollPane6)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         ConsoleLayout.setVerticalGroup(
             ConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -916,10 +916,10 @@ public class Main extends javax.swing.JFrame {
         InfoLayout.setHorizontalGroup(
             InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InfoLayout.createSequentialGroup()
-                .addContainerGap(518, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnInfoClear)
                 .addContainerGap())
-            .addComponent(jScrollPane7)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         InfoLayout.setVerticalGroup(
             InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -934,7 +934,6 @@ public class Main extends javax.swing.JFrame {
 
         Multi_Split_Pane.add(Window_Pane);
 
-        Desktop_Pane.setBackground(java.awt.SystemColor.window);
         Desktop_Pane.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         Desktop_Pane.setMinimumSize(new java.awt.Dimension(200, 50));
 
@@ -985,6 +984,11 @@ public class Main extends javax.swing.JFrame {
         jTbBtnNew.setFocusable(false);
         jTbBtnNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jTbBtnNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jTbBtnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTbBtnNewActionPerformed(evt);
+            }
+        });
         jTB.add(jTbBtnNew);
 
         jTbBtnOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/icons/Folder.png"))); // NOI18N
@@ -1164,6 +1168,10 @@ public class Main extends javax.swing.JFrame {
     private void AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutActionPerformed
         JOptionPane.showMessageDialog(this, "Routenplaner\nVersion: " + Routenplaner.getVersionNumber() + "\n\n by AndyB ...", "Über ...", JOptionPane.DEFAULT_OPTION);
     }//GEN-LAST:event_AboutActionPerformed
+
+    private void jTbBtnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTbBtnNewActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTbBtnNewActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="My Generated Code">
     /**
