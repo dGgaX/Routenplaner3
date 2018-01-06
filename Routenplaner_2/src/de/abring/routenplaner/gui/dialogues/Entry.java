@@ -24,6 +24,7 @@ import org.openstreetmap.gui.jmapviewer.*;
  */
 public class Entry extends javax.swing.JDialog {
     java.awt.Frame parent;
+    int parentState;
     private JXTreeRouteAddressClient entry;
     private List<PercentDimension> parts = new ArrayList<>();
         
@@ -66,7 +67,8 @@ public class Entry extends javax.swing.JDialog {
     public Entry(java.awt.Frame parent, boolean modal, MapAddress address, JXTreeRouteAddressFav favorite) {
         super(parent, modal);
         this.parent = parent;
-
+        this.parentState = this.parent.getState();
+        this.parent.setState(java.awt.Frame.ICONIFIED);
         initComponents();
     
         if (address == null) {
@@ -85,7 +87,9 @@ public class Entry extends javax.swing.JDialog {
     public Entry(java.awt.Frame parent, boolean modal, JXTreeRouteAddressFav favorite) {
         super(parent, modal);
         this.parent = parent;
-
+        this.parentState = this.parent.getState();
+        this.parent.setState(java.awt.Frame.ICONIFIED);
+        
         initComponents();
         
         MapAddress address = new MapAddress(jTxtSearchAddress.getText());
@@ -100,7 +104,9 @@ public class Entry extends javax.swing.JDialog {
     public Entry(java.awt.Frame parent, boolean modal, JXTreeRouteAddressClient _entry) {
         super(parent, modal);
         this.parent = parent;
-
+        this.parentState = this.parent.getState();
+        this.parent.setState(java.awt.Frame.ICONIFIED);
+        
         initComponents();
         
         if (_entry != null) {
@@ -311,6 +317,7 @@ public class Entry extends javax.swing.JDialog {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Extras"));
 
         jTextExtras.setColumns(20);
+        jTextExtras.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         jTextExtras.setRows(2);
         jTextExtras.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -418,6 +425,7 @@ public class Entry extends javax.swing.JDialog {
         
         entry.setExtras(this.jTextExtras.getText());
         this.setVisible(false);
+        this.parent.setState(this.parentState);
     }//GEN-LAST:event_jBtnOKActionPerformed
 
     private void jButtonSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSucheActionPerformed
@@ -448,6 +456,7 @@ public class Entry extends javax.swing.JDialog {
     private void jBtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelActionPerformed
         entry = null;
         this.setVisible(false);
+        this.parent.setState(this.parentState);
     }//GEN-LAST:event_jBtnCancelActionPerformed
 
     private void jTxtSearchAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtSearchAddressKeyPressed

@@ -348,7 +348,10 @@ public class Route extends javax.swing.JInternalFrame {
                 newEntry.setVisible(true);
 
                 if (newEntry.getEntry() != null && !newEntry.getEntry().getName().isEmpty() && newEntry.getEntry().getAddress() != null && newEntry.getEntry().getAddress().isValid() && !newEntry.getEntry().getAddress().getStraße().isEmpty()) {
-                    address = newEntry.getEntry();
+                    
+                    this.tablePane.removeItem(entry);
+                    this.tablePane.addItem(selectedRows[i], newEntry.getEntry());
+                    refreshTable();
                     this.tablePane.updateUI();
                 }
             }
