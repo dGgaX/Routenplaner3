@@ -137,11 +137,11 @@ public class JPictureFrame extends javax.swing.JFrame {
                 
                 if (RECTANGLE_COUNT == 3 && i == 1) {
                     g2d.dispose();
-                    int sw = (int) topLeft.distance(topRight) + 20;
-                    int sh = (int) topLeft.distance(bottomLeft) + 20;
+                    int sw = (int) topLeft.distance(topRight) + 6;
+                    int sh = (int) topLeft.distance(bottomLeft) + 6;
                     BufferedImage subImage = new BufferedImage(sw, sh, BufferedImage.TYPE_INT_RGB);
                     Graphics2D sg2d = subImage.createGraphics();
-                    BufferedImage temp = image.getSubimage(topLeft.x - 10, topLeft.y - 10, sw, sh);
+                    BufferedImage temp = image.getSubimage(topLeft.x - 3, topLeft.y - 3, sw, sh);
                     AffineTransform sat = new AffineTransform();
             
                     if(Math.abs(rotationAngle) > 0.3d) {
