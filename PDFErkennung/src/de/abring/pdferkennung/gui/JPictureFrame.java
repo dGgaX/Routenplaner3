@@ -69,7 +69,7 @@ public class JPictureFrame extends javax.swing.JFrame {
             initComponents();
             PDDocument doc = PDDocument.load(file);
             PDFRenderer renderer = new PDFRenderer(doc);
-            BufferedImage image = renderer.renderImageWithDPI(1, 300, ImageType.RGB);
+            BufferedImage image = renderer.renderImageWithDPI(6, 300, ImageType.RGB);
             System.out.println((System.currentTimeMillis() - time1));
             
             time1 = System.currentTimeMillis();
