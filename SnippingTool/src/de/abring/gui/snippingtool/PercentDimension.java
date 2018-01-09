@@ -157,4 +157,18 @@ public class PercentDimension {
     public void sethPe(String hPe) {
         this.hPe = hPe;
     }
+    public String toString() {
+        String ret = "";
+        
+        ret += String.valueOf(this.xPe);
+        ret += ", ";
+        ret += String.valueOf(this.yPe);
+        ret += ", ";
+        ret += String.valueOf(this.wPe);
+        ret += ", ";
+        ret += String.valueOf(this.hPe);
+        
+        return ret;
+    }
+    
 }
