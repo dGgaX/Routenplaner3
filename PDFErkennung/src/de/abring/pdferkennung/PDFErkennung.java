@@ -32,7 +32,7 @@ public class PDFErkennung {
              */
             try {
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
+                    if ("Windows".equals(info.getName())) {
                         javax.swing.UIManager.setLookAndFeel(info.getClassName());
                         break;
                     }
@@ -52,7 +52,7 @@ public class PDFErkennung {
             /* Create and display the form */
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-        System.out.println((System.currentTimeMillis() - time1));
+                    System.out.println((System.currentTimeMillis() - time1));
                     JPictureFrame frame = new JPictureFrame(filename);
                     frame.setVisible(true);
                 }
