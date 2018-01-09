@@ -81,7 +81,8 @@ public class JscanPDF extends javax.swing.JDialog {
         if (image != null) {
 
             JXTreeRouteAddressClient entry = OCR.rollkarteOCR(null, true, fav, image);
-            route.addEntry(route.listLength() - 2, entry);
+            if (entry != null)
+                route.addEntry(route.listLength() - 2, entry);
         }
     }
         
