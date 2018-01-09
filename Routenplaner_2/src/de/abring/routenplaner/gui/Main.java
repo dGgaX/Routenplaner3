@@ -29,6 +29,7 @@ import org.jdesktop.swingx.*;
 import javax.swing.*;
 import static javax.swing.TransferHandler.COPY;
 import de.abring.helfer.maproute.LookupAddress;
+import de.abring.pdferkennung.gui.dialogues.JscanPDF;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.logging.log4j.LogManager;
@@ -719,6 +720,8 @@ public class Main extends javax.swing.JFrame {
         jTbBtnRemoveEntry = new javax.swing.JButton();
         jTbSeparator5 = new javax.swing.JToolBar.Separator();
         jTbBtnCalcRoute = new javax.swing.JButton();
+        jTBSeparator6 = new javax.swing.JToolBar.Separator();
+        jBtnPDFScan = new javax.swing.JButton();
         MenuMain = new javax.swing.JMenuBar();
         MenuDatei = new javax.swing.JMenu();
         MenuDateiNeu = new javax.swing.JMenuItem();
@@ -934,6 +937,7 @@ public class Main extends javax.swing.JFrame {
 
         Multi_Split_Pane.add(Window_Pane);
 
+        Desktop_Pane.setBackground(java.awt.SystemColor.window);
         Desktop_Pane.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         Desktop_Pane.setMinimumSize(new java.awt.Dimension(200, 50));
 
@@ -1035,6 +1039,18 @@ public class Main extends javax.swing.JFrame {
         jTbBtnCalcRoute.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jTbBtnCalcRoute.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jTB.add(jTbBtnCalcRoute);
+        jTB.add(jTBSeparator6);
+
+        jBtnPDFScan.setText("PDF einscannen");
+        jBtnPDFScan.setFocusable(false);
+        jBtnPDFScan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jBtnPDFScan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jBtnPDFScan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnPDFScanActionPerformed(evt);
+            }
+        });
+        jTB.add(jBtnPDFScan);
 
         getContentPane().add(jTB, java.awt.BorderLayout.PAGE_START);
 
@@ -1172,6 +1188,36 @@ public class Main extends javax.swing.JFrame {
     private void jTbBtnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTbBtnNewActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTbBtnNewActionPerformed
+
+    private void jBtnPDFScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPDFScanActionPerformed
+        
+        if (this.getFavoriteTable().getSelectedRows().length > 0) {
+            
+            if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
+                Route route = ((Route) this.Desktop_Pane.getSelectedFrame());
+                JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) this.FavoriteTable.getItem(this.FavoriteTable.getSelectedRows()[0]);
+
+                JscanPDF jscanPDF = new JscanPDF(this, true, route, fav);
+
+                this.Desktop_Pane.getSelectedFrame().updateUI();
+            }
+        
+        } else {
+            
+            int selectedItem = Table.JXTreeTableAddressFavDialog(this, true, "Auftraggeber auswählen:", this.getFavoriteTable().getJxTreeRouteEntryList());
+            
+            if (selectedItem != Table.DIALOG_ABORT) {
+                this.getFavoriteTable().getSelectionModel().addSelectionInterval(selectedItem, selectedItem);
+                this.getFavoriteTable().updateUI();
+                jBtnPDFScanActionPerformed(evt);
+            }
+            
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_jBtnPDFScanActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="My Generated Code">
     /**
@@ -1378,6 +1424,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jBtnCalcRoute;
     private javax.swing.JButton jBtnCenterMap;
     private javax.swing.JButton jBtnNewEntry;
+    private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
     private javax.swing.JButton jBtnSearchAddress;
     private javax.swing.JPopupMenu jPopupMenuRoute;
@@ -1391,6 +1438,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jTB;
+    private javax.swing.JToolBar.Separator jTBSeparator6;
     private javax.swing.JButton jTbBtnCalcRoute;
     private javax.swing.JButton jTbBtnNew;
     private javax.swing.JButton jTbBtnNewEntry;

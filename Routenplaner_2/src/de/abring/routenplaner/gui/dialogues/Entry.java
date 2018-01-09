@@ -5,6 +5,7 @@
  */
 package de.abring.routenplaner.gui.dialogues;
 
+import de.abring.routenplaner.gui.imageOCR.OCR;
 import de.abring.helfer.maproute.LookupAddress;
 import de.abring.helfer.maproute.MapAddress;
 import de.abring.helfer.maproute.SearchForAddress;
@@ -164,12 +165,15 @@ public class Entry extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTblProdukte = new de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute();
+        jBtnProduktPlus = new javax.swing.JButton();
+        jBtnProduktMinus = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextExtras = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jBtnOK = new javax.swing.JButton();
         jBtnCancel = new javax.swing.JButton();
+        jBtnSnipRollkarte = new javax.swing.JButton();
 
         jMenuAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/icons/Add.png"))); // NOI18N
         jMenuAdd.setText("Add");
@@ -294,22 +298,46 @@ public class Entry extends javax.swing.JDialog {
 
         jSplitPane1.setLeftComponent(jPanel1);
 
-        jSplitPane2.setDividerLocation(130);
+        jSplitPane2.setDividerLocation(160);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Produkte"));
 
         jScrollPane3.setViewportView(jTblProdukte);
 
+        jBtnProduktPlus.setText("+");
+        jBtnProduktPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnProduktPlusActionPerformed(evt);
+            }
+        });
+
+        jBtnProduktMinus.setText("-");
+        jBtnProduktMinus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnProduktMinusActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jBtnProduktPlus, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBtnProduktMinus, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                .addGap(4, 4, 4)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBtnProduktPlus, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtnProduktMinus, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jSplitPane2.setLeftComponent(jPanel4);
@@ -330,11 +358,11 @@ public class Entry extends javax.swing.JDialog {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel5);
@@ -359,12 +387,21 @@ public class Entry extends javax.swing.JDialog {
             }
         });
 
+        jBtnSnipRollkarte.setText("Snipping Rollkarte");
+        jBtnSnipRollkarte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSnipRollkarteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jBtnSnipRollkarte)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jBtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBtnOK)
@@ -376,7 +413,8 @@ public class Entry extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnOK)
-                    .addComponent(jBtnCancel))
+                    .addComponent(jBtnCancel)
+                    .addComponent(jBtnSnipRollkarte))
                 .addContainerGap())
         );
 
@@ -385,7 +423,7 @@ public class Entry extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPnlAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
             .addComponent(jPnlName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -479,7 +517,7 @@ public class Entry extends javax.swing.JDialog {
     }//GEN-LAST:event_jTxtNameKeyPressed
 
     private void jMenuAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAddActionPerformed
-        String name = JOptionPane.showInputDialog(this.parent, "Produkt:");
+        String name = JOptionPane.showInputDialog(this, "Produkt:");
         this.jTblProdukte.addItem(new JXTreeRouteItem(name));
         this.jTblProdukte.updateUI();
     }//GEN-LAST:event_jMenuAddActionPerformed
@@ -505,9 +543,39 @@ public class Entry extends javax.swing.JDialog {
         this.jTblProdukte.updateUI();
     }//GEN-LAST:event_jMenuDeleteActionPerformed
 
+    private void jBtnProduktPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnProduktPlusActionPerformed
+        String name = JOptionPane.showInputDialog(this, "Produkt:");
+        this.jTblProdukte.addItem(new JXTreeRouteItem(name));
+        this.jTblProdukte.updateUI();
+    }//GEN-LAST:event_jBtnProduktPlusActionPerformed
+
+    private void jBtnProduktMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnProduktMinusActionPerformed
+        List<JXTreeRouteEntry> selectedEntries = new ArrayList<>();
+        int[] selectedRows = this.jTblProdukte.getSelectedRows();
+        
+        for (int i = 0; i < selectedRows.length; i++) {
+            JXTreeRouteEntry delentry = this.jTblProdukte.getItem(selectedRows[i]);
+            if (delentry instanceof JXTreeRouteItem)
+                selectedEntries.add(delentry);
+        }
+        this.jTblProdukte.removeItems(selectedEntries);
+        this.jTblProdukte.updateUI();
+    }//GEN-LAST:event_jBtnProduktMinusActionPerformed
+
+    private void jBtnSnipRollkarteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSnipRollkarteActionPerformed
+        this.entry = OCR.rollkarteOCR(this.parent, true, this.entry.getFavorite());
+        initOtherComponents();
+
+        this.jBtnOK.setEnabled(!this.jTxtName.getText().isEmpty() && this.getEntry().getAddress() != null && this.getEntry().getAddress().isValid() && !this.getEntry().getAddress().getStraße().isEmpty());
+
+    }//GEN-LAST:event_jBtnSnipRollkarteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancel;
     private javax.swing.JButton jBtnOK;
+    private javax.swing.JButton jBtnProduktMinus;
+    private javax.swing.JButton jBtnProduktPlus;
+    private javax.swing.JButton jBtnSnipRollkarte;
     private javax.swing.JButton jButtonSuche;
     private javax.swing.JLabel jLblFav;
     private javax.swing.JMenuItem jMenuAdd;
