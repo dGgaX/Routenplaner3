@@ -9,11 +9,15 @@ import de.abring.gui.snippingtool.*;
 import de.abring.helfer.maproute.*;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
+import de.abring.routenplaner.gui.Main;
 import de.abring.routenplaner.jxtreetableroute.entries.*;
 import de.abring.stringUtils.StringUtils;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDotWithNumber;
 
 /**
@@ -21,7 +25,8 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDotWithNumber;
  * @author Karima
  */
 public class OCR {
-            
+    private static final Logger LOGGER = LogManager.getLogger(OCR.class.getName());
+     
     //Suche Pakete
     private static final String[] paketeBausteine = {
         "liefer",
@@ -74,7 +79,12 @@ public class OCR {
             
             System.out.println("-> " + String.valueOf(partBounds.x) + ", " + String.valueOf(partBounds.y) + ", " + String.valueOf(partBounds.width) + ", " + String.valueOf(partBounds.height));
 
-            newImages.add(image.getSubimage(partBounds.x, partBounds.y, partBounds.width, partBounds.height));
+            try {
+                newImages.add(image.getSubimage(partBounds.x, partBounds.y, partBounds.width, partBounds.height));
+            } catch (RasterFormatException ex) {
+                LOGGER.error("RasterFormatException: " + ex.getMessage());
+                return null;
+            }
         }
         return rollkarteOCR(parent, modal, fav, newImages);
     }
