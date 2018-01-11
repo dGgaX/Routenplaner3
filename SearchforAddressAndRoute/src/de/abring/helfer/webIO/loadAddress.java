@@ -191,12 +191,17 @@ public class loadAddress {
     
     public static final MapAddress search(String searchString) {
         MapAddress address = loadAddress.OSM(searchString);
-        if (address == null || !address.isValid())
+        
+        if (address == null || !address.isValid()) {
             address = loadAddress.Google(searchString);
-        if (address == null || !address.isValid())
+        }
+        
+        if (address == null || !address.isValid()) {
             LOG.error("No valid Address found!");
-        else
+        } else {
+            address.setSuchString(searchString);
             return address;
+        }
         return null;
     }
     public static final MapAddress search(MapAddress searchMapRoute) {
