@@ -1196,9 +1196,11 @@ public class Main extends javax.swing.JFrame {
             if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
                 Route route = ((Route) this.Desktop_Pane.getSelectedFrame());
                 JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) this.FavoriteTable.getItem(this.FavoriteTable.getSelectedRows()[0]);
+                File file = de.abring.pdferkennung.gui.dialogues.FileIO.getOpenPDFFile(this, System.getProperty("user.home"));
 
-                JscanPDF jscanPDF = new JscanPDF(this, true, route, fav);
-
+                JscanPDF jscanPDF = new JscanPDF(this, true, route, fav, file);
+                jscanPDF.setVisible(true);
+                
                 this.Desktop_Pane.getSelectedFrame().updateUI();
             }
         

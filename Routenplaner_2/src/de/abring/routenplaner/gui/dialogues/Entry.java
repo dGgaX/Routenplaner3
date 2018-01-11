@@ -563,7 +563,7 @@ public class Entry extends javax.swing.JDialog {
     }//GEN-LAST:event_jBtnProduktMinusActionPerformed
 
     private void jBtnSnipRollkarteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSnipRollkarteActionPerformed
-        this.entry = OCR.rollkarteOCR(this.parent, true, this.entry.getFavorite());
+        this.entry = OCR.rollkarteOCR(null, true, this.entry.getFavorite());
         initOtherComponents();
 
         this.jBtnOK.setEnabled(!this.jTxtName.getText().isEmpty() && this.getEntry().getAddress() != null && this.getEntry().getAddress().isValid() && !this.getEntry().getAddress().getStraße().isEmpty());

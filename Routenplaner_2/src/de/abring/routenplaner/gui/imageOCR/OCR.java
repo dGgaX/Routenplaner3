@@ -9,6 +9,7 @@ import de.abring.gui.snippingtool.*;
 import de.abring.helfer.maproute.*;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
+import de.abring.pdferkennung.gui.dialogues.JscanPDF;
 import de.abring.routenplaner.gui.Main;
 import de.abring.routenplaner.jxtreetableroute.entries.*;
 import de.abring.stringUtils.StringUtils;
@@ -58,7 +59,7 @@ public class OCR {
         "garantie-verlängerung"
     };
 
-    public static final JXTreeRouteAddressClient rollkarteOCR(java.awt.Frame parent, boolean modal, JXTreeRouteAddressFav fav, BufferedImage image) {                                        
+    public static final JXTreeRouteAddressClient rollkarteOCR(JscanPDF parent, boolean modal, JXTreeRouteAddressFav fav, BufferedImage image) {                                        
         List<PercentDimension> parts = new ArrayList<>();
         List<BufferedImage> newImages = new ArrayList<>();
         parts.clear();
@@ -70,6 +71,9 @@ public class OCR {
         parts.add(new PercentDimension("X0.800f", "X0.200f", "W0.200f", "W0.100f")); // Notizen
         parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.081f"));// Geräte
         
+        parent.setImageMax(parts.size());
+        
+        int i = 0;
         for (PercentDimension part : parts) {
             Rectangle partBounds = part.getDimension(new Rectangle(0, 0, image.getWidth(), image.getHeight()));
 
@@ -89,7 +93,7 @@ public class OCR {
         return rollkarteOCR(parent, modal, fav, newImages);
     }
     
-    public static final JXTreeRouteAddressClient rollkarteOCR(java.awt.Frame parent, boolean modal, JXTreeRouteAddressFav fav) {
+    public static final JXTreeRouteAddressClient rollkarteOCR(JscanPDF parent, boolean modal, JXTreeRouteAddressFav fav) {
         List<PercentDimension> parts = new ArrayList<>();
         parts.clear();
         
@@ -100,25 +104,32 @@ public class OCR {
         parts.add(new PercentDimension("X0.800f", "X0.200f", "W0.200f", "W0.100f")); // Notizen
         parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.081f"));// Geräte
         
-        Snippet imageSnippet = new Snippet(parent, modal, parts);
+        Snippet imageSnippet = new Snippet(parent.getParent(), modal, parts);
         List<BufferedImage> newImages = imageSnippet.getNewImage();
         
         
         return rollkarteOCR(parent, modal, fav, newImages);
     }
     
-    public static final JXTreeRouteAddressClient rollkarteOCR(java.awt.Frame parent, boolean modal, JXTreeRouteAddressFav fav, List<BufferedImage> newImages) {
+    public static final JXTreeRouteAddressClient rollkarteOCR(JscanPDF parent, boolean modal, JXTreeRouteAddressFav fav, List<BufferedImage> newImages) {
         JXTreeRouteAddressClient entry = new JXTreeRouteAddressClient(new MapAddress(), fav);
         
         entry.setDuration(new TimeOfDay("00:05"));
         entry.setAppointment(new Appointment("Samstagslieferung", new TimeOfDay("10:00"), new TimeOfDay("17:00")));
         entry.setExtras("");
         
+        java.awt.Frame frame = null;
+        if (parent != null)
+            frame = parent.getParent();
+            
+        
         for(int i = 0; i < newImages.size(); i++) {
             BufferedImage image = newImages.get(i);
-            ImageOCR imageOCR = new ImageOCR(parent, modal, image);
+            ImageOCR imageOCR = new ImageOCR(frame, modal, image);
             imageOCR.requestFocus();
             imageOCR.setVisible(true);
+            if (parent != null)
+                parent.setImageValue(parent.getImageValue() + 1);
             
             List<String> z = Arrays.asList(imageOCR.getString().split("\n"));  
             List<String> zeilen = new ArrayList<>(); 
@@ -137,7 +148,7 @@ public class OCR {
                         for (int j = 2; j < zeilen.size() - 2; j++) {
                             addressString += zeilen.get(j) + ", ";
                         }
-                        entry.setAddress(getAddress(parent, modal, addressString));
+                        entry.setAddress(getAddress(frame, modal, addressString));
                         if (entry.getAddress() != null)
                             entry.setDot(new MapMarkerDotWithNumber(entry.getAddress().getLat(), entry.getAddress().getLon()));
                     }
@@ -149,7 +160,7 @@ public class OCR {
                         for (int j = 3; j < zeilen.size() - 2; j++) {
                             addressString += zeilen.get(j) + ", ";
                         }
-                        entry.setAddress(getAddress(parent, modal, addressString));
+                        entry.setAddress(getAddress(frame, modal, addressString));
                         if (entry.getAddress() != null)
                             entry.setDot(new MapMarkerDotWithNumber(entry.getAddress().getLat(), entry.getAddress().getLon()));
                     }
@@ -161,7 +172,7 @@ public class OCR {
                 case 4:// Notizen
                     String notizen = entry.getExtras();
                     for (String zeile : zeilen) {
-                        notizen += zeile + "\n\r";
+                        notizen += zeile + " ";
                     }
                     entry.setExtras(notizen);
                     break;

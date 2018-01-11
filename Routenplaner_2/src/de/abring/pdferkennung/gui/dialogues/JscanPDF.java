@@ -32,13 +32,17 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 public class JscanPDF extends javax.swing.JDialog {
 
     private final Route route;
-
-    private JXTreeRouteAddressFav fav;
+    private final File file;
+    private final JXTreeRouteAddressFav fav;
+    private final java.awt.Frame parent;
     
     private PDFRenderer renderer ;
     private int pages = 0;
+    private int images = 0;
     private int resolution = 250;
-    
+    private boolean stopRunning = false;
+    private int image = 0;
+    private int page = 0;
     
     /**
      * Creates new form JscanPDF
@@ -46,22 +50,27 @@ public class JscanPDF extends javax.swing.JDialog {
      * @param modal
      * @param route
      * @param fav
+     * @param file
      */
-    public JscanPDF(java.awt.Frame parent, boolean modal, Route route, JXTreeRouteAddressFav fav) {
+    public JscanPDF(java.awt.Frame parent, boolean modal, Route route, JXTreeRouteAddressFav fav, File file) {
         super(parent, modal);
+        this.parent = parent;
         initComponents();
         this.route = route;
         this.fav = fav;
-        loadFile(FileIO.getOpenPDFFile(parent, System.getProperty("user.home")));
+        this.file = file;
     }
 
     private void loadFile(File file) {
         try {
             PDDocument doc = PDDocument.load(file);
             renderer = new PDFRenderer(doc);
-            pages = doc.getNumberOfPages();
+            setPageMax(doc.getNumberOfPages());
             for(int i = 0; i < pages; i++) {
+                setPageValue(i);
                 showPage(i);
+                if (stopRunning)
+                    break;
             }
         } catch (IOException ex) {
             Logger.getLogger(JPictureFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,16 +85,59 @@ public class JscanPDF extends javax.swing.JDialog {
             image = renderer.renderImageWithDPI(page, resolution, ImageType.RGB);
         } catch (IOException ex) {
             Logger.getLogger(JPictureFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
+        
         image = PictureRecognition.frameFinder(image, 1, Math.round(resolution / 30.0f));
         if (image != null) {
 
-            JXTreeRouteAddressClient entry = OCR.rollkarteOCR(null, true, fav, image);
+            JXTreeRouteAddressClient entry = OCR.rollkarteOCR(this, true, fav, image);
             if (entry != null)
                 route.addEntry(route.listLength() - 2, entry);
         }
     }
         
+    public void setImageValue(int value) {
+        if (value >= 0 && value < this.images) {
+            this.image = value;
+            jLblImage.setText("Lese Bild " + String.valueOf(this.image + 1) + " von " + String.valueOf(this.images) + " ein:");
+            jBarImage.setValue(this.image);
+//            jLblImage.updateUI();
+//            jBarImage.updateUI();
+        }
+    }
+    
+    public int getImageValue() {
+        return this.page;
+    }
+    
+    public void setPageValue(int value) {
+        if (value >= 0 && value < this.pages) {
+            this.page = value;
+            jLblPage.setText("Ich bin bei Seite " + String.valueOf(this.page + 1) + " von " + String.valueOf(this.pages) + ":");
+            jBarPage.setValue(this.page);
+//            jLblPage.updateUI();
+//            jBarPage.updateUI();
+        }
+    }
+    
+    public void setImageMax(int max) {
+        if (max > 0) {
+            this.images = max;
+            jBarImage.setMaximum(this.images);
+//            jBarImage.updateUI();
+            
+        }
+    }
+    
+    public void setPageMax(int max) {
+        if (max > 0) {
+            this.pages = max;
+            jBarPage.setMaximum(this.pages);
+//            jBarPage.updateUI();
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,22 +147,96 @@ public class JscanPDF extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jBtnCancel = new javax.swing.JButton();
+        jLblImage = new javax.swing.JLabel();
+        jBarImage = new javax.swing.JProgressBar();
+        jLblPage = new javax.swing.JLabel();
+        jBarPage = new javax.swing.JProgressBar();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("PDF einlesen");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        jBtnCancel.setText("Abbrechen");
+        jBtnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnCancelActionPerformed(evt);
+            }
+        });
+
+        jLblImage.setText("Lese Teile ein");
+
+        jLblPage.setText("Bin bei Seite");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 772, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jBtnCancel))
+                    .addComponent(jBarImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+                    .addComponent(jBarPage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLblImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLblPage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLblImage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBarImage, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jLblPage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBarPage, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBtnCancel)
+                .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+        new Thread(){
+            @Override
+            public void run(){
+                loadFile(file);
+                dispose();
+            }
+        }.start();
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jBtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelActionPerformed
+        stopRunning = true;
+        this.dispose();
+    }//GEN-LAST:event_jBtnCancelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar jBarImage;
+    private javax.swing.JProgressBar jBarPage;
+    private javax.swing.JButton jBtnCancel;
+    private javax.swing.JLabel jLblImage;
+    private javax.swing.JLabel jLblPage;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the parent
+     */
+    public java.awt.Frame getParent() {
+        return parent;
+    }
 }

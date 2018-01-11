@@ -9,18 +9,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import javax.swing.JEditorPane;
 import javax.swing.RepaintManager;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
 
 /**
  *
  * @author Karima
  */
-public class JPanelPrintableEditorPane extends JEditorPane implements Printable {
+public class JPanelPrintableEditorPane extends JEditorPane implements Scrollable, Printable {
 
+    private int maxUnitIncrement = 1;
+    
     /**
      * Creates new form JPanelPrintableEditorPane
      */
@@ -81,5 +86,56 @@ private Graphics2D g2;
     }
     public Graphics2D getGraphics() {
         return g2;
+    }
+    
+    public Dimension getPreferredScrollableViewportSize() {
+        return getPreferredSize();
+    }
+ 
+    public int getScrollableUnitIncrement(Rectangle visibleRect,
+                                          int orientation,
+                                          int direction) {
+        //Get the current position.
+        int currentPosition = 0;
+        if (orientation == SwingConstants.HORIZONTAL) {
+            currentPosition = visibleRect.x;
+        } else {
+            currentPosition = visibleRect.y;
+        }
+ 
+        //Return the number of pixels between currentPosition
+        //and the nearest tick mark in the indicated direction.
+        if (direction < 0) {
+            int newPosition = currentPosition -
+                             (currentPosition / maxUnitIncrement)
+                              * maxUnitIncrement;
+            return (newPosition == 0) ? maxUnitIncrement : newPosition;
+        } else {
+            return ((currentPosition / maxUnitIncrement) + 1)
+                   * maxUnitIncrement
+                   - currentPosition;
+        }
+    }
+ 
+    public int getScrollableBlockIncrement(Rectangle visibleRect,
+                                           int orientation,
+                                           int direction) {
+        if (orientation == SwingConstants.HORIZONTAL) {
+            return visibleRect.width - maxUnitIncrement;
+        } else {
+            return visibleRect.height - maxUnitIncrement;
+        }
+    }
+ 
+    public boolean getScrollableTracksViewportWidth() {
+        return false;
+    }
+ 
+    public boolean getScrollableTracksViewportHeight() {
+        return false;
+    }
+ 
+    public void setMaxUnitIncrement(int pixels) {
+        maxUnitIncrement = pixels;
     }
 }

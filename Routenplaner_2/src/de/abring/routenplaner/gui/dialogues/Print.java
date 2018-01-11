@@ -7,6 +7,7 @@ package de.abring.routenplaner.gui.dialogues;
 
 import de.abring.routenplaner.jxtreetableroute.entries.*;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JViewport;
 import net.sf.jtpl.Template;
 
 /**
@@ -58,12 +60,25 @@ public class Print extends javax.swing.JDialog {
         
         initComponents();
         this.format = format;
+        double scale = 1.3d;
+        int pageWidth = (int) Math.round(this.format.getImageableWidth() * scale) ;
+        int pageHeight = (int) Math.round(this.format.getImageableHeight() * scale) ;
         this.preview = preview;
         this.programDir = programDir;
         this.tour = tour;
         preparePrint(programDir + "\\vorlagen\\drucken\\drucken.html");
         this.jPanelPrintableEditorPane1.setContentType("text/html");
         this.jPanelPrintableEditorPane1.setText(this.text);
+        Dimension printingSize = new Dimension(pageWidth, pageHeight);
+        this.setSize(pageWidth + 50, this.getHeight());
+        this.jPanelPrintableEditorPane1.setPreferredSize(printingSize);
+        this.jPanelPrintableEditorPane1.revalidate();
+        JViewport jvp = this.jScrollPane1.getViewport();
+        
+        jvp.setSize(printingSize);
+        
+        this.jScrollPane1.setViewport(jvp);
+        this.jTextPlane.setText(this.text);
     }
     
     /**
@@ -85,7 +100,11 @@ public class Print extends javax.swing.JDialog {
             for (JXTreeRouteEntry entry : tour.getEntryList()) {
                 if (!(entry instanceof JXTreeRouteRoute)) {
                     tpl.assign("UHRZEIT", entry.getStart().getTimeString().replace(" ", "&nbsp;"));
-                    tpl.assign("DAUER", entry.getDuration().getDurationString());
+                    if (entry instanceof JXTreeRouteAddress) {
+                        tpl.assign("DAUER", entry.getDuration().getDurationString());
+                    } else {
+                        tpl.assign("DAUER", "");
+                    }
                     tpl.assign("NAME", entry.getName().replace(", ", ",<br>").replace("\n", "<br>"));
                     
                     if (entry instanceof JXTreeRouteStart)
@@ -221,7 +240,7 @@ public class Print extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanelPrintableEditorPane1 = new de.abring.routenplaner.gui.components.JPanelPrintableEditorPane();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextPlane = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(640, 480));
@@ -297,9 +316,14 @@ public class Print extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("text / html", jScrollPane1);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jTextPlane.setColumns(20);
+        jTextPlane.setRows(5);
+        jTextPlane.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextPlaneFocusLost(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTextPlane);
 
         jTabbedPane1.addTab("text / plain", jScrollPane3);
 
@@ -329,12 +353,17 @@ public class Print extends javax.swing.JDialog {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if (this.preview) {
             LOGGER.log(Level.INFO, "Starting Preview ...");
-            this.jTextArea1.setText(this.text);
+            this.jTextPlane.setText(this.text);
             LOGGER.log(Level.INFO, "Starting Preview (DONE) ...");
         } else {
             printList();
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void jTextPlaneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextPlaneFocusLost
+        this.text = this.jTextPlane.getText();
+        this.jPanelPrintableEditorPane1.setText(this.text);
+    }//GEN-LAST:event_jTextPlaneFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -347,7 +376,7 @@ public class Print extends javax.swing.JDialog {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextPlane;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
