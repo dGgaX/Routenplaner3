@@ -94,6 +94,9 @@ public class MapAddress implements java.io.Serializable {
         this.lat = lat;
         this.lon = lon;
     }
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
     public void setLon(double lon) {
         this.lon = lon;
     }
@@ -112,7 +115,7 @@ public class MapAddress implements java.io.Serializable {
     public void setSuchString(String SuchString) {
         this.SuchString = SuchString;
     }
-    public void setLand() {
+    public void setLand(String Land) {
         this.Land  = Land;
     }
     @Override

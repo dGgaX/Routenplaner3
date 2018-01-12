@@ -82,8 +82,7 @@ public class loadAddress {
         return result;
     }
     
-    private static MapAddress parseAddress(JSONArray array) throws AddressNotValidException {
-        MapAddress newAddress = new MapAddress();
+    private static MapAddress parseAddress(MapAddress newAddress, JSONArray array) throws AddressNotValidException {
         if ((array != null) && !array.isNull(0)) {
             if (array.getJSONObject(0).has("address_components")) {     //Google
                 LOG.info("Parse Google ...");
@@ -127,13 +126,16 @@ public class loadAddress {
                 LOG.info("Parse OSM ...");
                 
                 JSONObject Address = array.getJSONObject(0).getJSONObject("address");
-                if (Address.has("road") && 
-                    Address.has("house_number") && 
-                    Address.has("postcode") &&
-                    (Address.has("town") || 
-                    Address.has("city")) &&
-                    Address.has("country")) {
-                    
+                if (Address.has("road")) { 
+                    newAddress.setStraße(Address.getString("road"));
+                }
+                if (Address.has("house_number")) {
+                    newAddress.setHsNr(Address.getString("house_number"));
+                }
+                if (Address.has("postcode")) {
+                    newAddress.setPLZ(Address.getString("postcode"));
+                }
+                if (Address.has("town") || Address.has("city")) {
                     String Stadtname = "";
                     if (Address.has("town")) {
                         Stadtname += Address.getString("town");
@@ -143,10 +145,12 @@ public class loadAddress {
                     if (Address.has("suburb")) {
                         Stadtname += " - " + Address.getString("suburb");
                     }
-                    
-                    Double DLat = Double.parseDouble(array.getJSONObject(0).getString("lat"));
-                    Double DLon = Double.parseDouble(array.getJSONObject(0).getString("lon"));
-                    newAddress.setAddress(Address.getString("road"), Address.getString("house_number"), Address.getString("postcode"), Stadtname, Address.getString("country"), DLat, DLon);
+                    newAddress.setStadt(Stadtname);
+                }
+                if (Address.has("country")) {
+                    newAddress.setLand(Address.getString("country"));
+                    newAddress.setLat(Double.parseDouble(array.getJSONObject(0).getString("lat")));
+                    newAddress.setLon(Double.parseDouble(array.getJSONObject(0).getString("lon")));
                 }
             }
         }
@@ -155,15 +159,15 @@ public class loadAddress {
         return newAddress;
     }
     
-    public static final MapAddress OSM(String Search_Obj) {
+    public static final MapAddress OSM(MapAddress Search_Obj) {
         LOG.info("Suche in OSM!");
         String result;
         try {
             result = getData("http://nominatim.openstreetmap.org/search?q=" +
-                             URLEncoder.encode(Search_Obj, "UTF-8") + 
+                             URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8") + 
                              "&bounded=0&format=json&limit=1&addressdetails=1&email=andreas.bring@rwth-aachen.de&countrycodes=de,nl,be,lu");
             JSONArray array = new JSONArray(result);
-            return parseAddress(array);
+            return parseAddress(Search_Obj, array);
         } catch (IOException ex) {
             LOG.error(ex);
         } catch (URLRequestExpiredException | URLEmptyDataException | AddressNotValidException ex) {
@@ -172,15 +176,15 @@ public class loadAddress {
         return null;
     }
     
-    public static final MapAddress Google(String Search_Obj) {
+    public static final MapAddress Google(MapAddress Search_Obj) {
         LOG.info("Suche bei Google!");
         String result;
         try {
             result = getData("http://maps.googleapis.com/maps/api/geocode/json?address=" + 
-                             URLEncoder.encode(Search_Obj, "UTF-8") + 
+                             URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8") + 
                              "&sensor=false&language=de&region=EU");
             JSONArray array = new JSONObject(result.replaceAll("\\s"," ")).getJSONArray("results");
-            return parseAddress(array);
+            return parseAddress(Search_Obj, array);
         } catch (IOException ex) {
             LOG.error(ex);
         } catch (URLRequestExpiredException | URLEmptyDataException | AddressNotValidException ex) {
@@ -190,23 +194,23 @@ public class loadAddress {
     }
     
     public static final MapAddress search(String searchString) {
-        MapAddress address = loadAddress.OSM(searchString);
-        
-        if (address == null || !address.isValid()) {
-            address = loadAddress.Google(searchString);
-        }
-        
-        if (address == null || !address.isValid()) {
-            LOG.error("No valid Address found!");
-        } else {
-            address.setSuchString(searchString);
-            return address;
-        }
-        return null;
+        return search(new MapAddress(searchString));
     }
+    
     public static final MapAddress search(MapAddress searchMapRoute) {
         if (searchMapRoute.getSuchString().isEmpty())
             return searchMapRoute;
-        return search(searchMapRoute.getSuchString());
+
+        MapAddress address = loadAddress.OSM(searchMapRoute);
+        
+        if (address == null || !address.isValid()) {
+            address = loadAddress.Google(searchMapRoute);
+        }
+        
+        if (address != null && address.isValid()) {
+            return address;
+        }
+        LOG.error("No valid Address found!");
+        return null;
     }
 }

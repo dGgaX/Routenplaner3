@@ -45,6 +45,7 @@ public class SearchForAddress extends javax.swing.JDialog {
             mapAddress = loadAddress.search(mapAddress);
             if (mapAddress != null && mapAddress.isValid()) {
                 LOG.info("Address found and parsed ...");
+                this.txt_search.setText(mapAddress.getSuchString());
                 this.lbl_Straße.setText(mapAddress.getStraße());
                 this.lbl_HsNr.setText(mapAddress.getHsNr());
                 this.lbl_PLZ.setText(mapAddress.getPLZ());
@@ -54,6 +55,7 @@ public class SearchForAddress extends javax.swing.JDialog {
                 this.jMapViewer.setDisplayToFitMapMarkers();
             } else {
                 LOG.warn("Address not found ...");
+                this.txt_search.setText(mapAddress.getSuchString());
                 this.lbl_Straße.setText("");
                 this.lbl_HsNr.setText("");
                 this.lbl_PLZ.setText("");
@@ -178,6 +180,8 @@ public class SearchForAddress extends javax.swing.JDialog {
     private void txt_searchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnOKActionPerformed(null);
+        } else {
+            mapAddress.setSuchString(txt_search.getText());
         }
     }//GEN-LAST:event_txt_searchKeyPressed
 
