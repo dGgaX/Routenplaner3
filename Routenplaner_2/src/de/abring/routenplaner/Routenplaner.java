@@ -46,6 +46,8 @@ public class Routenplaner {
                 splashScreen.dispose();
             }
         });
+        splashThread.start();
+        
         properties = new Properties();
         loadProperties();
         setLookAndFeel();
@@ -57,7 +59,6 @@ public class Routenplaner {
      * loads the Properties from File
      */
     private void loadProperties(){
-        splashThread.start();
         
         try {
             String mainpath = PathFinder.getAbsolutePath();
