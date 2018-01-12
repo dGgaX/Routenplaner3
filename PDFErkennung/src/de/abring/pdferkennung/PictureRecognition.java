@@ -281,7 +281,7 @@ public class PictureRecognition {
         int ALL_ENTRY_COUNT = TOP_LEFT_CORNERS.size() + TOP_RIGHT_CORNERS.size() + BOTTOM_LEFT_CORNERS.size() + BOTTOM_RIGHT_CORNERS.size();
         if (ALL_ENTRY_COUNT % 4 == 0) {
             int RECTANGLE_COUNT = ALL_ENTRY_COUNT / 4;
-            if (RECTANGLE_COUNT >= frame) {
+            if (RECTANGLE_COUNT > frame) {
                 Point topLeft = new Point((int) TOP_LEFT_CORNERS.get(frame).getCenterX(), (int) TOP_LEFT_CORNERS.get(frame).getCenterY());
                 Point topRight = new Point((int) TOP_RIGHT_CORNERS.get(frame).getCenterX(), (int) TOP_RIGHT_CORNERS.get(frame).getCenterY());
                 Point bottomLeft = new Point((int) BOTTOM_LEFT_CORNERS.get(frame).getCenterX(), (int) BOTTOM_LEFT_CORNERS.get(frame).getCenterY());

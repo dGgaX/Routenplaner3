@@ -37,19 +37,50 @@ public class showPDFPage extends javax.swing.JDialog {
         initComponents();
         this.renderer = new PDFRenderer(doc);
         try {
-            image = renderer.renderImageWithDPI(page, 120, ImageType.RGB);
+            this.image = renderer.renderImageWithDPI(page, 120, ImageType.RGB);
         } catch (IOException ex) {
             Logger.getLogger(JPictureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (image == null) {
+        if (this.image == null) {
             this.jLabel.setSize(this.jScrollPane.getSize());
             this.jLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/pdferkennung/image/red-x.png")));
         } else {
-            this.jLabel.setSize(new Dimension(image.getWidth(), image.getHeight()));
-            this.jLabel.setIcon(new ImageIcon(image));
+            this.jLabel.setSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
+            this.jLabel.setIcon(new ImageIcon(this.image));
+        }
+    }
+    
+    public showPDFPage(java.awt.Frame parent, boolean modal, BufferedImage image) {
+        super(parent, modal);
+        initComponents();
+        this.renderer = null;
+        this.image = scale(image, 1024, Math.round(1024.0f * image.getHeight()) / image.getWidth());
+        if (this.image == null) {
+            this.jLabel.setSize(this.jScrollPane.getSize());
+            this.jLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/pdferkennung/image/red-x.png")));
+        } else {
+            this.jLabel.setSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
+            this.jLabel.setIcon(new ImageIcon(this.image));
         }
     }
 
+    public static BufferedImage scale(BufferedImage src, int w, int h) {
+        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        int x, y;
+        int ww = src.getWidth();
+        int hh = src.getHeight();
+        int[] ys = new int[h];
+        for (y = 0; y < h; y++)
+            ys[y] = y * hh / h;
+        for (x = 0; x < w; x++) {
+            int newX = x * ww / w;
+            for (y = 0; y < h; y++) {
+                int col = src.getRGB(newX, ys[y]);
+                img.setRGB(x, y, col);
+            }
+        }
+        return img;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,7 +103,7 @@ public class showPDFPage extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+            .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
