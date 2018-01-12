@@ -386,30 +386,31 @@ public class Main extends javax.swing.JFrame {
      * loads the Favorites from a File
      * @param file 
      */
-    private void loadFavorite(File file) {
+    private boolean loadFavorite(File file) {
         LOGGER.info("Öffne Favoritendatei...");
-        Object input = null;
+        Object input;
         try {
             try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
                 input = in.readObject();
             }
         } catch (IOException | ClassNotFoundException ex) {
             LOGGER.warn(ex);
+            return false;
         }
         if (!(input instanceof List)) {
             LOGGER.warn("Keine Liste");
+            return false;
         }
-        if (input != null) {
-            for (Object entry : (ArrayList) input) {
-                if (entry instanceof JXTreeRouteAddressFav) {
-                    this.FavoriteTable.addItem((JXTreeRouteAddressFav) entry);
-                    this.Karte.addMapMarker(((JXTreeRouteAddressFav) entry).getDot());
-                }else {
-                    LOGGER.warn("Keine Adresse: " + entry.toString());
-                }
+        for (Object entry : (ArrayList) input) {
+            if (entry instanceof JXTreeRouteAddressFav) {
+                this.FavoriteTable.addItem((JXTreeRouteAddressFav) entry);
+                this.Karte.addMapMarker(((JXTreeRouteAddressFav) entry).getDot());
+            }else {
+                LOGGER.warn("Keine Adresse: " + entry.toString());
             }
-            this.getFavoriteTable().updateUI();
         }
+        this.getFavoriteTable().updateUI();
+        return true;
     }
         
     /**
@@ -722,6 +723,8 @@ public class Main extends javax.swing.JFrame {
         jTbBtnCalcRoute = new javax.swing.JButton();
         jTBSeparator6 = new javax.swing.JToolBar.Separator();
         jBtnPDFScan = new javax.swing.JButton();
+        jCkbEinzelnachweiss = new javax.swing.JCheckBox();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         MenuMain = new javax.swing.JMenuBar();
         MenuDatei = new javax.swing.JMenu();
         MenuDateiNeu = new javax.swing.JMenuItem();
@@ -1052,6 +1055,11 @@ public class Main extends javax.swing.JFrame {
         });
         jTB.add(jBtnPDFScan);
 
+        jCkbEinzelnachweiss.setText("Einzelnachweise");
+        jCkbEinzelnachweiss.setFocusable(false);
+        jTB.add(jCkbEinzelnachweiss);
+        jTB.add(jSeparator2);
+
         getContentPane().add(jTB, java.awt.BorderLayout.PAGE_START);
 
         MenuDatei.setText("Datei");
@@ -1197,10 +1205,10 @@ public class Main extends javax.swing.JFrame {
                 Route route = ((Route) this.Desktop_Pane.getSelectedFrame());
                 JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) this.FavoriteTable.getItem(this.FavoriteTable.getSelectedRows()[0]);
                 File file = de.abring.pdferkennung.gui.dialogues.FileIO.getOpenPDFFile(this, System.getProperty("user.home"));
-
-                JscanPDF jscanPDF = new JscanPDF(this, true, route, fav, file);
-                jscanPDF.setVisible(true);
-                
+                if (file != null && file.exists()) {
+                    JscanPDF jscanPDF = new JscanPDF(this, true, route, fav, file, jCkbEinzelnachweiss.isSelected());
+                    jscanPDF.setVisible(true);
+                }
                 this.Desktop_Pane.getSelectedFrame().updateUI();
             }
         
@@ -1368,7 +1376,9 @@ public class Main extends javax.swing.JFrame {
         this.programDir = PathFinder.getAbsolutePath() + parent.getProperties().getProperty("programpathpart", "");
         File favorite = new File(this.programDir + parent.getProperties().getProperty("favoritenfile", "\\vorlagen\\favoriten.serialroutefavorit"));
         if (favorite.exists()) {
-            loadFavorite(favorite);
+            if (!loadFavorite(favorite)) {
+                createFavorite();
+            }
         } else {
             createFavorite();
         }
@@ -1429,6 +1439,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
     private javax.swing.JButton jBtnSearchAddress;
+    private javax.swing.JCheckBox jCkbEinzelnachweiss;
     private javax.swing.JPopupMenu jPopupMenuRoute;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator1;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator2;
@@ -1439,6 +1450,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jTB;
     private javax.swing.JToolBar.Separator jTBSeparator6;
     private javax.swing.JButton jTbBtnCalcRoute;

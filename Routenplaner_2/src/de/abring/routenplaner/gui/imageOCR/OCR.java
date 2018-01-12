@@ -58,6 +58,11 @@ public class OCR {
         "verlängerung",
         "garantie-verlängerung"
     };
+    //Suche Garantie-Verlängerung
+    private static final String[] auslassungBausteine = {
+        "coupon",
+        "gutschein"
+    };
 
     public static final JXTreeRouteAddressClient rollkarteOCR(JscanPDF parent, boolean modal, JXTreeRouteAddressFav fav, BufferedImage image) {                                        
         List<PercentDimension> parts = new ArrayList<>();
@@ -72,6 +77,7 @@ public class OCR {
         parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.081f"));// Geräte
         
         parent.setImageMax(parts.size());
+        parent.setImageValue(0);
         
         int i = 0;
         for (PercentDimension part : parts) {
@@ -124,12 +130,17 @@ public class OCR {
             
         
         for(int i = 0; i < newImages.size(); i++) {
+            
+            if (parent != null) {
+                parent.setImageValue(i);
+                parent.imageUpdateUI();
+            }
+            
             BufferedImage image = newImages.get(i);
             ImageOCR imageOCR = new ImageOCR(frame, modal, image);
             imageOCR.requestFocus();
             imageOCR.setVisible(true);
-            if (parent != null)
-                parent.setImageValue(parent.getImageValue() + 1);
+            
             
             List<String> z = Arrays.asList(imageOCR.getString().split("\n"));  
             List<String> zeilen = new ArrayList<>(); 
@@ -177,6 +188,7 @@ public class OCR {
                     entry.setExtras(notizen);
                     break;
                 case 5:// Geräte
+                    boolean isAuslass = false;
                     boolean isPaket = false;
                     boolean isSubPaket = false;
                     boolean isAlthandl = false;
@@ -195,13 +207,14 @@ public class OCR {
                             
                                 artikelTeil = artikelTeil.toLowerCase();
                                 
+                                isAuslass = StringUtils.findMatch(artikelTeil, auslassungBausteine, 0.75d);
                                 isPaket = StringUtils.findMatch(artikelTeil, paketeBausteine, 0.75d);
                                 isSubPaket = StringUtils.findMatch(artikelTeil, subPaketeBausteine, 0.75d);
                                 isAlthandl = StringUtils.findMatch(artikelTeil, handlBausteine, 0.75d);
                                 isFina = StringUtils.findMatch(artikelTeil, finaBausteine, 0.75d);
                                 isGarantie = StringUtils.findMatch(artikelTeil, garantBausteine, 0.75d);
 
-                                if (isPaket || isSubPaket || isAlthandl || isFina || isGarantie) {
+                                if (isAuslass || isPaket || isSubPaket || isAlthandl || isFina || isGarantie) {
                                     if (isPaket) {
                                         if (StringUtils.findMatch("STANDART", worte, 0.75d)) {
                                             entry.setS(entry.getS() + 1);
@@ -240,7 +253,7 @@ public class OCR {
                                     break;
                                 }
                             }
-                            if (!(isPaket || isSubPaket || isAlthandl || isFina || isGarantie)) {
+                            if (!(isPaket || isSubPaket || isAlthandl || isFina || isGarantie || isAuslass)) {
                                 artikel = artikel.trim();
                                 entry.addItem(new JXTreeRouteItem(artikel));
                             }
@@ -269,7 +282,7 @@ public class OCR {
             search.setVisible(true);
             address = search.getMapAddress();
         }
-        if (address.isValid() && !address.getStraße().isEmpty()) {
+        if (address != null && address.isValid() && !address.getStraße().isEmpty()) {
             return address;
         }
         return null;

@@ -68,6 +68,7 @@ public class JPanelPakete extends javax.swing.JPanel {
      * @param zeit
      */
     public void setZeit(TimeOfDay zeit) {
+        zeit.addier(new TimeOfDay(-getMinutenFromPakete()));
         this.jComboBoxDuration.setZeit(zeit);
     }
     
@@ -76,10 +77,14 @@ public class JPanelPakete extends javax.swing.JPanel {
      */
     public JPanelPakete() {
         initComponents();
-        minuten = (int) this.jSpinnerS.getValue() * 5;
-        minuten += (int) this.jSpinnerK.getValue() * 20;
-        minuten += (int) this.jSpinnerP.getValue() * 40;
-        
+        minuten = getMinutenFromPakete();
+    }
+    
+    public final int getMinutenFromPakete() {
+        int min = (int) this.jSpinnerS.getValue() * 5;
+        min += (int) this.jSpinnerK.getValue() * 20;
+        min += (int) this.jSpinnerP.getValue() * 40;
+        return min;
     }
     
     public void increaseStandart() {
@@ -96,9 +101,8 @@ public class JPanelPakete extends javax.swing.JPanel {
     }
     
     private void calcMinutes() {
-        int neuMinuten = (int) this.getjSpinnerS().getValue() * 5;
-        neuMinuten += (int) this.getjSpinnerK().getValue() * 20;
-        neuMinuten += (int) this.getjSpinnerP().getValue() * 40;
+        int neuMinuten = getMinutenFromPakete();
+        
         TimeOfDay temp = new TimeOfDay(this.jComboBoxDuration.getZeit());
 
         temp.addier(new TimeOfDay((neuMinuten - minuten) * 60));

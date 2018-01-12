@@ -126,10 +126,10 @@ public class Entry extends javax.swing.JDialog {
         
         this.jPanelTermin.setTermin(entry.getAppointment());
         
-        this.jPanelPakete.setZeit(entry.getDuration());
         this.jPanelPakete.getjSpinnerP().setValue(entry.getP()) ;
         this.jPanelPakete.getjSpinnerK().setValue(entry.getK()) ;
         this.jPanelPakete.getjSpinnerS().setValue(entry.getS()) ;
+        this.jPanelPakete.setZeit(entry.getDuration());
         
         this.jTblProdukte.setJxTreeRouteEntryList(entry.getItems());
         this.jTblProdukte.setComponentPopupMenu(jPopupItems);

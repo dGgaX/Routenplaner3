@@ -9,6 +9,7 @@ import de.abring.pdferkennung.PictureRecognition;
 import de.abring.pdferkennung.gui.JPictureFrame;
 import de.abring.pdferkennung.gui.dialogues.FileIO;
 import de.abring.routenplaner.gui.Route;
+import de.abring.routenplaner.gui.dialogues.Entry;
 import de.abring.routenplaner.gui.imageOCR.OCR;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressClient;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
@@ -35,11 +36,11 @@ public class JscanPDF extends javax.swing.JDialog {
     private final File file;
     private final JXTreeRouteAddressFav fav;
     private final java.awt.Frame parent;
-    
+    private final boolean showResults;
     private PDFRenderer renderer ;
     private int pages = 0;
     private int images = 0;
-    private int resolution = 250;
+    private final int resolution = 250;
     private boolean stopRunning = false;
     private int image = 0;
     private int page = 0;
@@ -52,13 +53,14 @@ public class JscanPDF extends javax.swing.JDialog {
      * @param fav
      * @param file
      */
-    public JscanPDF(java.awt.Frame parent, boolean modal, Route route, JXTreeRouteAddressFav fav, File file) {
+    public JscanPDF(java.awt.Frame parent, boolean modal, Route route, JXTreeRouteAddressFav fav, File file, boolean showResults) {
         super(parent, modal);
         this.parent = parent;
         initComponents();
         this.route = route;
         this.fav = fav;
         this.file = file;
+        this.showResults = showResults;
     }
 
     private void loadFile(File file) {
@@ -80,7 +82,7 @@ public class JscanPDF extends javax.swing.JDialog {
     }
     
     private void showPage(int page) {
-        BufferedImage image = null;
+        BufferedImage image;
         try {
             image = renderer.renderImageWithDPI(page, resolution, ImageType.RGB);
         } catch (IOException ex) {
@@ -90,13 +92,29 @@ public class JscanPDF extends javax.swing.JDialog {
         
         image = PictureRecognition.frameFinder(image, 1, Math.round(resolution / 30.0f));
         if (image != null) {
-
             JXTreeRouteAddressClient entry = OCR.rollkarteOCR(this, true, fav, image);
-            if (entry != null)
-                route.addEntry(route.listLength() - 2, entry);
+            if (entry != null) {
+                if (this.showResults) {
+                    showPDFPage imageFrame = new showPDFPage(this.parent, false, image);
+                    Entry entryFrame = new Entry(this.parent, true, entry);
+                    imageFrame.setVisible(true);
+                    entryFrame.setVisible(true);
+                    imageFrame.dispose();
+                    entryFrame.dispose();
+                    entry = entryFrame.getEntry();
+                }
+                if (entry != null) {
+                    route.addEntry(route.listLength() - 2, entry);
+                }
+            }
         }
+        freememory();
     }
-        
+    
+    public void freememory(){
+        Runtime basurero = Runtime.getRuntime(); 
+        basurero.gc();
+    }
     public void setImageValue(int value) {
         if (value >= 0 && value < this.images) {
             this.image = value;
@@ -105,6 +123,10 @@ public class JscanPDF extends javax.swing.JDialog {
 //            jLblImage.updateUI();
 //            jBarImage.updateUI();
         }
+    }
+    public void imageUpdateUI() {
+        this.jBarImage.updateUI();
+        this.jLblImage.updateUI();
     }
     
     public int getImageValue() {
@@ -124,7 +146,7 @@ public class JscanPDF extends javax.swing.JDialog {
     public void setImageMax(int max) {
         if (max > 0) {
             this.images = max;
-            jBarImage.setMaximum(this.images);
+            jBarImage.setMaximum(this.images - 1);
 //            jBarImage.updateUI();
             
         }
@@ -133,7 +155,7 @@ public class JscanPDF extends javax.swing.JDialog {
     public void setPageMax(int max) {
         if (max > 0) {
             this.pages = max;
-            jBarPage.setMaximum(this.pages);
+            jBarPage.setMaximum(this.pages - 1);
 //            jBarPage.updateUI();
         }
     }
