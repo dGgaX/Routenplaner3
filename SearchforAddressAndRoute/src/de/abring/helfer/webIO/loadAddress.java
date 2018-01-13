@@ -211,6 +211,6 @@ public class loadAddress {
             return address;
         }
         LOG.error("No valid Address found!");
-        return null;
+        return searchMapRoute;
     }
 }
