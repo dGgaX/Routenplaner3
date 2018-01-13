@@ -10,6 +10,7 @@ import de.abring.helfer.maproute.*;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
 import de.abring.pdferkennung.gui.dialogues.JscanPDF;
+import de.abring.pdferkennung.gui.dialogues.showPDFPage;
 import de.abring.routenplaner.gui.Main;
 import de.abring.routenplaner.jxtreetableroute.entries.*;
 import de.abring.stringUtils.StringUtils;
@@ -74,7 +75,7 @@ public class OCR {
         parts.add(new PercentDimension("X0.600f", "X0.069f", "W0.200f", "W0.230f")); // Hilfsgeschäft
         parts.add(new PercentDimension("X0.800f", "X0.069f", "W0.200f", "W0.100f")); // BelegInfo
         parts.add(new PercentDimension("X0.800f", "X0.200f", "W0.200f", "W0.100f")); // Notizen
-        parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.081f"));// Geräte
+        parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.075f"));// Geräte
         
         parent.setImageMax(parts.size());
         parent.setImageValue(0);
@@ -108,9 +109,13 @@ public class OCR {
         parts.add(new PercentDimension("X0.600f", "X0.069f", "W0.200f", "W0.230f")); // Hilfsgeschäft
         parts.add(new PercentDimension("X0.800f", "X0.069f", "W0.200f", "W0.100f")); // BelegInfo
         parts.add(new PercentDimension("X0.800f", "X0.200f", "W0.200f", "W0.100f")); // Notizen
-        parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.081f"));// Geräte
+        parts.add(new PercentDimension("X0.000f", "X0.299f", "W1.000f", "W-0.075f"));// Geräte
+        Snippet imageSnippet;
+        if (parent == null)
+            imageSnippet = new Snippet(null, modal, parts);
+        else
+            imageSnippet = new Snippet(parent.getParent(), modal, parts);
         
-        Snippet imageSnippet = new Snippet(parent.getParent(), modal, parts);
         List<BufferedImage> newImages = imageSnippet.getNewImage();
         
         
@@ -137,6 +142,9 @@ public class OCR {
             }
             
             BufferedImage image = newImages.get(i);
+            showPDFPage showPage = new showPDFPage(null, false, image);
+            showPage.setVisible(true);
+                        
             ImageOCR imageOCR = new ImageOCR(frame, modal, image);
             imageOCR.requestFocus();
             imageOCR.setVisible(true);
@@ -159,7 +167,9 @@ public class OCR {
                         for (int j = 2; j < zeilen.size() - 2; j++) {
                             addressString += zeilen.get(j) + ", ";
                         }
+                        showPage.requestFocus();
                         entry.setAddress(getAddress(frame, modal, addressString));
+                        
                         if (entry.getAddress() != null)
                             entry.setDot(new MapMarkerDotWithNumber(entry.getAddress().getLat(), entry.getAddress().getLon()));
                     }
@@ -171,6 +181,7 @@ public class OCR {
                         for (int j = 3; j < zeilen.size() - 2; j++) {
                             addressString += zeilen.get(j) + ", ";
                         }
+                        showPage.requestFocus();
                         entry.setAddress(getAddress(frame, modal, addressString));
                         if (entry.getAddress() != null)
                             entry.setDot(new MapMarkerDotWithNumber(entry.getAddress().getLat(), entry.getAddress().getLon()));
@@ -262,6 +273,7 @@ public class OCR {
                     break;
 
             }
+            showPage.dispose();
         }
         return entry;
     }

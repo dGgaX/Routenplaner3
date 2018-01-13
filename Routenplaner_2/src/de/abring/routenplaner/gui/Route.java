@@ -635,7 +635,8 @@ public class Route extends javax.swing.JInternalFrame {
         jBtn_.setMinimumSize(new java.awt.Dimension(20, 20));
         jBtn_.setPreferredSize(new java.awt.Dimension(20, 20));
 
-        setBorder(javax.swing.BorderFactory.createLineBorder(null, 2));
+        setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.SystemColor.activeCaption, 2));
+        setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
@@ -644,8 +645,10 @@ public class Route extends javax.swing.JInternalFrame {
                 formInternalFrameActivated(evt);
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -753,6 +756,14 @@ public class Route extends javax.swing.JInternalFrame {
         
         }
     }//GEN-LAST:event_tablePaneComponentResized
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formInternalFrameClosed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formInternalFrameClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane backPane;
