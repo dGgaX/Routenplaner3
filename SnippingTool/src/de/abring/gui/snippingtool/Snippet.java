@@ -135,12 +135,18 @@ public final class Snippet extends javax.swing.JDialog {
             jPntPne.setDrawRect(false);
             bounds = new Rectangle(start);
             bounds.add(evt.getPoint());
+            
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice gd = ge.getDefaultScreenDevice();
+            if (gd.isWindowTranslucencySupported(TRANSLUCENT)) {
+                setOpacity(0.0f);
+            }
+
             BufferedImage image = getScreenshot();
             for (PercentDimension part : parts) {
                 Rectangle partBounds = part.getDimension(bounds);
 
                 System.out.println("-> " + String.valueOf(partBounds.x) + ", " + String.valueOf(partBounds.y) + ", " + String.valueOf(partBounds.width) + ", " + String.valueOf(partBounds.height));
-
                 newImage.add(image.getSubimage(partBounds.x, partBounds.y, partBounds.width, partBounds.height));
             }
             this.dispose();
