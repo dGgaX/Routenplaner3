@@ -163,7 +163,7 @@ public class loadAddress {
         LOG.info("Suche in OSM!");
         String result;
         try {
-            result = getData("http://nominatim.openstreetmap.org/search?q=" +
+            result = getData("https://nominatim.openstreetmap.org/search?q=" +
                              URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8") + 
                              "&bounded=0&format=json&limit=1&addressdetails=1&email=andreas.bring@rwth-aachen.de&countrycodes=de,nl,be,lu");
             JSONArray array = new JSONArray(result);
