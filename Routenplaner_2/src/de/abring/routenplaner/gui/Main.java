@@ -810,9 +810,14 @@ public class Main extends javax.swing.JFrame {
 
         jBtnCenterMap.setText("Karte auf Routen zentrieren");
 
-        jBtnNewEntry.setText("neuer Eintrag");
+        jBtnNewEntry.setText("+ Eintrag");
+        jBtnNewEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnNewEntryActionPerformed(evt);
+            }
+        });
 
-        jBtnRemoveEntry.setText("entferne Einträge");
+        jBtnRemoveEntry.setText("- Eintrag");
 
         jBtnCalcRoute.setText("berechne Routen");
 
@@ -824,9 +829,9 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jBtnCenterMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OptionPaneChildLayout.createSequentialGroup()
-                .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
         );
         OptionPaneChildLayout.setVerticalGroup(
             OptionPaneChildLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -903,7 +908,7 @@ public class Main extends javax.swing.JFrame {
         ConsoleLayout.setVerticalGroup(
             ConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ConsoleLayout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnConsoleClear)
                 .addContainerGap())
@@ -930,7 +935,7 @@ public class Main extends javax.swing.JFrame {
         InfoLayout.setVerticalGroup(
             InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InfoLayout.createSequentialGroup()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnInfoClear)
                 .addContainerGap())
@@ -940,7 +945,6 @@ public class Main extends javax.swing.JFrame {
 
         Multi_Split_Pane.add(Window_Pane);
 
-        Desktop_Pane.setBackground(java.awt.SystemColor.window);
         Desktop_Pane.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         Desktop_Pane.setMinimumSize(new java.awt.Dimension(200, 50));
 
@@ -1228,6 +1232,10 @@ public class Main extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jBtnPDFScanActionPerformed
+
+    private void jBtnNewEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnNewEntryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBtnNewEntryActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="My Generated Code">
     /**
