@@ -175,7 +175,7 @@ public class OCR {
                     }
                     break;
                 case 1:// Kundenadresse
-                    if (!entry.getAddress().isValid() || entry.getAddress().getHsNr().isEmpty()) {
+                    if (zeilen.size() > 2 && (!entry.getAddress().isValid() || entry.getAddress().getHsNr().isEmpty())) {
                         entry.setName(zeilen.get(2).substring(0, 1).toUpperCase() + zeilen.get(2).substring(1).toLowerCase() + ", " + zeilen.get(1).substring(0, 1).toUpperCase() + zeilen.get(1).substring(1).toLowerCase());
                         String addressString = "";
                         for (int j = 3; j < zeilen.size() - 2; j++) {
