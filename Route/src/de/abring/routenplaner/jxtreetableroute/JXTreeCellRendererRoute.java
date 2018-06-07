@@ -6,6 +6,7 @@
 package de.abring.routenplaner.jxtreetableroute;
 
 import de.abring.routenplaner.jxtreetableroute.entries.*;
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -28,12 +29,17 @@ public final class JXTreeCellRendererRoute extends DefaultTreeCellRenderer {
     private final Icon iconP = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconP.png"));
     private final Icon iconFlag = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconFlag.png"));
     private final Icon iconStart = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconStart.png"));
+    private final Icon iconCross = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconCross.png"));
+    private final Icon iconCrossBorder = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconCrossBorder.png"));
+    private final Icon iconLight = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconLight.png"));
+    private final Icon iconLightBorder = new ImageIcon(getClass().getResource("/de/abring/routenplaner/jxtreetableroute/images/iconLightBorder.png"));
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 //        if (value instanceof JXTreeRouteEntry)
 //            setText(((JXTreeRouteEntry) value).getName());
+        setText("");
         if (value instanceof JXTreeRouteStart) {
             setIcon(iconStart);
         } else if (value instanceof JXTreeRouteEnd) {
@@ -44,6 +50,8 @@ public final class JXTreeCellRendererRoute extends DefaultTreeCellRenderer {
             setIcon(iconP);
         } else if (value instanceof JXTreeRouteAddress) {
             JXTreeRouteAddress address = (JXTreeRouteAddress) value;
+            
+                    
 //            String text = "";
 //            if (address.getID() > 0)
 //                text += String.valueOf(address.getID() + ". ");
@@ -55,6 +63,17 @@ public final class JXTreeCellRendererRoute extends DefaultTreeCellRenderer {
             } else if (address.getName().startsWith("Saturn")) {
                 setIcon(iconSa);
             } else {
+                if (address.getEnd().getMillis() <= address.getAppointment().getStart().getMillis() ||
+                    address.getStart().getMillis() >= address.getAppointment().getEnd().getMillis()) {
+                    setIcon(iconCrossBorder);
+                    setBackground(Color.BLACK);
+                    return this;
+                } else if (address.getStart().getMillis() < address.getAppointment().getStart().getMillis() ||
+                    address.getEnd().getMillis() > address.getAppointment().getEnd().getMillis()) {
+                    setIcon(iconLightBorder);
+                    setBackground(Color.RED);
+                    return this;
+                }
                 setIcon(iconKunde);
             }
 //            setText(text);
@@ -63,7 +82,6 @@ public final class JXTreeCellRendererRoute extends DefaultTreeCellRenderer {
         }
         
         
-        setText("");
         return this;
     }
     
