@@ -182,7 +182,7 @@ public class Route extends javax.swing.JInternalFrame {
         
         setTourColor(Color.RED);
 
-        addBasicEntries("Löschmann", new TimeOfDay("09:00"), new TimeOfDay("00:20"), new TimeOfDay("00:10"));
+        addBasicEntries("Löschmann", new TimeOfDay("10:00"), new TimeOfDay("00:20"), new TimeOfDay("00:00"));
     }
 
     /**

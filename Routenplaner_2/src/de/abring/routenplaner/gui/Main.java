@@ -864,6 +864,7 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Routenplaner");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/images/osm32.png")).getImage());
         setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(1800, 960));
