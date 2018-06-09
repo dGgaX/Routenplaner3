@@ -79,9 +79,9 @@ public final class JXTreeTableRoute extends JXTreeTable {
         setDragEnabled(true);
         setDropMode(DropMode.INSERT_ROWS);
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        addHighlighter(HighlighterFactory.createAlternateStriping(new Color(235, 245, 255), Color.white));
         setTreeCellRenderer(new JXTreeCellRendererRoute());
         setRowHeight(22);
-        addHighlighter(HighlighterFactory.createAlternateStriping(new Color(235, 245, 255), Color.white));
         setTransferHandler(new JXTableRowTransferHandlerRoute(this));
     }
    

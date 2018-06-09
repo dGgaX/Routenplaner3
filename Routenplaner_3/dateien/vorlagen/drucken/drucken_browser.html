@@ -1,0 +1,63 @@
+<!-- BEGIN: main --> 
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>{TITLE}</title>
+        <link rel="stylesheet" href="../../dateien/vorlagen/drucken/style.css">
+        
+    </head>
+    <body dir="LTR" lang="de-DE">
+        <div id="wrapper">
+            <table id="header" border="0" cellpadding="0" cellspacing="0" width="70%">
+                <tbody>
+                    <tr>
+                        <td>Datum:</td>
+                        <td colspan="3"><b>{DATUM}</b></td>
+                        <td>Tour:</td>
+                        <td><b>{TOUR}</b></td>
+
+                    </tr>
+                    <tr>
+                        <td>Fahrer:</td>
+                        <td><b>{FAHRER}</b></td>
+                        <td>Beifahrer:</td>
+                        <td><b>{BEIFAHRER}</b></td>
+                        <td>Fahrzeug:</td>
+                        <td><b>{FAHRZEUG}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="content" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="20"></td>
+                        <td>Uhrzeit/Dauer</td>
+                        <td>Termin</td>
+                        <td>Aktion</td>
+                        <td>Adresse</td>
+                        <td>Produkte</td>
+                        <td>Extras</td>
+                    </tr>
+                <!-- BEGIN: address --> 
+                    <tr class="address">
+                        <td><img src="../../dateien/vorlagen/drucken/images/{BILD}" alt=""></td>
+                        <td>{UHRZEIT}<br>&nbsp;<br>{DAUER}</td>
+                        <td align="center">{TERMIN}</td>
+                        <td>{NAME}</td>
+                        <td>{ADRESSE}</td>
+                        <td>{PRODUKTE}</td>
+                        <td style="max-width: 50%; min-width: 100px;"><p class="left">{EXTRAS}</p></td>
+                    </tr>
+                <!-- END: address -->
+                </tbody>
+            </table>
+        </div>
+        <script>
+            window.onload = function () {
+            window.print();
+            }
+        </script>
+    </body>
+</html>
+<!-- END: main -->

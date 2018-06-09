@@ -3,6 +3,7 @@ package de.abring.routenplaner.jxtreetableroute.cellEditores;
 
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.gui.JComboBoxAppointment;
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
