@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import de.abring.helfer.maproute.LookupAddress;
 import de.abring.helfer.maproute.MapAddress;
+import de.abring.helfer.maproute.MapRoute;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDotWithNumber;
 
 /**
@@ -18,7 +19,7 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDotWithNumber;
  * @author Bring
  */
 public class JXTreeRouteAddress extends JXTreeRouteEntry implements java.io.Serializable {
-    private MapAddress address;
+    private JXTreeRouteRoute route;
     private String extras;
     private MapMarkerDotWithNumber dot;
     private Appointment appointment;
@@ -26,13 +27,13 @@ public class JXTreeRouteAddress extends JXTreeRouteEntry implements java.io.Seri
             
     public JXTreeRouteAddress(MapAddress address) {
         super();
-        this.address = address;
+        this.route = new JXTreeRouteRoute(new MapRoute(address, null));
         this.ID = -1;
     }
     
     public JXTreeRouteAddress(JXTreeRouteAddress master) {
         super();
-        this.address = master.getAddress();
+        this.route = new JXTreeRouteRoute(master.getRoute());
         this.ID = -1;
     }
 
@@ -40,14 +41,14 @@ public class JXTreeRouteAddress extends JXTreeRouteEntry implements java.io.Seri
      * @return the address
      */
     public MapAddress getAddress() {
-        return address;
+        return this.route.getRoute().getStartAddress();
     }
 
     /**
      * @param address the address to set
      */
     public void setAddress(MapAddress address) {
-        this.address = address;
+        this.route.getRoute().setStartAddress(address);
     }
 
     /**
@@ -93,19 +94,19 @@ public class JXTreeRouteAddress extends JXTreeRouteEntry implements java.io.Seri
     }
     
     public void updateDot() {
-        if (this.address.isValid()) {
-            this.dot = new MapMarkerDotWithNumber(this.address.getLat(), this.address.getLon());
+        if (this.route.getRoute().getStartAddress().isValid()) {
+            this.dot = new MapMarkerDotWithNumber(this.route.getRoute().getStartAddress().getLat(), this.route.getRoute().getStartAddress().getLon());
         }
     }
     
     public String getAddressName() {
-        return this.address.toString();
+        return this.route.getRoute().getStartAddress().toString();
     }
     
     public void findAddress() {
-        LookupAddress finde = new LookupAddress(null, true, address);
+        LookupAddress finde = new LookupAddress(null, true, this.route.getRoute().getStartAddress());
         finde.setVisible(true);
-        this.address = finde.getMapAddress();
+        this.route.getRoute().setStartAddress(finde.getMapAddress());
         updateDot();
     }
     
@@ -121,5 +122,19 @@ public class JXTreeRouteAddress extends JXTreeRouteEntry implements java.io.Seri
      */
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    /**
+     * @return the route
+     */
+    public JXTreeRouteRoute getRoute() {
+        return route;
+    }
+
+    /**
+     * @param route the route to set
+     */
+    public void setRoute(JXTreeRouteRoute route) {
+        this.route = route;
     }
 }

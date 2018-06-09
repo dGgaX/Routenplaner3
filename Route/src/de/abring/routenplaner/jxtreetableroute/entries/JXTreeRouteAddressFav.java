@@ -24,13 +24,11 @@ public class JXTreeRouteAddressFav extends JXTreeRouteAddress implements java.io
     
     public JXTreeRouteAddressFav(JXTreeRouteAddressFav master) {
         super(master.getAddress());
-        setName(master.getName());
-        setStart(new TimeOfDay(master.getStart()));
-        setDuration(new TimeOfDay(master.getDuration()));
-        
-        
-        setExtras(master.getExtras());
-        setDot(new MapMarkerDotWithNumber(master.getDot().getLat(), master.getDot().getLon()));
-        setAppointment(new Appointment(master.getAppointment()));
+        super.setName(master.getName());
+        super.setStart(new TimeOfDay(master.getStart()));
+        super.setDuration(new TimeOfDay(master.getDuration()));
+        super.setExtras(master.getExtras());
+        super.setDot(new MapMarkerDotWithNumber(master.getDot().getLat(), master.getDot().getLon()));
+        super.setAppointment(new Appointment(master.getAppointment()));
     }
 }

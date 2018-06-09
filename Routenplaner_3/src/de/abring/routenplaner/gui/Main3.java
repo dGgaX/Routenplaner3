@@ -38,6 +38,7 @@ import static javax.swing.TransferHandler.COPY;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdesktop.swingx.MultiSplitLayout;
+import org.openstreetmap.gui.jmapviewer.OsmTileSource;
 
 /**
  *
@@ -424,6 +425,8 @@ public class Main3 extends javax.swing.JFrame {
         this.jXPaneBack.add(this.Karte, "top" ); 
         this.jXPaneBack.add(this.jSclPneRouteTable, "bottom" );
         this.jXPaneBack.add(this.jTbdPneDesktop, "middle" );
+        
+        Karte.setTileSource(new OsmTileSource.TilesAtHome());
         
         int[] columns = {
             JXNoRootTreeTableModelAddress.EMPTY,
