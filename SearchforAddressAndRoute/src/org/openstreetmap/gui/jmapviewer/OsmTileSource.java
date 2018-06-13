@@ -14,8 +14,8 @@ public class OsmTileSource {
 		}
 
 		public int getMinZoom() {
-            return 0;
-        }
+                    return 0;
+                }
 
 		public String getTileUrl(int zoom, int tilex, int tiley) {
 			return "/" + zoom + "/" + tilex + "/" + tiley + ".png";

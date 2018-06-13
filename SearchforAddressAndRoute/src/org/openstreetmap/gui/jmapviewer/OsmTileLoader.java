@@ -23,7 +23,7 @@ public class OsmTileLoader implements TileLoader {
      * Holds the used user agent used for HTTP requests. If this field is 
      * <code>null</code>, the default Java user agent is used.
      */
-    public static String USER_AGENT = null;
+    public static String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; de; de-DE; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36";
     public static String ACCEPT = "text/html, image/png, image/jpeg, image/gif, */*";
 
     protected TileLoaderListener listener;

@@ -9,6 +9,8 @@ import de.abring.helfer.maproute.LookupAddress;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
 import de.abring.routenplaner.Routenplaner;
+import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
+import de.abring.routenplaner.gui.components.mapTiles.MyTileSource;
 import de.abring.routenplaner.gui.dialogues.FileIO;
 import de.abring.routenplaner.gui.dialogues.MSG;
 import de.abring.routenplaner.gui.dialogues.Print;
@@ -39,6 +41,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.openstreetmap.gui.jmapviewer.OsmTileSource;
+import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
 
 /**
  *
@@ -421,12 +424,22 @@ public class Main3 extends javax.swing.JFrame {
         this.jXPaneBack.getMultiSplitLayout().setModel( modelRoot ); 
         this.jXPaneBack.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
 
+        MapTileComboBoxModel mapTileComboBoxModel = new MapTileComboBoxModel();
+        
+        mapTileComboBoxModel.addElement(new OsmTileSource.Mapnik());
+        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_DARK());
+        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_POSITRON());
+        
+        
+        this.jCBXKarteTile.setModel(mapTileComboBoxModel);
+        
         this.jXPaneBack.add(this.jSclPneFavoriteTable, "left" ); 
         this.jXPaneBack.add(this.Karte, "top" ); 
         this.jXPaneBack.add(this.jSclPneRouteTable, "bottom" );
         this.jXPaneBack.add(this.jTbdPneDesktop, "middle" );
         
-        Karte.setTileSource(new OsmTileSource.TilesAtHome());
+        Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
+        Karte.updateUI();
         
         int[] columns = {
             JXNoRootTreeTableModelAddress.EMPTY,
@@ -832,6 +845,7 @@ public class Main3 extends javax.swing.JFrame {
         jBtnPDFScan = new javax.swing.JButton();
         jCkbEinzelnachweiss = new javax.swing.JCheckBox();
         jSeparator2 = new javax.swing.JToolBar.Separator();
+        jCBXKarteTile = new javax.swing.JComboBox<>();
         jXPaneBack = new org.jdesktop.swingx.JXMultiSplitPane();
         jSclPneFavoriteTable = new javax.swing.JScrollPane();
         FavoriteTable = new de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute();
@@ -1002,6 +1016,14 @@ public class Main3 extends javax.swing.JFrame {
         jTB.add(jCkbEinzelnachweiss);
         jTB.add(jSeparator2);
 
+        jCBXKarteTile.setMaximumSize(new java.awt.Dimension(130, 20));
+        jCBXKarteTile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBXKarteTileActionPerformed(evt);
+            }
+        });
+        jTB.add(jCBXKarteTile);
+
         getContentPane().add(jTB, java.awt.BorderLayout.PAGE_START);
 
         jSclPneFavoriteTable.setViewportView(FavoriteTable);
@@ -1124,6 +1146,12 @@ public class Main3 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jBtnNewEntryActionPerformed
 
+    private void jCBXKarteTileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBXKarteTileActionPerformed
+        Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
+        Karte.updateUI();
+        
+    }//GEN-LAST:event_jCBXKarteTileActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     public de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute FavoriteTable;
@@ -1164,6 +1192,7 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JButton jBtnNewEntry;
     private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
+    private javax.swing.JComboBox<String> jCBXKarteTile;
     private javax.swing.JCheckBox jCkbEinzelnachweiss;
     private javax.swing.JPopupMenu jPopupMenuRoute;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator1;
