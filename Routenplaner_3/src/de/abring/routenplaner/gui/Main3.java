@@ -17,10 +17,14 @@ import de.abring.routenplaner.gui.dialogues.Print;
 import de.abring.routenplaner.jxtreetableroute.JXNoRootTreeTableModelAddress;
 import de.abring.routenplaner.jxtreetableroute.JXTableRowTransferHandlerRoute;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteEntry;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteRoute;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteTour;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.PrinterJob;
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -41,6 +45,7 @@ import static javax.swing.TransferHandler.COPY;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdesktop.swingx.MultiSplitLayout;
+import org.jdesktop.swingx.MultiSplitLayout.Node;
 import org.openstreetmap.gui.jmapviewer.OsmTileSource;
 import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
 
@@ -70,169 +75,22 @@ public class Main3 extends javax.swing.JFrame {
         
         this.parent = parent;
 
+        this.tourCounter = 0;
+        this.format = PrinterJob.getPrinterJob().defaultPage();
+        this.format.setOrientation(PageFormat.LANDSCAPE);
+        
+        double rand = 10.0d; // in mm
+        
+        Paper paper = this.format.getPaper();
+        double margin = (72.0d * rand) / 25.4d;
+        paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight() - margin * 2);
+        this.format.setPaper(paper);
+        
         initComponents();
         initOtherComponents();
         
     }
-
-//    private void initOtherComponents() {
-//    
-//        String layoutDef = "(ROW (LEAF name=left weight=0.2) (COLUMN weight=0.8 " + 
-//                   "(LEAF name=top weight=0.3) (LEAF name=bottom weight=0.7)))"; 
-//        MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel( layoutDef ); 
-//        this.jXPaneBack.getMultiSplitLayout().setModel( modelRoot ); 
-//        this.jXPaneBack.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-//
-//        MapTileComboBoxModel mapTileComboBoxModel = new MapTileComboBoxModel();
-//        
-//        mapTileComboBoxModel.addElement(new OsmTileSource.Mapnik());
-//        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_DARK());
-//        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_POSITRON());
-//        
-//        
-//        this.jCBXKarteTile.setModel(mapTileComboBoxModel);
-//        
-//        this.jXPaneBack.add(this.jSclPneFavoriteTable, "left" ); 
-//        this.jXPaneBack.add(this.Karte, "top" ); 
-//        this.jXPaneBack.add(this.jSclPneRouteTable, "bottom" );
-//        this.jXPaneBack.add(this.jTbdPneDesktop, "middle" );
-//        
-//        Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
-//        Karte.updateUI();
-//        
-//        int[] columns = {
-//            JXNoRootTreeTableModelAddress.EMPTY,
-//            JXNoRootTreeTableModelAddress.NAME
-//        };
-//        this.FavoriteTable.setKarte(Karte);
-//        this.FavoriteTable.setColor(Color.YELLOW);
-//        this.FavoriteTable.handleColumns(columns);
-//        ((JXTableRowTransferHandlerRoute) this.FavoriteTable.getTransferHandler()).setMoveOrCopy(COPY);
-//        this.FavoriteTable.updateUI();
-//        
-//        // <editor-fold defaultstate="collapsed" desc="All ActionListener">
-//        MenuDateiNeu.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourAddActionPerformed(evt);
-//        });
-//
-//        MenuDateiOpen.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourOpenActionPerformed(evt);
-//        });
-//
-//        MenuDateiSave.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourSaveActionPerformed(evt);
-//        });
-//
-//        MenuDateiSaveAs.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourSaveAsActionPerformed(evt);
-//        });
-//
-//        MenuDateiClose.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourRemoveActionPerformed(evt);
-//        });
-//        
-//        MenuDateiFavOpen.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            favoriteOpenActionPerformed(evt);
-//        });
-//
-//        MenuDateiFavSave.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            favoriteSaveActionPerformed(evt);
-//        });
-//
-//        MenueDateiDruckVorschau.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourPrintPreviewActionPerformed(evt);
-//        });
-//        
-//        MenuDateiDruckOption.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourPrintOptionActionPerformed(evt);
-//        });
-//
-//        MenuDateiDruckAktuell.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourPrintActionPerformed(evt);
-//        });
-//
-//        MenuDateiDruckAlle.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourPrintAllActionPerformed(evt);
-//        });
-//
-//        MenuDateiBeenden.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            exitProgramActionPerformed(evt);
-//        });
-//        MenuOptionenFavToMap.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            mapFavoritSetVisibleActionPerformed(evt);
-//        });
-//
-//        MenuOptionenCenterMap.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            mapFitMapMarkersActionPerformed(evt);
-//        });
-//        
-//        jTbBtnNew.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourAddActionPerformed(evt);
-//        });
-//
-//        jTbBtnOpen.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourOpenActionPerformed(evt);
-//        });
-//
-//        jTbBtnSave.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourSaveActionPerformed(evt);
-//        });
-//
-//        jTbBtnPrint.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourPrintActionPerformed(evt);
-//        });
-//
-//        jTbBtnNewEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientAddActionPerformed(evt);
-//        });
-//
-//        jTbBtnRemoveEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientRemoveActionPerformed(evt);
-//        });
-//
-//        jTbBtnCalcRoute.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourCalculateActionPerformed(evt);
-//        });
-//        
-//        jPopupMenuRoutejMenuItemAdd.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientAddActionPerformed(evt);
-//        });
-//        
-//        jPopupMenuRoutejMenuItemRemove.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientRemoveActionPerformed(evt);
-//        });
-//        
-//        jPopupMenuRoutejMenuItemRouteMapVisible.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            mapRouteSetVisibleActionPerformed(evt);
-//        });
-//        
-//        jPopupMenuRoutejMenuItemEdit.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientEditActionPerformed(evt);
-//        });
-//        
-//        OptionenFavToMap.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            mapFavoritSetVisibleActionPerformed(evt);
-//        });
-//        
-//        jBtnCenterMap.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            mapFitMapMarkersActionPerformed(evt);
-//        });
-//        
-//        jBtnNewEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientAddActionPerformed(evt);
-//        });
-//                
-//        jBtnRemoveEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            addressClientRemoveActionPerformed(evt);
-//        });
-//                
-//        jBtnCalcRoute.addActionListener((java.awt.event.ActionEvent evt) -> {
-//            tourCalculateActionPerformed(evt);
-//        });
-//        // </editor-fold>
-//    }
     
-     
     private void initOtherComponents() {
 
         Dimension size = this.jSclPneRouteTable.getSize();
@@ -254,6 +112,7 @@ public class Main3 extends javax.swing.JFrame {
         
         int[] columns2 = {
             JXNoRootTreeTableModelAddress.EMPTY,
+            JXNoRootTreeTableModelAddress.MAP_VISIBLE,
             JXNoRootTreeTableModelAddress.NAME,
             JXNoRootTreeTableModelAddress.DRIVER,
             JXNoRootTreeTableModelAddress.CO_DRIVER,
@@ -266,9 +125,9 @@ public class Main3 extends javax.swing.JFrame {
         this.RouteTable.updateUI();
         
         
-        String layoutDef = "(ROW (COLUMN weight=0.2 (LEAF name=lefttop weight=0.3) (LEAF name=leftbottom weight=0.7))"
-                + "(LEAF  weight=0.1 name=center)"
-                + "(COLUMN weight=0.1 (LEAF name=righttop weight=0.5) (LEAF name=rightbottom weight=0.5)))"; 
+        String layoutDef = "(ROW (COLUMN weight=0.25 (LEAF name=lefttop weight=0.3) (LEAF name=leftbottom weight=0.7))"
+                + "(LEAF  weight=0.6 name=center)"
+                + "(COLUMN weight=0.15 (LEAF name=righttop weight=0.5) (LEAF name=rightmiddle weight=0.25) (LEAF name=rightbottom weight=0.25)))"; 
         MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel( layoutDef ); 
         this.jXPaneBack.getMultiSplitLayout().setModel( modelRoot ); 
         this.jXPaneBack.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
@@ -277,9 +136,11 @@ public class Main3 extends javax.swing.JFrame {
         this.jXPaneBack.add(this.jTbdPneDesktop, "leftbottom" );
         this.jXPaneBack.add(this.Karte, "center" ); 
         this.jXPaneBack.add(this.jSclPneFavoriteTable, "righttop" ); 
-        this.jXPaneBack.add(this.OptionPane, "rightbottom" ); 
+        this.jXPaneBack.add(this.OptionPane, "rightmiddle" ); 
+        this.jXPaneBack.add(this.jPneRoute, "rightbottom" ); 
+        this.jXPaneBack.getMultiSplitLayout().setLayoutByWeight(true);
+        this.jXPaneBack.revalidate();
                 
-        
         MapTileComboBoxModel mapTileComboBoxModel = new MapTileComboBoxModel();
         
         mapTileComboBoxModel.addElement(new OsmTileSource.Mapnik());
@@ -290,6 +151,7 @@ public class Main3 extends javax.swing.JFrame {
         
         Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
         Karte.updateUI();
+        Karte.setDisplayToFitMapMarkers();
         
         // <editor-fold defaultstate="collapsed" desc="All ActionListener">
         MenuDateiNeu.addActionListener((java.awt.event.ActionEvent evt) -> {
@@ -442,16 +304,9 @@ public class Main3 extends javax.swing.JFrame {
         tour.setTourColor(wavelength);
         wavelength+=2.2;
         tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
-        
-        jTbdPneDesktop.add(tour);
-//        this.Desktop_Pane.add(tour);
-//        try {
-//            tour.setMaximum(true);
-//        } catch (PropertyVetoException e) {
-//            // Vetoed by internalFrame
-//            // ... possibly add some handling for this case
-//        }
-//        tour.show();
+        this.RouteTable.addItem(tour.getTour());
+        this.jTbdPneDesktop.add(tour.getTitle(), tour);
+        this.RouteTable.updateUI();
         Karte.setDisplayToFitMapMarkers();
     }
     
@@ -481,17 +336,10 @@ public class Main3 extends javax.swing.JFrame {
         Route tour = new Route(tourInput, this);
         tour.setTourColor(wavelength);
         wavelength+=2.2;
-        //tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
-        
-        
-        //this.Desktop_Pane.add(tour);
-        try {
-            tour.setMaximum(true);
-        } catch (PropertyVetoException e) {
-            // Vetoed by internalFrame
-            // ... possibly add some handling for this case
-        }
-        tour.show();
+        tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
+        this.RouteTable.addItem(tour.getTour());
+        this.jTbdPneDesktop.add(tour.getTitle(), tour);
+        this.RouteTable.updateUI();
         Karte.setDisplayToFitMapMarkers();
         return true;
     }
@@ -512,8 +360,8 @@ public class Main3 extends javax.swing.JFrame {
      * @return success
      */
     public boolean saveThisTour(File file, boolean overwrite) {
-//        if (this.Desktop_Pane.getSelectedFrame() instanceof Route)
-//            return saveTour(((Route) this.Desktop_Pane.getSelectedFrame()).getTour(), file, overwrite);
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3)
+            return saveTour(((Route3) this.jTbdPneDesktop.getSelectedComponent()).getTour(), file, overwrite);
         return false;
     }
     
@@ -564,8 +412,7 @@ public class Main3 extends javax.swing.JFrame {
      * @return printOkay
      */
     private boolean printTour() {
-//        return printTour(((Route) this.Desktop_Pane.getSelectedFrame()).getTour());
-        return false;
+        return printTour(((Route3) this.jTbdPneDesktop.getSelectedComponent()).getTour());
     }
     
     /**
@@ -574,10 +421,9 @@ public class Main3 extends javax.swing.JFrame {
      */
     private boolean printPreview() {
         LOGGER.debug("printPreview...");
-//        Print print = new Print(this, true, this.programDir, ((Route) this.Desktop_Pane.getSelectedFrame()).getTour(), this.format, true);
-//        print.setVisible(true);
-//        return print.isPrintDone();
-        return false;
+        Print print = new Print(this, true, this.programDir, ((Route3) this.jTbdPneDesktop.getSelectedComponent()).getTour(), this.format, true);
+        print.setVisible(true);
+        return print.isPrintDone();
     }
     
     /**
@@ -597,13 +443,14 @@ public class Main3 extends javax.swing.JFrame {
      * @return printOkay
      */
     private boolean printAllTours() {
-//        for(JInternalFrame frame : this.Desktop_Pane.getAllFrames()) {
-//            if (frame instanceof Route) {
-//                if (!printTour(((Route) frame).getTour())) {
-//                    return false;
-//                }
-//            }
-//        }
+        for (Component c : this.jTbdPneDesktop.getComponents()) {
+            if (c instanceof Route3) {
+                Route3 tour = (Route3) c;
+                if (!printTour(tour.getTour())) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
     
@@ -763,33 +610,33 @@ public class Main3 extends javax.swing.JFrame {
      * AL to add a ClientAddress
      * @param evt 
      */
-    private void addressClientAddActionPerformed(java.awt.event.ActionEvent evt) {                                             
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            ((Route) this.Desktop_Pane.getSelectedFrame()).newAddressClientEntry();
-//            this.Karte.updateUI();
-//        }
+    private void addressClientAddActionPerformed(java.awt.event.ActionEvent evt) { 
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            ((Route3) this.jTbdPneDesktop.getSelectedComponent()).newAddressClientEntry();
+            this.Karte.updateUI();
+        }
     }
     
     /**
      * AL to remove a ClientAddress
      * @param evt 
      */
-    private void addressClientRemoveActionPerformed(java.awt.event.ActionEvent evt) {  
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            ((Route) this.Desktop_Pane.getSelectedFrame()).removeSelectedAddressClientEntries();
-//            this.Karte.updateUI();
-//        }
+    private void addressClientRemoveActionPerformed(java.awt.event.ActionEvent evt) { 
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            ((Route3) this.jTbdPneDesktop.getSelectedComponent()).removeSelectedAddressClientEntries();
+            this.Karte.updateUI();
+        }
     }
     
     /**
      * AL to edit a ClientAddress
      * @param evt 
      */
-    private void addressClientEditActionPerformed(java.awt.event.ActionEvent evt) {  
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            ((Route) this.Desktop_Pane.getSelectedFrame()).editSelectedAddressClientEntry();
-//            this.Karte.updateUI();
-//        }
+    private void addressClientEditActionPerformed(java.awt.event.ActionEvent evt) {
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            ((Route3) this.jTbdPneDesktop.getSelectedComponent()).editSelectedAddressClientEntry();
+            this.Karte.updateUI();
+        }
     }
     
     
@@ -806,11 +653,10 @@ public class Main3 extends javax.swing.JFrame {
      * AL to remove the actual Tour
      * @param evt 
      */
-    private void tourRemoveActionPerformed(java.awt.event.ActionEvent evt) {                                          
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            ((Route) this.Desktop_Pane.getSelectedFrame()).remove();
-//            this.Karte.updateUI();
-//        }
+    private void tourRemoveActionPerformed(java.awt.event.ActionEvent evt) { 
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            ((Route3) this.jTbdPneDesktop.getSelectedComponent()).remove();
+        }
     }
     
     /**
@@ -828,9 +674,9 @@ public class Main3 extends javax.swing.JFrame {
      */
     private void tourSaveActionPerformed(java.awt.event.ActionEvent evt) {
         String fileName = "";
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            fileName = ((Route)this.Desktop_Pane.getSelectedFrame()).getRouteName();
-//        }
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            fileName = ((Route3) this.jTbdPneDesktop.getSelectedComponent()).getRouteName();
+        }
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
         saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + fileName), this.workingDir));
     }
@@ -840,9 +686,9 @@ public class Main3 extends javax.swing.JFrame {
      */
     private void tourSaveAsActionPerformed(java.awt.event.ActionEvent evt) {                                           
         String fileName = "";
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            fileName = ((Route)this.Desktop_Pane.getSelectedFrame()).getRouteName();
-//        }
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            fileName = ((Route3) this.jTbdPneDesktop.getSelectedComponent()).getRouteName();
+        }
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
         saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + fileName), this.workingDir), false);
     }
@@ -911,8 +757,8 @@ public class Main3 extends javax.swing.JFrame {
         else if (evt.getSource() instanceof JCheckBox)
             visible = ((JCheckBox) evt.getSource()).isSelected();
         
-//        if (!evt.getSource().equals(OptionenFavToMap))
-//            OptionenFavToMap.setSelected(visible);
+        if (!evt.getSource().equals(OptionenFavToMap))
+            OptionenFavToMap.setSelected(visible);
         if (!evt.getSource().equals(MenuOptionenFavToMap))
             MenuOptionenFavToMap.setSelected(visible);
         
@@ -920,22 +766,24 @@ public class Main3 extends javax.swing.JFrame {
         Karte.updateUI();        
     }
     
-    private void mapRouteSetVisibleActionPerformed(java.awt.event.ActionEvent evt) {                                                     
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            boolean visible = false;
-//            if (evt.getSource() instanceof JCheckBoxMenuItem)
-//                visible = ((JCheckBoxMenuItem) evt.getSource()).isSelected();
-//            else if (evt.getSource() instanceof JCheckBox)
-//                visible = ((JCheckBox) evt.getSource()).isSelected();
-//
-//            if (!evt.getSource().equals(OptionenFavToMap))
-//                OptionenFavToMap.setSelected(visible);
-//            if (!evt.getSource().equals(MenuOptionenFavToMap))
-//                MenuOptionenFavToMap.setSelected(visible);
-//
-//            ((Route) this.Desktop_Pane.getSelectedFrame()).setMapMarkerVisible(visible);
-//        }
-//        Karte.updateUI();        
+    private void mapRouteSetVisibleActionPerformed(java.awt.event.ActionEvent evt) { 
+        
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            Route3 route = (Route3) this.jTbdPneDesktop.getSelectedComponent();
+            boolean visible = false;
+            if (evt.getSource() instanceof JCheckBoxMenuItem)
+                visible = ((JCheckBoxMenuItem) evt.getSource()).isSelected();
+            else if (evt.getSource() instanceof JCheckBox)
+                visible = ((JCheckBox) evt.getSource()).isSelected();
+
+            if (!evt.getSource().equals(OptionenFavToMap))
+                OptionenFavToMap.setSelected(visible);
+            if (!evt.getSource().equals(MenuOptionenFavToMap))
+                MenuOptionenFavToMap.setSelected(visible);
+
+            route.setMapMarkerVisible(visible);
+        }
+        Karte.updateUI();        
     }
     
 
@@ -966,9 +814,13 @@ public class Main3 extends javax.swing.JFrame {
      * CL for Favorites Event
      * @param evt 
      */
-    private void favoriteTableValueChanged(javax.swing.event.TreeSelectionEvent evt) {                                           
-//        LOGGER.info("Favoriten für: {} gesetzt.", ((Route) this.Desktop_Pane.getSelectedFrame()).getTitle());
-//        ((Route) this.Desktop_Pane.getSelectedFrame()).setFavSelection(this.FavoriteTable.getSelectedRows());
+    private void favoriteTableValueChanged(javax.swing.event.TreeSelectionEvent evt) { 
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            Route3 route = (Route3) this.jTbdPneDesktop.getSelectedComponent();
+
+            LOGGER.info("Favoriten für: {} gesetzt.", route.getTitle());
+            route.setFavSelection(this.FavoriteTable.getSelectedRows());
+        }
     }
     
     
@@ -978,17 +830,17 @@ public class Main3 extends javax.swing.JFrame {
      * @param evt 
      */
     private void exitProgramActionPerformed(java.awt.event.ActionEvent evt) {
-//        for(JInternalFrame frame : this.Desktop_Pane.getAllFrames()) {
-//            if (frame instanceof Route) {
-//                Route route = (Route) frame;
-//                if (!route.isCurrentStateSaved()) {
-//                    if (MSG.msgSaveBeforeClose(this, route.getRouteName())) {
-//                        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
-//                        saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + route.getRouteName()), this.workingDir), false);
-//                    }
-//                }
-//            }
-//        }
+        for (Component c : this.jTbdPneDesktop.getComponents()) {
+            if (c instanceof Route3) {
+                Route3 route = (Route3) c;
+               if (!route.isCurrentStateSaved()) {
+                    if (MSG.msgSaveBeforeClose(this, route.getRouteName())) {
+                        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy_MM_dd_EEEE");
+                        saveThisTour(FileIO.getSaveRouteFile(this, new File(isoFormat.format(new Date()) + " - " + route.getRouteName()), this.workingDir), false);
+                    }
+                }
+            }
+        }
         parent.exitProgram(0);
     }
     
@@ -1037,6 +889,7 @@ public class Main3 extends javax.swing.JFrame {
         jBtnNewEntry = new javax.swing.JButton();
         jBtnRemoveEntry = new javax.swing.JButton();
         jBtnCalcRoute = new javax.swing.JButton();
+        jPneRoute = new javax.swing.JPanel();
         MenuMain = new javax.swing.JMenuBar();
         MenuDatei = new javax.swing.JMenu();
         MenuDateiNeu = new javax.swing.JMenuItem();
@@ -1085,6 +938,14 @@ public class Main3 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Routenplaner 3");
+        setMinimumSize(new java.awt.Dimension(600, 480));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
+        setSize(new java.awt.Dimension(1200, 800));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
 
         jTB.setRollover(true);
 
@@ -1162,19 +1023,56 @@ public class Main3 extends javax.swing.JFrame {
 
         getContentPane().add(jTB, java.awt.BorderLayout.PAGE_START);
 
+        jXPaneBack.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                jXPaneBackComponentResized(evt);
+            }
+        });
+
+        jSclPneFavoriteTable.setPreferredSize(new java.awt.Dimension(200, 300));
         jSclPneFavoriteTable.setViewportView(FavoriteTable);
 
         jXPaneBack.add(jSclPneFavoriteTable);
 
+        jSclPneRouteTable.setPreferredSize(new java.awt.Dimension(200, 300));
+
+        RouteTable.setSelectionMode(1);
+        RouteTable.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                RouteTableValueChanged(evt);
+            }
+        });
+        RouteTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RouteTableActionPerformed(evt);
+            }
+        });
+        RouteTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                RouteTablePropertyChange(evt);
+            }
+        });
         jSclPneRouteTable.setViewportView(RouteTable);
 
         jXPaneBack.add(jSclPneRouteTable);
 
         Karte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Karte.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                KarteComponentResized(evt);
+            }
+        });
         jXPaneBack.add(Karte);
+
+        jTbdPneDesktop.setPreferredSize(new java.awt.Dimension(200, 300));
+        jTbdPneDesktop.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTbdPneDesktopStateChanged(evt);
+            }
+        });
         jXPaneBack.add(jTbdPneDesktop);
 
-        OptionPane.setBackground(new java.awt.Color(214, 223, 247));
+        OptionPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         OptionPane.setMaximumSize(new java.awt.Dimension(400, 111));
         OptionPane.setMinimumSize(new java.awt.Dimension(200, 111));
 
@@ -1200,17 +1098,25 @@ public class Main3 extends javax.swing.JFrame {
         OptionPane.setLayout(OptionPaneLayout);
         OptionPaneLayout.setHorizontalGroup(
             OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jBtnCenterMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OptionPaneLayout.createSequentialGroup()
-                .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+            .addGroup(OptionPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(OptionPaneLayout.createSequentialGroup()
+                        .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jBtnCenterMap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(OptionPaneLayout.createSequentialGroup()
+                                .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(3, 3, 3)))
+                .addGap(4, 4, 4))
         );
         OptionPaneLayout.setVerticalGroup(
             OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(OptionPaneLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(OptionenFavToMap)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jBtnCenterMap)
@@ -1219,10 +1125,14 @@ public class Main3 extends javax.swing.JFrame {
                     .addComponent(jBtnNewEntry)
                     .addComponent(jBtnRemoveEntry))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnCalcRoute))
+                .addComponent(jBtnCalcRoute)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jXPaneBack.add(OptionPane);
+
+        jPneRoute.setLayout(new java.awt.BorderLayout());
+        jXPaneBack.add(jPneRoute);
 
         getContentPane().add(jXPaneBack, java.awt.BorderLayout.CENTER);
 
@@ -1338,6 +1248,74 @@ public class Main3 extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jCBXKarteTileActionPerformed
 
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        
+    }//GEN-LAST:event_formComponentResized
+
+    private void KarteComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_KarteComponentResized
+
+    }//GEN-LAST:event_KarteComponentResized
+
+    private void jXPaneBackComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jXPaneBackComponentResized
+        
+    }//GEN-LAST:event_jXPaneBackComponentResized
+
+    private void RouteTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RouteTableActionPerformed
+        LOGGER.info("TreeTable changed");
+    }//GEN-LAST:event_RouteTableActionPerformed
+
+    private void RouteTableValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_RouteTableValueChanged
+        for (Component c : this.jTbdPneDesktop.getComponents()) {
+            if (c instanceof Route3) {
+                Route3 tour = (Route3) c;
+                if (tour.getTour() == this.RouteTable.getItem(this.RouteTable.getSelectedRow())) {
+                    this.jPneRoute.removeAll();
+                    this.jPneRoute.add(tour.jPaneTour);
+                    this.jPneRoute.updateUI();
+            
+                    this.jTbdPneDesktop.setSelectedComponent(c);
+                    this.jTbdPneDesktop.updateUI();
+                    return;
+                }
+            }
+        }
+    }//GEN-LAST:event_RouteTableValueChanged
+
+    private void jTbdPneDesktopStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTbdPneDesktopStateChanged
+        
+        if (this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            Route3 route = (Route3) this.jTbdPneDesktop.getSelectedComponent();
+            JXTreeRouteTour selTour = route.getTour();
+            
+            this.jPneRoute.removeAll();
+            this.jPneRoute.add(route.jPaneTour);
+            this.jPneRoute.updateUI();
+            for (JXTreeRouteEntry entry : this.RouteTable.getJxTreeRouteEntryList()) {
+                if (entry instanceof JXTreeRouteTour) {
+                    JXTreeRouteTour tour = (JXTreeRouteTour) entry;
+                    if (tour == selTour) {
+                        //this.RouteTable.getModel().
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jTbdPneDesktopStateChanged
+
+    private void RouteTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_RouteTablePropertyChange
+        if (evt.getPropertyName().equals("ItemDropped")) {
+            for (Component c : this.jTbdPneDesktop.getComponents()) {
+                if (c instanceof Route3) {
+                    Route3 tour = (Route3) c;
+                    if (tour.getTour() == ((JXTreeRouteTour) evt.getNewValue())) {
+                        tour.recreateRoute();
+                        tour.refreshTable();
+                        return;
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_RouteTablePropertyChange
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     public de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute FavoriteTable;
@@ -1380,6 +1358,7 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JButton jBtnRemoveEntry;
     private javax.swing.JComboBox<String> jCBXKarteTile;
     private javax.swing.JCheckBox jCkbEinzelnachweiss;
+    private javax.swing.JPanel jPneRoute;
     private javax.swing.JPopupMenu jPopupMenuRoute;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator1;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator2;

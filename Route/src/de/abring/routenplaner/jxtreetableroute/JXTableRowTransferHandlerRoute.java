@@ -7,6 +7,9 @@ package de.abring.routenplaner.jxtreetableroute;
 
 import de.abring.routenplaner.jxtreetableroute.entries.*;
 import java.awt.datatransfer.*;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,7 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
     private final List<JXTreeRouteEntry> oldEntries = new ArrayList<>();
     private final List<JXTreeRouteEntry> newEntries = new ArrayList<>();
     private final JXTreeTableRoute table;
-    private int moveOrCopy = COPY_OR_MOVE;
+    private int moveOrCopy = MOVE;
     
     public JXTableRowTransferHandlerRoute(JXTreeTableRoute table) {
         this.table = table;
@@ -52,21 +55,43 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
     @Override
     public void exportDone(JComponent c, Transferable t, int action) {
         if (action == MOVE) {
-            JXTreeTableRoute tta = (JXTreeTableRoute) c;
-                
-            
 
-            oldEntries.forEach((entry) -> {
-                tta.removeItem(entry);
-            });
-            oldEntries.clear();
-            
-            if (newEntries.size() > 0) {
-                tta.clearSelection();
-                newEntries.forEach((entry) -> {
-                    int index = tta.getItemIndexOf(entry);
-                    tta.getSelectionModel().addSelectionInterval(index, index);
+            JXTreeTableRoute tta = (JXTreeTableRoute) c;
+
+            if (!newEntries.isEmpty()) {
+
+                oldEntries.forEach((entry) -> {
+                    tta.removeItem(entry);
                 });
+                oldEntries.clear();
+
+                if (newEntries.size() > 0) {
+                    tta.clearSelection();
+                    newEntries.forEach((entry) -> {
+                        int index = tta.getItemIndexOf(entry);
+                        tta.getSelectionModel().addSelectionInterval(index, index);
+                    });
+                }
+                
+            } else {
+
+                int[] selectedRows = tta.getSelectedRows();
+
+
+                oldEntries.clear();
+                for (int i = selectedRows.length - 1; i >= 0; i--) {
+                    JXTreeRouteEntry entry = tta.getItem(selectedRows[i]);
+                    oldEntries.add(entry);
+                }
+                for (JXTreeRouteEntry entry: oldEntries) {
+                    tta.removeItem(entry);
+                }
+                for (PropertyChangeListener listener : tta.getPropertyChangeListeners()) {
+                    listener.propertyChange(new PropertyChangeEvent(table,
+                   "ItemsDeleted",
+                   null,
+                   null));
+                }
             }
         }
     }
@@ -81,7 +106,9 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
             index = 0;
         }
         
-        return supp.getComponent() instanceof JXTreeTableRoute && supp.isDrop() && supp.isDataFlavorSupported(localObjectFlavor) && (table.getItem(index) instanceof JXTreeRouteRoute);
+        return supp.getComponent() instanceof JXTreeTableRoute && supp.isDrop() && supp.isDataFlavorSupported(localObjectFlavor) &&
+                ((table.getItem(index) instanceof JXTreeRouteRoute) ||
+                (table.getItem(index) instanceof JXTreeRouteTour));
     }
 
     @Override
@@ -98,6 +125,8 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
             JXTreeTableRoute.DropLocation dl = (JXTreeTableRoute.DropLocation) supp.getDropLocation();
             int index = dl.getRow();
             
+            JXTreeRouteEntry targetEntry = table.getItem(index);
+            
             // Insert the data at this location
             int[] selectedRows = tta.getSelectedRows();
             
@@ -113,18 +142,29 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
                 newEntries.add(JXTreeRouteCopy.copy(entry));
             }
             
-            table.addAllItems(index, newEntries);
-            
-            if (tta != table) {
-                if (newEntries.size() > 0) {
-                    table.clearSelection();
-                    newEntries.forEach((entry) -> {
-                        int index2 = table.getItemIndexOf(entry);
-                        table.getSelectionModel().addSelectionInterval(index2, index2);
-                    });
+            if (targetEntry instanceof JXTreeRouteRoute) {
+                table.addAllItems(index, newEntries);
+                if (tta != table) {
+                    if (newEntries.size() > 0) {
+                        table.clearSelection();
+                        newEntries.forEach((entry) -> {
+                            int index2 = table.getItemIndexOf(entry);
+                            table.getSelectionModel().addSelectionInterval(index2, index2);
+                        });
+                    }
+                    newEntries.clear();
                 }
-                newEntries.clear();
+            } else if (targetEntry instanceof JXTreeRouteTour) {
+                ((JXTreeRouteTour) targetEntry).getEntryList().addAll(((JXTreeRouteTour) targetEntry).getEntryList().size() - 2, newEntries);
+                for (PropertyChangeListener listener : table.getPropertyChangeListeners()) {
+                    listener.propertyChange(new PropertyChangeEvent(table,
+                   "ItemDropped",
+                   null,
+                   targetEntry));
+                }
             }
+            
+            
         } catch (UnsupportedFlavorException | IOException ex) {
             Logger.getLogger(JXTableRowTransferHandlerRoute.class.getName()).log(Level.SEVERE, null, ex);
         }

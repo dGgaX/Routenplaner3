@@ -25,6 +25,7 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
     public static final int DRIVER          = 11;
     public static final int CO_DRIVER       = 12;
     public static final int CAR             = 13;
+    public static final int MAP_VISIBLE     = 14;
            
     
     private final List<JXTreeRouteEntry> entryList;
@@ -75,12 +76,18 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 return "Beifahrer";
             case JXNoRootTreeTableModelAddress.CAR:
                 return "Fahrzeug";
+            case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
+                return "Auf Karte";
         }
         return "";
     }
     
     @Override
     public Class getColumnClass(int column) {
+        switch (this.columnNames[column]) {
+            case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
+                return java.lang.Boolean.class;
+        }
         return java.lang.String.class;
     }
     
@@ -115,6 +122,7 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 case JXNoRootTreeTableModelAddress.DRIVER:
                 case JXNoRootTreeTableModelAddress.CO_DRIVER:
                 case JXNoRootTreeTableModelAddress.CAR:
+                case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
                     return true;
             }
         } else if (node instanceof JXTreeRouteItem) {
@@ -208,7 +216,11 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 if (node instanceof JXTreeRouteTour) {
                     return ((JXTreeRouteTour) node).getCar();
                 }            
-                return "";
+            case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
+                if (node instanceof JXTreeRouteTour) {
+                    return ((JXTreeRouteTour) node).isMapVisible();
+                }            
+                return false;
         }
         return "";
     }
@@ -306,6 +318,10 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 case JXNoRootTreeTableModelAddress.CAR:
                     if (value instanceof String)
                         ((JXTreeRouteTour) node).setCar((String) value);
+                    break;
+                case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
+                    if (value instanceof Boolean)
+                        ((JXTreeRouteTour) node).setMapVisible((Boolean) value);
                     break;
             }
         } else if (node instanceof JXTreeRouteItem) {

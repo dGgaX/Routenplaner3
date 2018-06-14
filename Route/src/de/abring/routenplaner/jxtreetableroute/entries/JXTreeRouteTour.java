@@ -27,6 +27,7 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
     private String car;
     private Color color;
     private final ImageIconFromColor icon;
+    private boolean mapVisible = true;
     
     public JXTreeRouteTour(String tourName) {
         super();
@@ -166,5 +167,19 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
     public final void setColor(Color color) {
         this.color = color;
         this.icon.updateColor(this.color);
+    }
+
+    /**
+     * @return the mapVisible
+     */
+    public boolean isMapVisible() {
+        return mapVisible;
+    }
+
+    /**
+     * @param mapVisible the mapVisible to set
+     */
+    public void setMapVisible(boolean mapVisible) {
+        this.mapVisible = mapVisible;
     }
 }

@@ -556,6 +556,7 @@ public class Route3 extends javax.swing.JPanel {
 
     public void setMapMarkerVisible(boolean visible) {
         this.markerVisible = visible;
+        this.tour.setMapVisible(visible);
         this.tablePane.setMapMarkerVisible(visible);
         this.jPaneTour.updateTexte();
 //        this.parent.setjPopupMenuRoutejMenuItemRouteMapVisibleSelected(visible);

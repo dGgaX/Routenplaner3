@@ -10,6 +10,8 @@ import de.abring.routenplaner.jxtreetableroute.entries.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -83,6 +85,12 @@ public final class JXTreeTableRoute extends JXTreeTable {
         setTreeCellRenderer(new JXTreeCellRendererRoute());
         setRowHeight(22);
         setTransferHandler(new JXTableRowTransferHandlerRoute(this));
+        this.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                removeItemListeners();
+            }
+        });
     }
    
     
@@ -438,6 +446,10 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     break;
                 case JXNoRootTreeTableModelAddress.CO_DRIVER:
                     setColumnWidth(i, 25, true);
+                    
+                    break;
+                case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
+                    setColumnWidth(i, 25, false);
                     
                     break;
             }
