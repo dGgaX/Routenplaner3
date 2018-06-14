@@ -1,8 +1,8 @@
-package org.openstreetmap.gui.jmapviewer;
+package de.abring.routenplaner.gui.components.mapTiles;
 
 import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
 
-public class OsmTileSource {
+public class myTileSource {
 
 	public static final String MAP_MAPNIK = "http://tile.openstreetmap.org";
 	public static final String MAP_OSMA = "http://tah.openstreetmap.org/Tiles/tile";
@@ -14,8 +14,8 @@ public class OsmTileSource {
 		}
 
 		public int getMinZoom() {
-                    return 0;
-                }
+            return 0;
+        }
 
 		public String getTileUrl(int zoom, int tilex, int tiley) {
 			return "/" + zoom + "/" + tilex + "/" + tiley + ".png";

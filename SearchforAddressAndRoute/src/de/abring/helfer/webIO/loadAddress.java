@@ -52,7 +52,7 @@ public class loadAddress {
                         try {
                             Thread.sleep(1000);
                             sec++;
-                            if (sec > 30) {
+                            if (sec > 5) {
                                 run = false;
                                 is.close();
                             }
@@ -163,9 +163,8 @@ public class loadAddress {
         LOG.info("Suche in OSM!");
         String result;
         try {
-            result = getData("https://nominatim.openstreetmap.org/search?q=" +
-                             URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8") + 
-                             "&bounded=0&format=json&limit=1&addressdetails=1&email=andreas.bring@rwth-aachen.de&countrycodes=de,nl,be,lu");
+            result = getData("https://nominatim.openstreetmap.org/search?bounded=0&format=json&limit=1&addressdetails=1&email=andreas.bring@rwth-aachen.de&countrycodes=de,nl,be,lu&q=" +
+                             URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8"));   //No-API-Key
             JSONArray array = new JSONArray(result);
             return parseAddress(Search_Obj, array);
         } catch (IOException ex) {
@@ -180,9 +179,8 @@ public class loadAddress {
         LOG.info("Suche bei Google!");
         String result;
         try {
-            result = getData("http://maps.googleapis.com/maps/api/geocode/json?address=" + 
-                             URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8") + 
-                             "&sensor=false&language=de&region=EU");
+            result = getData("https://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=de&region=EU&key=AIzaSyDD3NZr3Uydh-62gpguMLKBFQ90-tIr7Sk&address=" +
+                             URLEncoder.encode(Search_Obj.getSuchString(), "UTF-8"));   //API-Key: AIzaSyDD3NZr3Uydh-62gpguMLKBFQ90-tIr7Sk
             JSONArray array = new JSONObject(result.replaceAll("\\s"," ")).getJSONArray("results");
             return parseAddress(Search_Obj, array);
         } catch (IOException ex) {
@@ -201,7 +199,7 @@ public class loadAddress {
         if (searchMapRoute.getSuchString().isEmpty())
             return searchMapRoute;
 
-        MapAddress address = loadAddress.OSM(searchMapRoute);
+        MapAddress address = null;//loadAddress.OSM(searchMapRoute);
         
         if (address == null || !address.isValid()) {
             address = loadAddress.Google(searchMapRoute);

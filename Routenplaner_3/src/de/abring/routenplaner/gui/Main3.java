@@ -9,6 +9,8 @@ import de.abring.helfer.maproute.LookupAddress;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
 import de.abring.routenplaner.Routenplaner;
+import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
+import de.abring.routenplaner.gui.components.mapTiles.MyTileSource;
 import de.abring.routenplaner.gui.dialogues.FileIO;
 import de.abring.routenplaner.gui.dialogues.MSG;
 import de.abring.routenplaner.gui.dialogues.Print;
@@ -39,6 +41,8 @@ import static javax.swing.TransferHandler.COPY;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdesktop.swingx.MultiSplitLayout;
+import org.openstreetmap.gui.jmapviewer.OsmTileSource;
+import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
 
 /**
  *
@@ -71,6 +75,163 @@ public class Main3 extends javax.swing.JFrame {
         
     }
 
+//    private void initOtherComponents() {
+//    
+//        String layoutDef = "(ROW (LEAF name=left weight=0.2) (COLUMN weight=0.8 " + 
+//                   "(LEAF name=top weight=0.3) (LEAF name=bottom weight=0.7)))"; 
+//        MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel( layoutDef ); 
+//        this.jXPaneBack.getMultiSplitLayout().setModel( modelRoot ); 
+//        this.jXPaneBack.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+//
+//        MapTileComboBoxModel mapTileComboBoxModel = new MapTileComboBoxModel();
+//        
+//        mapTileComboBoxModel.addElement(new OsmTileSource.Mapnik());
+//        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_DARK());
+//        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_POSITRON());
+//        
+//        
+//        this.jCBXKarteTile.setModel(mapTileComboBoxModel);
+//        
+//        this.jXPaneBack.add(this.jSclPneFavoriteTable, "left" ); 
+//        this.jXPaneBack.add(this.Karte, "top" ); 
+//        this.jXPaneBack.add(this.jSclPneRouteTable, "bottom" );
+//        this.jXPaneBack.add(this.jTbdPneDesktop, "middle" );
+//        
+//        Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
+//        Karte.updateUI();
+//        
+//        int[] columns = {
+//            JXNoRootTreeTableModelAddress.EMPTY,
+//            JXNoRootTreeTableModelAddress.NAME
+//        };
+//        this.FavoriteTable.setKarte(Karte);
+//        this.FavoriteTable.setColor(Color.YELLOW);
+//        this.FavoriteTable.handleColumns(columns);
+//        ((JXTableRowTransferHandlerRoute) this.FavoriteTable.getTransferHandler()).setMoveOrCopy(COPY);
+//        this.FavoriteTable.updateUI();
+//        
+//        // <editor-fold defaultstate="collapsed" desc="All ActionListener">
+//        MenuDateiNeu.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourAddActionPerformed(evt);
+//        });
+//
+//        MenuDateiOpen.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourOpenActionPerformed(evt);
+//        });
+//
+//        MenuDateiSave.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourSaveActionPerformed(evt);
+//        });
+//
+//        MenuDateiSaveAs.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourSaveAsActionPerformed(evt);
+//        });
+//
+//        MenuDateiClose.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourRemoveActionPerformed(evt);
+//        });
+//        
+//        MenuDateiFavOpen.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            favoriteOpenActionPerformed(evt);
+//        });
+//
+//        MenuDateiFavSave.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            favoriteSaveActionPerformed(evt);
+//        });
+//
+//        MenueDateiDruckVorschau.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourPrintPreviewActionPerformed(evt);
+//        });
+//        
+//        MenuDateiDruckOption.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourPrintOptionActionPerformed(evt);
+//        });
+//
+//        MenuDateiDruckAktuell.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourPrintActionPerformed(evt);
+//        });
+//
+//        MenuDateiDruckAlle.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourPrintAllActionPerformed(evt);
+//        });
+//
+//        MenuDateiBeenden.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            exitProgramActionPerformed(evt);
+//        });
+//        MenuOptionenFavToMap.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            mapFavoritSetVisibleActionPerformed(evt);
+//        });
+//
+//        MenuOptionenCenterMap.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            mapFitMapMarkersActionPerformed(evt);
+//        });
+//        
+//        jTbBtnNew.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourAddActionPerformed(evt);
+//        });
+//
+//        jTbBtnOpen.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourOpenActionPerformed(evt);
+//        });
+//
+//        jTbBtnSave.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourSaveActionPerformed(evt);
+//        });
+//
+//        jTbBtnPrint.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourPrintActionPerformed(evt);
+//        });
+//
+//        jTbBtnNewEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientAddActionPerformed(evt);
+//        });
+//
+//        jTbBtnRemoveEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientRemoveActionPerformed(evt);
+//        });
+//
+//        jTbBtnCalcRoute.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourCalculateActionPerformed(evt);
+//        });
+//        
+//        jPopupMenuRoutejMenuItemAdd.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientAddActionPerformed(evt);
+//        });
+//        
+//        jPopupMenuRoutejMenuItemRemove.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientRemoveActionPerformed(evt);
+//        });
+//        
+//        jPopupMenuRoutejMenuItemRouteMapVisible.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            mapRouteSetVisibleActionPerformed(evt);
+//        });
+//        
+//        jPopupMenuRoutejMenuItemEdit.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientEditActionPerformed(evt);
+//        });
+//        
+//        OptionenFavToMap.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            mapFavoritSetVisibleActionPerformed(evt);
+//        });
+//        
+//        jBtnCenterMap.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            mapFitMapMarkersActionPerformed(evt);
+//        });
+//        
+//        jBtnNewEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientAddActionPerformed(evt);
+//        });
+//                
+//        jBtnRemoveEntry.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            addressClientRemoveActionPerformed(evt);
+//        });
+//                
+//        jBtnCalcRoute.addActionListener((java.awt.event.ActionEvent evt) -> {
+//            tourCalculateActionPerformed(evt);
+//        });
+//        // </editor-fold>
+//    }
+    
      
     private void initOtherComponents() {
 
@@ -119,6 +280,16 @@ public class Main3 extends javax.swing.JFrame {
         this.jXPaneBack.add(this.OptionPane, "rightbottom" ); 
                 
         
+        MapTileComboBoxModel mapTileComboBoxModel = new MapTileComboBoxModel();
+        
+        mapTileComboBoxModel.addElement(new OsmTileSource.Mapnik());
+        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_DARK());
+        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_POSITRON());
+        
+        this.jCBXKarteTile.setModel(mapTileComboBoxModel);
+        
+        Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
+        Karte.updateUI();
         
         // <editor-fold defaultstate="collapsed" desc="All ActionListener">
         MenuDateiNeu.addActionListener((java.awt.event.ActionEvent evt) -> {
@@ -584,7 +755,8 @@ public class Main3 extends javax.swing.JFrame {
         }
         return true;
     }
-   
+    
+    
     //-- ActionListener - Methodes
     
     /**
@@ -680,10 +852,10 @@ public class Main3 extends javax.swing.JFrame {
      * @param evt 
      */
     private void tourCalculateActionPerformed(java.awt.event.ActionEvent evt) {                                              
-//        if(this.Desktop_Pane.getSelectedFrame() != null && this.Desktop_Pane.getSelectedFrame() instanceof Route) {
-//            ((Route) this.Desktop_Pane.getSelectedFrame()).calculateRoute();
-//            this.Karte.updateUI();
-//        }
+        if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            ((Route3) this.jTbdPneDesktop.getSelectedComponent()).calculateRoute();
+            this.Karte.updateUI();
+        }
     }
     
     /**
@@ -851,6 +1023,7 @@ public class Main3 extends javax.swing.JFrame {
         jBtnPDFScan = new javax.swing.JButton();
         jCkbEinzelnachweiss = new javax.swing.JCheckBox();
         jSeparator2 = new javax.swing.JToolBar.Separator();
+        jCBXKarteTile = new javax.swing.JComboBox<>();
         jXPaneBack = new org.jdesktop.swingx.JXMultiSplitPane();
         jSclPneFavoriteTable = new javax.swing.JScrollPane();
         FavoriteTable = new de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute();
@@ -978,6 +1151,14 @@ public class Main3 extends javax.swing.JFrame {
         jCkbEinzelnachweiss.setFocusable(false);
         jTB.add(jCkbEinzelnachweiss);
         jTB.add(jSeparator2);
+
+        jCBXKarteTile.setMaximumSize(new java.awt.Dimension(130, 20));
+        jCBXKarteTile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBXKarteTileActionPerformed(evt);
+            }
+        });
+        jTB.add(jCBXKarteTile);
 
         getContentPane().add(jTB, java.awt.BorderLayout.PAGE_START);
 
@@ -1151,6 +1332,12 @@ public class Main3 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jBtnNewEntryActionPerformed
 
+    private void jCBXKarteTileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBXKarteTileActionPerformed
+        Karte.setTileSource((TileSource) this.jCBXKarteTile.getModel().getSelectedItem());
+        Karte.updateUI();
+        
+    }//GEN-LAST:event_jCBXKarteTileActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     public de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute FavoriteTable;
@@ -1191,6 +1378,7 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JButton jBtnNewEntry;
     private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
+    private javax.swing.JComboBox<String> jCBXKarteTile;
     private javax.swing.JCheckBox jCkbEinzelnachweiss;
     private javax.swing.JPopupMenu jPopupMenuRoute;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator1;
