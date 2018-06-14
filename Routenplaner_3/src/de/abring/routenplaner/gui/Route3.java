@@ -195,13 +195,10 @@ public class Route3 extends javax.swing.JPanel {
         tableColumns =  new int[] {
             JXNoRootTreeTableModelAddress.EMPTY,
             JXNoRootTreeTableModelAddress.ID,
-            JXNoRootTreeTableModelAddress.NAME,
             JXNoRootTreeTableModelAddress.TIME,
             JXNoRootTreeTableModelAddress.DURATION,
             JXNoRootTreeTableModelAddress.APPOINTMENT,
-            JXNoRootTreeTableModelAddress.ITEMS,
             JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
-            JXNoRootTreeTableModelAddress.FAVORIT,
         };
         this.tablePane.handleColumns(tableColumns);
         
@@ -765,9 +762,9 @@ public class Route3 extends javax.swing.JPanel {
             .addGap(0, 814, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(backPane, javax.swing.GroupLayout.PREFERRED_SIZE, 814, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 0, 0)
+                    .addComponent(backPane, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
+                    .addGap(0, 0, 0)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -779,9 +776,9 @@ public class Route3 extends javax.swing.JPanel {
             .addGap(0, 486, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(backPane, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 0, 0)
+                    .addComponent(backPane, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
+                    .addGap(0, 0, 0)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
