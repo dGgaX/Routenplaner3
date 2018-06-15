@@ -312,6 +312,7 @@ public class Print extends javax.swing.JDialog {
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
 
+        jScrollPane1.setBackground(new java.awt.Color(102, 102, 102));
         jScrollPane1.setViewportView(jPanelPrintableEditorPane1);
 
         jTabbedPane1.addTab("text / html", jScrollPane1);
@@ -351,6 +352,7 @@ public class Print extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.jPanelPrintableEditorPane1.getSize().width = (int) Math.round(this.format.getImageableWidth());
         if (this.preview) {
             LOGGER.log(Level.INFO, "Starting Preview ...");
             this.jTextPlane.setText(this.text);
