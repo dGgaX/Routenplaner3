@@ -10,7 +10,7 @@ import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
 import de.abring.routenplaner.Routenplaner;
 import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
-import de.abring.routenplaner.gui.components.mapTiles.MyTileSource;
+import de.abring.routenplaner.gui.components.mapTiles.MyTilehosterTileSource;
 import de.abring.routenplaner.gui.dialogues.FileIO;
 import de.abring.routenplaner.gui.dialogues.MSG;
 import de.abring.routenplaner.gui.dialogues.Print;
@@ -144,8 +144,8 @@ public class Main3 extends javax.swing.JFrame {
         MapTileComboBoxModel mapTileComboBoxModel = new MapTileComboBoxModel();
         
         mapTileComboBoxModel.addElement(new OsmTileSource.Mapnik());
-        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_DARK());
-        mapTileComboBoxModel.addElement(new MyTileSource.TILEHOSTER_POSITRON());
+        mapTileComboBoxModel.addElement(new MyTilehosterTileSource.TILEHOSTER_DARK());
+        mapTileComboBoxModel.addElement(new MyTilehosterTileSource.TILEHOSTER_POSITRON());
         
         this.jCBXKarteTile.setModel(mapTileComboBoxModel);
         

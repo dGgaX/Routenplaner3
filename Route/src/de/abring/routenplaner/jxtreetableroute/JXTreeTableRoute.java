@@ -88,7 +88,9 @@ public final class JXTreeTableRoute extends JXTreeTable {
         this.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                removeItemListeners();
+                if (evt.getPropertyName().equals("ItemsDeleted")) {
+                    removeItemListeners();
+                }
             }
         });
     }

@@ -2,7 +2,7 @@ package de.abring.routenplaner.gui.components.mapTiles;
 
 import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
 
-public class MyTileSource {
+public class MyTilehosterTileSource {
 
 	public static final String MAP_TILEHOSTER_POSITRON = "https://maps.tilehosting.com/styles/positron";
         public static final String MAP_TILEHOSTER_POSITRON_KEY = "?key=grAzG6EzmHIeuIFYiZK4";
