@@ -1051,11 +1051,13 @@ public class Main3 extends javax.swing.JFrame {
             }
         });
 
+        jSclPneFavoriteTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jSclPneFavoriteTable.setPreferredSize(new java.awt.Dimension(200, 300));
         jSclPneFavoriteTable.setViewportView(FavoriteTable);
 
         jXPaneBack.add(jSclPneFavoriteTable);
 
+        jSclPneRouteTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jSclPneRouteTable.setPreferredSize(new java.awt.Dimension(200, 300));
 
         RouteTable.setSelectionMode(1);
@@ -1124,7 +1126,7 @@ public class Main3 extends javax.swing.JFrame {
                 .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnCenterMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
