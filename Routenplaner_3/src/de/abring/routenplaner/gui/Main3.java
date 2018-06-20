@@ -133,7 +133,7 @@ public class Main3 extends javax.swing.JFrame {
         this.jXPaneBack.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
 
         this.jXPaneBack.add(this.jSclPneRouteTable, "lefttop" );
-        this.jXPaneBack.add(this.jTbdPneDesktop, "leftbottom" );
+        this.jXPaneBack.add(this.jPneNeueTour, "leftbottom" );
         this.jXPaneBack.add(this.Karte, "center" ); 
         this.jXPaneBack.add(this.jSclPneFavoriteTable, "righttop" ); 
         this.jXPaneBack.add(this.OptionPane, "rightmiddle" ); 
@@ -302,7 +302,7 @@ public class Main3 extends javax.swing.JFrame {
         LOGGER.debug("create new Tour!");
         Route3 tour = new Route3("neue Tour " + String.valueOf(++this.tourCounter), this);
         tour.setTourColor(wavelength);
-        wavelength+=2.2;
+        wavelength+=1.0;
         tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
         this.RouteTable.addItem(tour.getTour());
         this.jTbdPneDesktop.add(tour.getTitle(), tour);
@@ -335,7 +335,7 @@ public class Main3 extends javax.swing.JFrame {
         
         Route3 tour = new Route3(tourInput, this);
         tour.setTourColor(wavelength);
-        wavelength+=2.2;
+        wavelength+=1.0d;
         tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
         this.RouteTable.addItem(tour.getTour());
         this.jTbdPneDesktop.add(tour.getTitle(), tour);
@@ -519,14 +519,14 @@ public class Main3 extends javax.swing.JFrame {
         fav.updateDot();
         this.FavoriteTable.addItem(fav);
         
-        address = new LookupAddress(this, true, "Konrad-Adenauer-Ring 95, 41464 Neuss");
-        address.setVisible(true);
-        fav = new JXTreeRouteAddressFav(address.getMapAddress());
-        fav.setDuration(new TimeOfDay("00:30"));
-        fav.setName("Media Markt Neuss");
-        fav.setAppointment(new Appointment("Öffnungszeit", new TimeOfDay("10:00"),new TimeOfDay("20:00")));
-        fav.updateDot();
-        this.FavoriteTable.addItem(fav);
+//        address = new LookupAddress(this, true, "Konrad-Adenauer-Ring 95, 41464 Neuss");
+//        address.setVisible(true);
+//        fav = new JXTreeRouteAddressFav(address.getMapAddress());
+//        fav.setDuration(new TimeOfDay("00:30"));
+//        fav.setName("Media Markt Neuss");
+//        fav.setAppointment(new Appointment("Öffnungszeit", new TimeOfDay("10:00"),new TimeOfDay("20:00")));
+//        fav.updateDot();
+//        this.FavoriteTable.addItem(fav);
         
         address = new LookupAddress(this, true, "Adalbertstraße 100,  52062 Aachen");
         address.setVisible(true);
@@ -546,7 +546,9 @@ public class Main3 extends javax.swing.JFrame {
         fav.updateDot();
         this.FavoriteTable.addItem(fav);
         
+        this.FavoriteTable.setMapMarkerVisible(false);
         this.FavoriteTable.updateUI();
+        Karte.updateUI();
     }
 
     /**
@@ -576,7 +578,9 @@ public class Main3 extends javax.swing.JFrame {
                 LOGGER.warn("Keine Adresse: " + entry.toString());
             }
         }
+        this.FavoriteTable.setMapMarkerVisible(false);
         this.FavoriteTable.updateUI();
+        Karte.updateUI();
         return true;
     }
         
@@ -860,6 +864,9 @@ public class Main3 extends javax.swing.JFrame {
         jPopupMenuRoutejMenuItemRouteMapVisible = new javax.swing.JCheckBoxMenuItem();
         jPopupMenuRouteSeparator2 = new javax.swing.JPopupMenu.Separator();
         jPopupMenuRoutejMenuItemEdit = new javax.swing.JMenuItem();
+        jPneNeueTour = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jTB = new javax.swing.JToolBar();
         jTbBtnNew = new javax.swing.JButton();
         jTbBtnOpen = new javax.swing.JButton();
@@ -935,6 +942,21 @@ public class Main3 extends javax.swing.JFrame {
 
         jPopupMenuRoutejMenuItemEdit.setText("edit Item");
         jPopupMenuRoute.add(jPopupMenuRoutejMenuItemEdit);
+
+        jPneNeueTour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPneNeueTour.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 50));
+
+        jButton1.setText("neue Tour");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPneNeueTour.add(jButton1);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/images/splash.png"))); // NOI18N
+        jPneNeueTour.add(jLabel1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Routenplaner 3");
@@ -1077,11 +1099,10 @@ public class Main3 extends javax.swing.JFrame {
         OptionPane.setMinimumSize(new java.awt.Dimension(200, 111));
 
         OptionenFavToMap.setBackground(new java.awt.Color(214, 223, 247));
-        OptionenFavToMap.setSelected(true);
-        OptionenFavToMap.setText("Favoriten auf der Karte anzeigen");
+        OptionenFavToMap.setText("Favoriten anzeigen");
         OptionenFavToMap.setOpaque(false);
 
-        jBtnCenterMap.setText("Karte auf Routen zentrieren");
+        jBtnCenterMap.setText("Karte zentrieren");
 
         jBtnNewEntry.setText("+ Eintrag");
         jBtnNewEntry.addActionListener(new java.awt.event.ActionListener() {
@@ -1101,30 +1122,25 @@ public class Main3 extends javax.swing.JFrame {
             .addGroup(OptionPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(OptionPaneLayout.createSequentialGroup()
-                        .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jBtnCenterMap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(OptionPaneLayout.createSequentialGroup()
-                                .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(3, 3, 3)))
-                .addGap(4, 4, 4))
+                    .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBtnCenterMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         OptionPaneLayout.setVerticalGroup(
             OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(OptionPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(OptionenFavToMap)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBtnNewEntry)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBtnRemoveEntry)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBtnCenterMap)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBtnNewEntry)
-                    .addComponent(jBtnRemoveEntry))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jBtnCalcRoute)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1202,7 +1218,6 @@ public class Main3 extends javax.swing.JFrame {
         MenuOptionen.setText("Optionen");
 
         MenuOptionenFavToMap.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
-        MenuOptionenFavToMap.setSelected(true);
         MenuOptionenFavToMap.setText("Favoriten auf Karte anzeigen");
         MenuOptionen.add(MenuOptionenFavToMap);
 
@@ -1284,6 +1299,9 @@ public class Main3 extends javax.swing.JFrame {
     private void jTbdPneDesktopStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTbdPneDesktopStateChanged
         
         if (this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+            this.jXPaneBack.remove(this.jPneNeueTour);
+            this.jXPaneBack.add(this.jTbdPneDesktop, "leftbottom" );
+            this.jXPaneBack.updateUI();
             Route3 route = (Route3) this.jTbdPneDesktop.getSelectedComponent();
             JXTreeRouteTour selTour = route.getTour();
             
@@ -1315,6 +1333,10 @@ public class Main3 extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_RouteTablePropertyChange
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        tourAddActionPerformed(evt);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
@@ -1356,8 +1378,11 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JButton jBtnNewEntry;
     private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jCBXKarteTile;
     private javax.swing.JCheckBox jCkbEinzelnachweiss;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPneNeueTour;
     private javax.swing.JPanel jPneRoute;
     private javax.swing.JPopupMenu jPopupMenuRoute;
     private javax.swing.JPopupMenu.Separator jPopupMenuRouteSeparator1;

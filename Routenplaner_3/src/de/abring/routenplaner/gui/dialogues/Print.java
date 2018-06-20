@@ -60,15 +60,15 @@ public class Print extends javax.swing.JDialog {
         
         initComponents();
         this.format = format;
-        double scale = 1.3d;
-        int pageWidth = (int) Math.round(this.format.getImageableWidth() * scale) ;
-        int pageHeight = (int) Math.round(this.format.getImageableHeight() * scale) ;
+        double scale = 1.0d;
         this.preview = preview;
         this.programDir = programDir;
         this.tour = tour;
-        preparePrint(programDir + "\\vorlagen\\drucken\\drucken.html");
+        this.text = preparePrint(programDir + "\\vorlagen\\drucken\\drucken.html");
         this.jPanelPrintableEditorPane1.setContentType("text/html");
         this.jPanelPrintableEditorPane1.setText(this.text);
+        int pageWidth = (int) Math.round(this.format.getImageableWidth() * scale) ;
+        int pageHeight = (int) Math.round(this.format.getImageableHeight() * scale) ;
         Dimension printingSize = new Dimension(pageWidth, pageHeight);
         this.setSize(pageWidth + 50, this.getHeight());
         this.jPanelPrintableEditorPane1.setPreferredSize(printingSize);
@@ -84,10 +84,8 @@ public class Print extends javax.swing.JDialog {
     /**
      * 
      */
-    private void preparePrint(String template) {
+    private String preparePrint(String template) {
         LOGGER.log(Level.INFO, "Convert Tour to String ...");
-
-        this.text = "";
         try {
             Template tpl = new Template(new File(template));
             tpl.assign("TITLE", tour.getName());
@@ -119,7 +117,15 @@ public class Print extends javax.swing.JDialog {
                         else if (entry.getName().startsWith("Saturn"))
                             tpl.assign("BILD", "iconSa.png");
                         else
-                            tpl.assign("BILD", "iconK.png");
+                            if (((JXTreeRouteAddress) entry).getEnd().getMillis() <= ((JXTreeRouteAddress) entry).getAppointment().getStart().getMillis() ||
+                                ((JXTreeRouteAddress) entry).getStart().getMillis() >= ((JXTreeRouteAddress) entry).getAppointment().getEnd().getMillis()) {
+                                tpl.assign("BILD", "iconC.png");
+                            } else if (((JXTreeRouteAddress) entry).getStart().getMillis() < ((JXTreeRouteAddress) entry).getAppointment().getStart().getMillis() ||
+                                ((JXTreeRouteAddress) entry).getEnd().getMillis() > ((JXTreeRouteAddress) entry).getAppointment().getEnd().getMillis()) {
+                                tpl.assign("BILD", "iconL.png");
+                            } else {
+                                tpl.assign("BILD", "iconK.png");
+                            }
                     } else 
                         tpl.assign("BILD", "iconcross.png");
 
@@ -156,10 +162,11 @@ public class Print extends javax.swing.JDialog {
                 }
             }
             tpl.parse("main");
-            this.text = tpl.out();
             LOGGER.log(Level.INFO, "Convert Tour to String (DONE) ...");
+            return tpl.out();
         } catch (FileNotFoundException | IllegalArgumentException e) {
             LOGGER.log(Level.INFO, "Convert Tour to String (ERROR) ...");
+            return "";
         }
     }
 
@@ -190,12 +197,11 @@ public class Print extends javax.swing.JDialog {
      */
     private void openInBrowser() {
         LOGGER.log(Level.INFO, "Move to Browser ...");
-        preparePrint(programDir + "\\vorlagen\\drucken\\drucken_browser.html");
         try {
             SimpleDateFormat fileFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             File file = new File("dateien/temp/Route-" + tour.getName() + "-" + fileFormat.format(new Date()) + ".html");
             try (FileWriter fileWriter = new FileWriter(file)) {
-                fileWriter.write(this.text);
+                fileWriter.write(preparePrint(programDir + "\\vorlagen\\drucken\\drucken_browser.html"));
                 fileWriter.flush();
             }
             if(Desktop.isDesktopSupported()){
@@ -238,6 +244,7 @@ public class Print extends javax.swing.JDialog {
         jButton3 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
         jPanelPrintableEditorPane1 = new de.abring.routenplaner.gui.components.JPanelPrintableEditorPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPlane = new javax.swing.JTextArea();
@@ -313,7 +320,11 @@ public class Print extends javax.swing.JDialog {
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
 
         jScrollPane1.setBackground(new java.awt.Color(102, 102, 102));
-        jScrollPane1.setViewportView(jPanelPrintableEditorPane1);
+
+        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel1.add(jPanelPrintableEditorPane1);
+
+        jScrollPane1.setViewportView(jPanel1);
 
         jTabbedPane1.addTab("text / html", jScrollPane1);
 
@@ -349,6 +360,15 @@ public class Print extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         PrinterJob pj = PrinterJob.getPrinterJob();
         format = pj.pageDialog(format);
+        
+        double scale = 1.3d;
+        int pageWidth = (int) Math.round(this.format.getImageableWidth() * scale) ;
+        int pageHeight = (int) Math.round(this.format.getImageableHeight() * scale) ;
+        Dimension printingSize = new Dimension(pageWidth, pageHeight);
+        this.jPanelPrintableEditorPane1.setPreferredSize(printingSize);
+        this.jPanelPrintableEditorPane1.revalidate();
+        this.jPanel1.updateUI();
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -372,6 +392,7 @@ public class Print extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JPanel jPanel1;
     private de.abring.routenplaner.gui.components.JPanelPrintableEditorPane jPanelPrintableEditorPane1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;

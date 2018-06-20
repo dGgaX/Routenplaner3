@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -64,7 +65,7 @@ private Graphics2D g2;
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor (Color.black);
 
-        RepaintManager.currentManager(this).setDoubleBufferingEnabled(false);
+        RepaintManager.currentManager(this).setDoubleBufferingEnabled(true);
         Dimension d = this.getSize();
         double panelWidth = d.width;
         double panelHeight = d.height;
@@ -84,6 +85,7 @@ private Graphics2D g2;
 
         return Printable.PAGE_EXISTS;
     }
+    
     public Graphics2D getGraphics() {
         return g2;
     }

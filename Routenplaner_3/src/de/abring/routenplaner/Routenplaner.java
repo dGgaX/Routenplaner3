@@ -110,7 +110,7 @@ public class Routenplaner {
         splashThread.interrupt();
         main.setVisible(true);
         if (!fileToOpen.exists() || !main.loadTour(fileToOpen)) {
-            main.createTour();
+            //main.createTour();
         }
     }
 

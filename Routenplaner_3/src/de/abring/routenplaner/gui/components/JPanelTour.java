@@ -33,6 +33,7 @@ public class JPanelTour extends javax.swing.JPanel {
         this.jTxtCoDriver.setText(this.route.getCoDriver());
         this.jTxtCar.setText(this.route.getCar());
         this.jBtnColor.setBackground(this.route.getColor());
+        this.jBtnColor.setIcon(this.route.getTour().getIcon());
         this.jChkMapMarkerVisible.setSelected(this.route.isMarkerVisible());
     }
 
@@ -113,8 +114,8 @@ public class JPanelTour extends javax.swing.JPanel {
             }
         });
 
-        jBtnColor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jBtnColor.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jBtnColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/icons/Add.png"))); // NOI18N
+        jBtnColor.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jBtnColor.setIconTextGap(1);
         jBtnColor.setMaximumSize(new java.awt.Dimension(73, 20));
         jBtnColor.setMinimumSize(new java.awt.Dimension(73, 20));
@@ -172,9 +173,9 @@ public class JPanelTour extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jBtnColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jBtnColor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jChkMapMarkerVisible, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+                                .addComponent(jChkMapMarkerVisible, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
                             .addComponent(jTxtCar))))
                 .addContainerGap())
         );
@@ -198,11 +199,11 @@ public class JPanelTour extends javax.swing.JPanel {
                     .addComponent(jTxtCar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLblCar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jBtnColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLblColor, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jChkMapMarkerVisible))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jBtnColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jChkMapMarkerVisible, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(jLblColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -231,8 +232,11 @@ public class JPanelTour extends javax.swing.JPanel {
 
     private void jBtnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnColorActionPerformed
         Color color = JColorChooser.showDialog(this, "Tour-Farbe", this.route.getColor());
-        this.jBtnColor.setBackground(color);
-        this.route.setTourColor(color);
+        if (color != null) {
+            this.route.setTourColor(color);
+            this.jBtnColor.setBackground(color);
+            this.jBtnColor.setIcon(this.route.getTour().getIcon());
+        }
     }//GEN-LAST:event_jBtnColorActionPerformed
 
     private void jTxtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtNameActionPerformed
