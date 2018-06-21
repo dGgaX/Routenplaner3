@@ -8,12 +8,14 @@ import de.abring.helfer.PathFinder;
 import de.abring.helfer.maproute.LookupAddress;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
+import de.abring.pdferkennung.gui.dialogues.JscanPDF;
 import de.abring.routenplaner.Routenplaner;
 import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
 import de.abring.routenplaner.gui.components.mapTiles.MyTilehosterTileSource;
 import de.abring.routenplaner.gui.dialogues.FileIO;
 import de.abring.routenplaner.gui.dialogues.MSG;
 import de.abring.routenplaner.gui.dialogues.Print;
+import de.abring.routenplaner.gui.dialogues.Table;
 import de.abring.routenplaner.jxtreetableroute.JXNoRootTreeTableModelAddress;
 import de.abring.routenplaner.jxtreetableroute.JXTableRowTransferHandlerRoute;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
@@ -1050,6 +1052,11 @@ public class Main3 extends javax.swing.JFrame {
         jBtnPDFScan.setFocusable(false);
         jBtnPDFScan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jBtnPDFScan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jBtnPDFScan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnPDFScanActionPerformed(evt);
+            }
+        });
         jTB.add(jBtnPDFScan);
 
         jCkbEinzelnachweiss.setText("Einzelnachweise");
@@ -1161,7 +1168,7 @@ public class Main3 extends javax.swing.JFrame {
                 .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnCenterMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -1177,7 +1184,7 @@ public class Main3 extends javax.swing.JFrame {
                 .addComponent(jBtnRemoveEntry)
                 .addGap(30, 30, 30)
                 .addComponent(jBtnCenterMap)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jBtnCalcRoute)
                 .addContainerGap())
         );
@@ -1395,6 +1402,34 @@ public class Main3 extends javax.swing.JFrame {
                 }
             }
     }//GEN-LAST:event_FavoriteTableMouseClicked
+
+    private void jBtnPDFScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPDFScanActionPerformed
+
+        if (this.FavoriteTable.getSelectedRows().length > 0) {
+            
+            if(this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+                Route3 route = (Route3) this.jTbdPneDesktop.getSelectedComponent();
+                JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) this.FavoriteTable.getItem(this.FavoriteTable.getSelectedRows()[0]);
+                File file = de.abring.pdferkennung.gui.dialogues.FileIO.getOpenPDFFile(this, System.getProperty("user.home"));
+                if (file != null && file.exists()) {
+                    JscanPDF jscanPDF = new JscanPDF(this, true, route, fav, file, jCkbEinzelnachweiss.isSelected());
+                    jscanPDF.setVisible(true);
+                }
+                route.updateUI();
+            }
+        
+        } else {
+            
+            int selectedItem = Table.JXTreeTableAddressFavDialog(this, true, "Auftraggeber auswählen:", this.FavoriteTable.getJxTreeRouteEntryList());
+            
+            if (selectedItem != Table.DIALOG_ABORT) {
+                this.FavoriteTable.getSelectionModel().addSelectionInterval(selectedItem, selectedItem);
+                this.FavoriteTable.updateUI();
+                jBtnPDFScanActionPerformed(evt);
+            }
+            
+        }
+    }//GEN-LAST:event_jBtnPDFScanActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;

@@ -8,7 +8,7 @@ package de.abring.pdferkennung.gui.dialogues;
 import de.abring.pdferkennung.PictureRecognition;
 import de.abring.pdferkennung.gui.JPictureFrame;
 import de.abring.pdferkennung.gui.dialogues.FileIO;
-import de.abring.routenplaner.gui.Route;
+import de.abring.routenplaner.gui.Route3;
 import de.abring.routenplaner.gui.dialogues.Entry;
 import de.abring.routenplaner.gui.imageOCR.OCR;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressClient;
@@ -32,7 +32,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
  */
 public class JscanPDF extends javax.swing.JDialog {
 
-    private final Route route;
+    private final Route3 route;
     private final File file;
     private final JXTreeRouteAddressFav fav;
     private final java.awt.Frame parent;
@@ -53,7 +53,7 @@ public class JscanPDF extends javax.swing.JDialog {
      * @param fav
      * @param file
      */
-    public JscanPDF(java.awt.Frame parent, boolean modal, Route route, JXTreeRouteAddressFav fav, File file, boolean showResults) {
+    public JscanPDF(java.awt.Frame parent, boolean modal, Route3 route, JXTreeRouteAddressFav fav, File file, boolean showResults) {
         super(parent, modal);
         this.parent = parent;
         initComponents();
