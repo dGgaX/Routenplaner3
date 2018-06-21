@@ -333,7 +333,7 @@ public class Main3 extends javax.swing.JFrame {
         }
         JXTreeRouteTour tourInput = (JXTreeRouteTour) input;
         
-        Route tour = new Route(tourInput, this);
+        Route3 tour = new Route3(tourInput, this);
         tour.setTourColor(wavelength);
         wavelength+=2.2;
         tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
