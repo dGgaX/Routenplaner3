@@ -204,7 +204,7 @@ public class Route3 extends javax.swing.JPanel {
         
         setTourColor(Color.RED);
 
-        addBasicEntries("Löschmann", new TimeOfDay("10:00"), new TimeOfDay("00:20"), new TimeOfDay("00:00"));
+        addBasicEntries("Löschmann", new TimeOfDay("09:00"), new TimeOfDay("00:20"), new TimeOfDay("00:00"));
     }
 
     /**
@@ -399,7 +399,7 @@ public class Route3 extends javax.swing.JPanel {
      */
     public void addEntry(JXTreeRouteEntry entry) {
         this.tablePane.addItem(entry);
-        refreshTable();
+        this.recreateRoute();
         this.tablePane.updateUI();
     }
     
@@ -410,7 +410,7 @@ public class Route3 extends javax.swing.JPanel {
      */
     public void addEntry(int index, JXTreeRouteEntry entry) {
         this.tablePane.addItem(index, entry);
-        refreshTable();
+        this.recreateRoute();
         this.tablePane.updateUI();
     }
     
@@ -420,7 +420,7 @@ public class Route3 extends javax.swing.JPanel {
      */
     public void removeEntry(JXTreeRouteEntry item) {
         this.tablePane.removeItem(item);
-        refreshTable();
+        this.recreateRoute();
         this.tablePane.repaint();
     }
     
@@ -430,7 +430,7 @@ public class Route3 extends javax.swing.JPanel {
      */
     public void removeEntry(int index) {
         this.tablePane.removeItem(index);
-        refreshTable();
+        this.recreateRoute();
         this.tablePane.updateUI();
         this.tablePane.repaint();
     }

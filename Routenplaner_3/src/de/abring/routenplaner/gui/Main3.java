@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.PrinterJob;
@@ -128,7 +129,7 @@ public class Main3 extends javax.swing.JFrame {
         
         String layoutDef = "(ROW (COLUMN weight=0.25 (LEAF name=lefttop weight=0.3) (LEAF name=leftbottom weight=0.7))"
                 + "(LEAF  weight=0.6 name=center)"
-                + "(COLUMN weight=0.15 (LEAF name=righttop weight=0.5) (LEAF name=rightmiddle weight=0.25) (LEAF name=rightbottom weight=0.25)))"; 
+                + "(COLUMN weight=0.15 (LEAF name=righttop weight=0.5) (LEAF name=rightmiddle weight=0.3) (LEAF name=rightbottom weight=0.2)))"; 
         MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel( layoutDef ); 
         this.jXPaneBack.getMultiSplitLayout().setModel( modelRoot ); 
         this.jXPaneBack.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
@@ -866,7 +867,9 @@ public class Main3 extends javax.swing.JFrame {
         jPopupMenuRouteSeparator2 = new javax.swing.JPopupMenu.Separator();
         jPopupMenuRoutejMenuItemEdit = new javax.swing.JMenuItem();
         jPneNeueTour = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTB = new javax.swing.JToolBar();
         jTbBtnNew = new javax.swing.JButton();
@@ -947,13 +950,31 @@ public class Main3 extends javax.swing.JFrame {
         jPneNeueTour.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPneNeueTour.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 50));
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setMaximumSize(new java.awt.Dimension(200, 134));
+        jPanel1.setMinimumSize(new java.awt.Dimension(200, 134));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 134));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 30);
+        flowLayout1.setAlignOnBaseline(true);
+        jPanel1.setLayout(flowLayout1);
+
         jButton1.setText("neue Tour");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPneNeueTour.add(jButton1);
+        jPanel1.add(jButton1);
+
+        jButton2.setText("Tour öffnen");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+
+        jPneNeueTour.add(jPanel1);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/images/splash.png"))); // NOI18N
@@ -1056,6 +1077,16 @@ public class Main3 extends javax.swing.JFrame {
         jSclPneFavoriteTable.setPreferredSize(new java.awt.Dimension(200, 300));
 
         FavoriteTable.setDropMode(javax.swing.DropMode.USE_SELECTION);
+        FavoriteTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FavoriteTableMouseClicked(evt);
+            }
+        });
+        FavoriteTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FavoriteTableActionPerformed(evt);
+            }
+        });
         jSclPneFavoriteTable.setViewportView(FavoriteTable);
 
         jXPaneBack.add(jSclPneFavoriteTable);
@@ -1130,25 +1161,25 @@ public class Main3 extends javax.swing.JFrame {
                 .addGroup(OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jBtnCalcRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnCenterMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(OptionenFavToMap, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jBtnRemoveEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jBtnNewEntry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         OptionPaneLayout.setVerticalGroup(
             OptionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(OptionPaneLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OptionPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(OptionenFavToMap)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnNewEntry)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnRemoveEntry)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnCenterMap)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBtnNewEntry)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBtnRemoveEntry)
+                .addGap(30, 30, 30)
+                .addComponent(jBtnCenterMap)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jBtnCalcRoute)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jXPaneBack.add(OptionPane);
@@ -1347,6 +1378,24 @@ public class Main3 extends javax.swing.JFrame {
         tourAddActionPerformed(evt);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.tourOpenActionPerformed(evt);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void FavoriteTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FavoriteTableActionPerformed
+        
+    }//GEN-LAST:event_FavoriteTableActionPerformed
+
+    private void FavoriteTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FavoriteTableMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2)
+            if (this.jTbdPneDesktop.getSelectedComponent() != null && this.jTbdPneDesktop.getSelectedComponent() instanceof Route3) {
+                Route3 route = (Route3) this.jTbdPneDesktop.getSelectedComponent();
+                for (int i : this.FavoriteTable.getSelectedRows()) {
+                    route.addEntry(route.getTour().getEntryList().size() - 2, new JXTreeRouteAddressFav((JXTreeRouteAddressFav) this.FavoriteTable.getItem(i)));
+                }
+            }
+    }//GEN-LAST:event_FavoriteTableMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     public de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute FavoriteTable;
@@ -1388,9 +1437,11 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jCBXKarteTile;
     private javax.swing.JCheckBox jCkbEinzelnachweiss;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPneNeueTour;
     private javax.swing.JPanel jPneRoute;
     private javax.swing.JPopupMenu jPopupMenuRoute;

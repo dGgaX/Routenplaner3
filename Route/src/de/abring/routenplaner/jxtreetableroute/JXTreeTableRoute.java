@@ -120,6 +120,10 @@ public final class JXTreeTableRoute extends JXTreeTable {
                 JXTreeRouteAddress address = (JXTreeRouteAddress) item;
                 address.getDot().setColor(this.color);
                 this.Karte.addMapMarker(address.getDot());
+                if (address.getRoute().getMapLinesDot() != null) {
+                    address.getRoute().getMapLinesDot().setColor(this.color);
+                    this.Karte.addMapLines(address.getRoute().getMapLinesDot());
+                }
                 this.Karte.updateUI();
             }
             addItemListeners();
@@ -140,6 +144,10 @@ public final class JXTreeTableRoute extends JXTreeTable {
                 JXTreeRouteAddress address = (JXTreeRouteAddress) item;
                 address.getDot().setColor(this.color);
                 this.Karte.addMapMarker(address.getDot());
+                if (address.getRoute().getMapLinesDot() != null) {
+                    address.getRoute().getMapLinesDot().setColor(this.color);
+                    this.Karte.addMapLines(address.getRoute().getMapLinesDot());
+                }
                 this.Karte.updateUI();
             }
             addItemListeners();
@@ -163,6 +171,10 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     JXTreeRouteAddress address = (JXTreeRouteAddress) item;
                     address.getDot().setColor(this.color);
                     this.Karte.addMapMarker(address.getDot());
+                    if (address.getRoute().getMapLinesDot() != null) {
+                        address.getRoute().getMapLinesDot().setColor(this.color);
+                        this.Karte.addMapLines(address.getRoute().getMapLinesDot());
+                    }
                     this.Karte.updateUI();
 //                    
 //                    JXTreeRouteRoute route = address.getRoute();
@@ -192,6 +204,10 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     JXTreeRouteAddress address = (JXTreeRouteAddress) item;
                     address.getDot().setColor(this.color);
                     this.Karte.addMapMarker(address.getDot());
+                    if (address.getRoute().getMapLinesDot() != null) {
+                        address.getRoute().getMapLinesDot().setColor(this.color);
+                        this.Karte.addMapLines(address.getRoute().getMapLinesDot());
+                    }
                     this.Karte.updateUI();
                 }
             } else if (item instanceof JXTreeRouteRoute) {
@@ -210,6 +226,11 @@ public final class JXTreeTableRoute extends JXTreeTable {
         if (item instanceof JXTreeRouteAddress) {
             if (this.Karte != null) {
                 this.Karte.deleteMapMarker(((JXTreeRouteAddress) item).getDot());
+                if (((JXTreeRouteAddress) item).getRoute().getMapLinesDot() != null) {
+                    this.Karte.deleteMapLines(((JXTreeRouteAddress) item).getRoute().getMapLinesDot());
+                }
+                
+                    
                 this.Karte.updateUI();
             }
             this.jxTreeRouteEntryList.remove(item);
@@ -234,6 +255,9 @@ public final class JXTreeTableRoute extends JXTreeTable {
         if (getItem(index) instanceof JXTreeRouteAddress) {
             if (this.Karte != null) {
                 this.Karte.deleteMapMarker(((JXTreeRouteAddress) getItem(index)).getDot());
+                if (((JXTreeRouteAddress) getItem(index)).getRoute().getMapLinesDot() != null) {
+                    this.Karte.deleteMapLines(((JXTreeRouteAddress) getItem(index)).getRoute().getMapLinesDot());
+                }
                 this.Karte.updateUI();
             }
             this.jxTreeRouteEntryList.remove(index);
