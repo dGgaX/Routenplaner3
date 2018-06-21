@@ -4,35 +4,11 @@
  */
 package de.abring.routenplaner.gui;
 
-import de.abring.helfer.RainbowColor;
-import de.abring.helfer.maproute.MapRoute;
-import de.abring.helfer.primitives.TimeOfDay;
-import de.abring.routenplaner.gui.components.JPanelTour;
-import de.abring.routenplaner.gui.dialogues.Entry;
-import de.abring.routenplaner.gui.dialogues.Table;
-import de.abring.routenplaner.jxtreetableroute.JXNoRootTreeTableModelAddress;
-import de.abring.routenplaner.jxtreetableroute.JXTreeRouteCopy;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddress;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressClient;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteEnd;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteEntry;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteRoute;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteStart;
-import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteTour;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.event.TableModelEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.openstreetmap.gui.jmapviewer.MapLinesDot;
-import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
-import de.abring.helfer.primitives.TimeOfDay;
-import de.abring.helfer.RainbowColor;
-import de.abring.routenplaner.jxtreetableroute.JXNoRootTreeTableModelAddress;
-import de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute;
+
 import de.abring.routenplaner.jxtreetableroute.entries.*;
+import de.abring.helfer.primitives.TimeOfDay;
+import de.abring.helfer.RainbowColor;
+import de.abring.routenplaner.jxtreetableroute.*;
 import de.abring.routenplaner.gui.components.JPanelTour;
 import de.abring.routenplaner.gui.dialogues.Entry;
 import de.abring.routenplaner.gui.dialogues.Table;
@@ -40,11 +16,9 @@ import de.abring.routenplaner.jxtreetableroute.JXTreeRouteCopy;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
 import javax.swing.event.TableModelEvent;
 import org.openstreetmap.gui.jmapviewer.MapLinesDot;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
-import de.abring.helfer.maproute.MapRoute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
