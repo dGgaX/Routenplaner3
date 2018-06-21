@@ -23,6 +23,7 @@ import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteTour;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.PrinterJob;
@@ -1053,6 +1054,8 @@ public class Main3 extends javax.swing.JFrame {
 
         jSclPneFavoriteTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jSclPneFavoriteTable.setPreferredSize(new java.awt.Dimension(200, 300));
+
+        FavoriteTable.setDropMode(javax.swing.DropMode.USE_SELECTION);
         jSclPneFavoriteTable.setViewportView(FavoriteTable);
 
         jXPaneBack.add(jSclPneFavoriteTable);
@@ -1060,6 +1063,7 @@ public class Main3 extends javax.swing.JFrame {
         jSclPneRouteTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jSclPneRouteTable.setPreferredSize(new java.awt.Dimension(200, 300));
 
+        RouteTable.setDropMode(javax.swing.DropMode.ON);
         RouteTable.setSelectionMode(1);
         RouteTable.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
@@ -1326,10 +1330,13 @@ public class Main3 extends javax.swing.JFrame {
             for (Component c : this.jTbdPneDesktop.getComponents()) {
                 if (c instanceof Route3) {
                     Route3 tour = (Route3) c;
+                    if (evt.getOldValue() instanceof List)
+                        tour.getTablePane().addAllItems(tour.getTour().getEntryList().size() - 2, (List) evt.getOldValue());
                     if (tour.getTour() == ((JXTreeRouteTour) evt.getNewValue())) {
-                        tour.recreateRoute();
-                        tour.refreshTable();
-                        return;
+                        ActionEvent event = new ActionEvent(tour.getTablePane(), 1, "ItemAdded");
+                        tour.getTablePane().getActionListenerList().forEach((action) -> {
+                            action.actionPerformed(event);
+                        });
                     }
                 }
             }

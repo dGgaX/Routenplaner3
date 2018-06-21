@@ -11,21 +11,23 @@ import de.abring.helfer.maproute.MapAddress;
 
 public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
     
-    public static final int EMPTY           = 0;
-    public static final int ID              = 1;
-    public static final int NAME            = 2;
-    public static final int TIME            = 3;
-    public static final int DURATION        = 4;
-    public static final int ITEMS           = 5;
-    public static final int APPOINTMENT     = 6;
-    public static final int ADDRESS         = 7;
-    public static final int ROUTE           = 8;
-    public static final int ADDRESS_ROUTE   = 9;
-    public static final int FAVORIT         = 10;
-    public static final int DRIVER          = 11;
-    public static final int CO_DRIVER       = 12;
-    public static final int CAR             = 13;
-    public static final int MAP_VISIBLE     = 14;
+    public static final int EMPTY               = 0;
+    public static final int ID                  = 1;
+    public static final int NAME                = 2;
+    public static final int TIME                = 3;
+    public static final int DURATION            = 4;
+    public static final int ITEMS               = 5;
+    public static final int APPOINTMENT         = 6;
+    public static final int APPOINTMENT_SHORT   = 15;
+    public static final int ADDRESS             = 7;
+    public static final int ROUTE               = 8;
+    public static final int ADDRESS_ROUTE       = 9;
+    public static final int ADDRESS_ROUTE_REV   = 16;
+    public static final int FAVORIT             = 10;
+    public static final int DRIVER              = 11;
+    public static final int CO_DRIVER           = 12;
+    public static final int CAR                 = 13;
+    public static final int MAP_VISIBLE         = 14;
            
     
     private final List<JXTreeRouteEntry> entryList;
@@ -51,7 +53,7 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
     public String getColumnName(int column) {
         switch (this.columnNames[column]) {
             case JXNoRootTreeTableModelAddress.ID:
-                return "ID";
+                return "Nr";
             case JXNoRootTreeTableModelAddress.NAME:
                 return "Name";
             case JXNoRootTreeTableModelAddress.TIME:
@@ -61,12 +63,14 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
             case JXNoRootTreeTableModelAddress.ITEMS:
                 return "Artikel";
             case JXNoRootTreeTableModelAddress.APPOINTMENT:
+            case JXNoRootTreeTableModelAddress.APPOINTMENT_SHORT:
                 return "Termin";
             case JXNoRootTreeTableModelAddress.ADDRESS:
                 return "Adresse";
             case JXNoRootTreeTableModelAddress.ROUTE:
                 return "Route";
             case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE:
+            case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV:
                 return "Adresse/Route";
             case JXNoRootTreeTableModelAddress.FAVORIT:
                 return "Auftraggeber";
@@ -179,6 +183,12 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                     return ((JXTreeRouteAddress) node).getAppointment();
                 }            
                 return "";
+            case JXNoRootTreeTableModelAddress.APPOINTMENT_SHORT:
+                if (node instanceof JXTreeRouteAddress) {
+                    Appointment ap = ((JXTreeRouteAddress) node).getAppointment();
+                    return ap.getStart() + " - " + ap.getEnd();
+                }            
+                return "";
             case JXNoRootTreeTableModelAddress.ADDRESS:
                 if (node instanceof JXTreeRouteAddress) {
                     return ((JXTreeRouteAddress) node).getAddressName();
@@ -192,6 +202,22 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
             case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE:
                 if (node instanceof JXTreeRouteAddress) {
                     return ((JXTreeRouteAddress) node).getAddressName();
+                } 
+                if (node instanceof JXTreeRouteRoute) {
+                    return ((JXTreeRouteRoute) node).getRoute().toString();
+                }            
+                return "";
+            case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV:
+                if (node instanceof JXTreeRouteAddress) {
+                    MapAddress ad = ((JXTreeRouteAddress) node).getAddress();
+                    String landKurz = "";
+                    if (ad.getLand().equals("Deutschland"))
+                        landKurz = "DE";
+                    if (ad.getLand().equals("Niederlande"))
+                        landKurz = "NL";
+                    if (ad.getLand().equals("Belgien"))
+                        landKurz = "BE";
+                    return landKurz + "-" + ad.getPLZ() + " " + ad.getStadt() + ", " + ad.getStraße() + " " + ad.getHsNr();
                 } 
                 if (node instanceof JXTreeRouteRoute) {
                     return ((JXTreeRouteRoute) node).getRoute().toString();

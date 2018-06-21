@@ -107,7 +107,7 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
         }
         
         return supp.getComponent() instanceof JXTreeTableRoute && supp.isDrop() && supp.isDataFlavorSupported(localObjectFlavor) &&
-                ((table.getItem(index) instanceof JXTreeRouteRoute) ||
+                ((table.getItem(index) instanceof JXTreeRouteAddress) ||
                 (table.getItem(index) instanceof JXTreeRouteTour));
     }
 
@@ -142,7 +142,7 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
                 newEntries.add(JXTreeRouteCopy.copy(entry));
             }
             
-            if (targetEntry instanceof JXTreeRouteRoute) {
+            if (targetEntry instanceof JXTreeRouteAddress) {
                 table.addAllItems(index, newEntries);
                 if (tta != table) {
                     if (newEntries.size() > 0) {
@@ -155,11 +155,11 @@ public class JXTableRowTransferHandlerRoute extends TransferHandler {
                     newEntries.clear();
                 }
             } else if (targetEntry instanceof JXTreeRouteTour) {
-                ((JXTreeRouteTour) targetEntry).getEntryList().addAll(((JXTreeRouteTour) targetEntry).getEntryList().size() - 2, newEntries);
+                //((JXTreeRouteTour) targetEntry).getEntryList().addAll(((JXTreeRouteTour) targetEntry).getEntryList().size() - 2, newEntries);
                 for (PropertyChangeListener listener : table.getPropertyChangeListeners()) {
                     listener.propertyChange(new PropertyChangeEvent(table,
                    "ItemDropped",
-                   null,
+                   newEntries,
                    targetEntry));
                 }
             }

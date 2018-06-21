@@ -62,11 +62,6 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute" name="tablePane">
-          <Properties>
-            <Property name="dropMode" type="javax.swing.DropMode" editor="org.netbeans.modules.form.editors.EnumEditor">
-              <Value id="ON_OR_INSERT_ROWS"/>
-            </Property>
-          </Properties>
           <Events>
             <EventHandler event="componentResized" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="tablePaneComponentResized"/>
           </Events>

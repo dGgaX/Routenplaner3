@@ -447,6 +447,11 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
             <Component class="de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute" name="FavoriteTable">
+              <Properties>
+                <Property name="dropMode" type="javax.swing.DropMode" editor="org.netbeans.modules.form.editors.EnumEditor">
+                  <Value id="USE_SELECTION"/>
+                </Property>
+              </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>
@@ -472,6 +477,9 @@
           <SubComponents>
             <Component class="de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute" name="RouteTable">
               <Properties>
+                <Property name="dropMode" type="javax.swing.DropMode" editor="org.netbeans.modules.form.editors.EnumEditor">
+                  <Value id="ON"/>
+                </Property>
                 <Property name="selectionMode" type="int" value="1"/>
               </Properties>
               <Events>

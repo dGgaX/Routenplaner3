@@ -72,7 +72,7 @@ public class JXTreeRouteRoute extends JXTreeRouteEntry implements java.io.Serial
     }
 
     public void updateLine() {
-        if (this.route.getStartAddress().isValid() && this.route.getEndAddress().isValid()) {
+        if (this.route.getStartAddress() != null && this.route.getStartAddress().isValid() && this.route.getEndAddress() != null  && this.route.getEndAddress().isValid()) {
             this.mapLinesDot = new MapLinesDot(this.route.getStartAddress().getLat(), this.route.getStartAddress().getLon(), this.route.getEndAddress().getLat(), this.route.getEndAddress().getLon());
             this.mapLinesDot.setCoordinates(this.route.getCoordinates());
         }

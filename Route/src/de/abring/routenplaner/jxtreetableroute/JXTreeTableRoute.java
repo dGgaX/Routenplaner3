@@ -164,6 +164,11 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     address.getDot().setColor(this.color);
                     this.Karte.addMapMarker(address.getDot());
                     this.Karte.updateUI();
+//                    
+//                    JXTreeRouteRoute route = address.getRoute();
+//                    route.getMapLinesDot().setColor(this.color);
+//                    this.Karte.addMapLines(route.getMapLinesDot());
+//                    this.Karte.updateUI();
                 }
             } else if (item instanceof JXTreeRouteRoute) {
                 if (this.Karte != null) {
@@ -174,7 +179,7 @@ public final class JXTreeTableRoute extends JXTreeTable {
                 }
             }
         });
-                addItemListeners();
+        addItemListeners();
     }
 
     public void addAllItems(List<JXTreeRouteEntry> items) {
@@ -256,51 +261,51 @@ public final class JXTreeTableRoute extends JXTreeTable {
 // Alle ActionListener!!!
     
     public void addActionListener(ActionListener al) {
-        actionListenerList.add(al);
+        getActionListenerList().add(al);
     }
 
     public void removeActionListener(ActionListener al) {
-        actionListenerList.remove(al);
+        getActionListenerList().remove(al);
     }
 
     private void addItemListeners() {
         ActionEvent event = new ActionEvent(this, 1, "ItemAdded");
-        actionListenerList.forEach((action) -> {
+        getActionListenerList().forEach((action) -> {
             action.actionPerformed(event);
         });
     }
 
     private void removeItemListeners() {
         ActionEvent event = new ActionEvent(this, 2, "ItemRemoved");
-        actionListenerList.forEach((action) -> {
+        getActionListenerList().forEach((action) -> {
             action.actionPerformed(event);
         });
     }
     
     private void changeItemStartListeners() {
         ActionEvent event = new ActionEvent(this, 3, "ItemStartChanged");
-        actionListenerList.forEach((action) -> {
+        getActionListenerList().forEach((action) -> {
             action.actionPerformed(event);
         });
     }
     
     private void changeItemDurationListeners() {
         ActionEvent event = new ActionEvent(this, 4, "ItemDurationChanged");
-        actionListenerList.forEach((action) -> {
+        getActionListenerList().forEach((action) -> {
             action.actionPerformed(event);
         });
     }
     
     private void changeItemAppointmentListeners() {
         ActionEvent event = new ActionEvent(this, 5, "ItemAppointmentChanged");
-        actionListenerList.forEach((action) -> {
+        getActionListenerList().forEach((action) -> {
             action.actionPerformed(event);
         });
     }
     
     private void changeItemAddressListeners() {
         ActionEvent event = new ActionEvent(this, 6, "ItemAddressChanged");
-        actionListenerList.forEach((action) -> {
+        getActionListenerList().forEach((action) -> {
             action.actionPerformed(event);
         });
     }
@@ -392,7 +397,7 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     break;
                 case JXNoRootTreeTableModelAddress.ID:
                     setColumnAlignment(i, JLabel.RIGHT);
-                    setColumnWidth(i, 30, false);
+                    setColumnWidth(i, 20, false);
                     break;
                 case JXNoRootTreeTableModelAddress.NAME:
                     setColumnWidth(i, 120, true);
@@ -400,13 +405,13 @@ public final class JXTreeTableRoute extends JXTreeTable {
 
                 case JXNoRootTreeTableModelAddress.TIME:
                     setColumnAlignment(i, JLabel.RIGHT);
-                    setColumnWidth(i, 80, false);
+                    setColumnWidth(i, 60, false);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorTimeOfDay);
                     break;
 
                 case JXNoRootTreeTableModelAddress.DURATION:
                     setColumnAlignment(i, JLabel.RIGHT);
-                    setColumnWidth(i, 80, false);
+                    setColumnWidth(i, 60, false);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorDuration);
                     break;
 
@@ -420,6 +425,12 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAppointment);
                     break;
 
+                case JXNoRootTreeTableModelAddress.APPOINTMENT_SHORT:
+                    setColumnAlignment(i, JLabel.CENTER);
+                    setColumnWidth(i, 80, false);
+                    getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAppointment);
+                    break;
+
                 case JXNoRootTreeTableModelAddress.ADDRESS:
                     setColumnWidth(i, 160, true);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAddress);
@@ -430,6 +441,7 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     break;
 
                 case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE:
+                case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV:
                     setColumnWidth(i, 160, true);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAddress);
                     break;
@@ -492,10 +504,13 @@ public final class JXTreeTableRoute extends JXTreeTable {
      */
     public void setMapMarkerVisible(boolean visible) {
         this.jxTreeRouteEntryList.forEach((entry) -> {
-            if (entry instanceof JXTreeRouteAddress)
+            if (entry instanceof JXTreeRouteAddress) {
                 ((JXTreeRouteAddress) entry).getDot().setVisible(visible);
-            else if (entry instanceof JXTreeRouteRoute)
+                if (((JXTreeRouteAddress) entry).getRoute().getMapLinesDot() != null)
+                    ((JXTreeRouteAddress) entry).getRoute().getMapLinesDot().setVisible(visible);
+            } else if (entry instanceof JXTreeRouteRoute) {
                 ((JXTreeRouteRoute) entry).getMapLinesDot().setVisible(visible);
+            }
         });
         if(this.Karte != null)
             this.Karte.updateUI();
@@ -521,5 +536,12 @@ public final class JXTreeTableRoute extends JXTreeTable {
      */
     public List<JXTreeRouteEntry> getJxTreeRouteEntryList() {
         return jxTreeRouteEntryList;
+    }
+
+    /**
+     * @return the actionListenerList
+     */
+    public List<ActionListener> getActionListenerList() {
+        return actionListenerList;
     }
 }

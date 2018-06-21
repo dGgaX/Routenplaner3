@@ -306,6 +306,7 @@ public class Route3 extends javax.swing.JPanel {
         }
         //add End
         addEntry(new JXTreeRouteEnd());
+        this.recreateRoute();
     }
 
     // <editor-fold defaultstate="collapsed" desc="List Manipulation Operation">
@@ -449,15 +450,17 @@ public class Route3 extends javax.swing.JPanel {
     public final void calculateRoute() {
         LOGGER.trace("fehlende Routen berechnen...");
         Color ossi = Color.DARK_GRAY;
-        this.tour.getEntryList().stream().filter((entry) -> (entry instanceof JXTreeRouteRoute)).map((entry) -> (JXTreeRouteRoute) entry).filter((route) -> (!(route.getRoute().isCalculated()))).forEachOrdered((route) -> {
-            MapLinesDot  calcLine = new MapLinesDot(ossi, route.getLine().getStartLat(), route.getLine().getStartLon(), route.getLine().getStopLat(), route.getLine().getStopLon());
-            removeMapLines(route.getLine());
-            addMapLines(calcLine);
-            route.calcRoute();
-            route.setDuration(route.getRoute().getDauer());
-//            route.setName("Diese Route beträgt " + String.valueOf(route.getRoute().getLänge()) + " km.");
-            removeMapLines(calcLine);
-            addMapLines(route.getLine());
+        this.tour.getEntryList().stream().filter((entry) -> (entry instanceof JXTreeRouteAddress)).map((entry) -> ((JXTreeRouteAddress) entry).getRoute()).filter((route) -> (!(route.getRoute().isCalculated()))).forEachOrdered((route) -> {
+            if (route.getLine() != null) {
+                MapLinesDot  calcLine = new MapLinesDot(ossi, route.getLine().getStartLat(), route.getLine().getStartLon(), route.getLine().getStopLat(), route.getLine().getStopLon());
+                removeMapLines(route.getLine());
+                addMapLines(calcLine);
+                route.calcRoute();
+                route.setDuration(route.getRoute().getDauer());
+    //            route.setName("Diese Route beträgt " + String.valueOf(route.getRoute().getLänge()) + " km.");
+                removeMapLines(calcLine);
+                addMapLines(route.getLine());
+            }
         });
         refreshTable();
     }
@@ -471,57 +474,95 @@ public class Route3 extends javax.swing.JPanel {
         /**
          * gehe die ganze Liste durch
          */
-        for(int i = 1; i < this.tour.getEntryList().size() - 1; i++) {
-            JXTreeRouteEntry entryPrev = this.tour.getEntryList().get(i - 1);
+        for(int i = 0; i < this.tour.getEntryList().size() - 2; i++) {
+            //JXTreeRouteEntry entryPrev = this.tour.getEntryList().get(i - 1);
             JXTreeRouteEntry entryThis = this.tour.getEntryList().get(i);
             JXTreeRouteEntry entryNext = this.tour.getEntryList().get(i + 1);
-
-            /**
-             * Schaue, ob 2 Adressen hintereinander kommen.
-             * Wenn, füge eine neue Route in die Mitte ein.
-             */
-            if (entryThis instanceof JXTreeRouteAddress && entryNext instanceof JXTreeRouteAddress) {
-                JXTreeRouteRoute newRoute = new JXTreeRouteRoute(new MapRoute(((JXTreeRouteAddress) entryThis).getAddress(), ((JXTreeRouteAddress) entryNext).getAddress()));
-                newRoute.setDuration(newRoute.getRoute().getDauer());
-                addEntry(i + 1, newRoute);
-                
-                recreateRoute();
-                return;
-            }
             
-            /**
-             * Schaue, ob die Route zur vorigen und nächsten Adresse passt.
-             * Wenn nicht, lösche die Route und gehe die Liste noch mal von vorne durch.
-             * danach verlasse die Liste (itteration)
-             */
-            if (entryPrev instanceof JXTreeRouteAddress && entryThis instanceof JXTreeRouteRoute && entryNext instanceof JXTreeRouteAddress) {
-                JXTreeRouteAddress addressPrev = (JXTreeRouteAddress) entryPrev;
-                JXTreeRouteRoute routeThis = (JXTreeRouteRoute) entryThis;
-                JXTreeRouteAddress addressNext = (JXTreeRouteAddress) entryNext;
-
-                if (!routeThis.getRoute().getStartAddress().equals(addressPrev.getAddress()) || !routeThis.getRoute().getEndAddress().equals(addressNext.getAddress())) {
-                    removeEntry(entryThis);
+            if (entryThis instanceof JXTreeRouteAddress) {
+                JXTreeRouteAddress addressThis = (JXTreeRouteAddress) entryThis;
+                JXTreeRouteRoute routeThis = addressThis.getRoute();
                     
-                    recreateRoute();
-                    return;
+                if (entryNext instanceof JXTreeRouteAddress) {
+                    JXTreeRouteAddress addressNext = (JXTreeRouteAddress) entryNext;
+                    JXTreeRouteRoute routeNext = addressNext.getRoute();
+                    
+                    if (routeThis.getRoute().getEndAddress() == null || !routeThis.getRoute().getEndAddress().equals(addressNext.getAddress())) {
+                        this.parent.Karte.deleteMapLines(routeThis.getMapLinesDot());
+                        routeThis.getRoute().setEndAddress(addressNext.getAddress());
+                        routeThis.updateLine();
+                        routeThis.getMapLinesDot().setColor(this.tour.getColor());
+                        this.parent.Karte.addMapLines(routeThis.getMapLinesDot());
+                        this.parent.Karte.updateUI();
+                        this.parent.Karte.setDisplayToFitMapMarkers();
+
+                    }
+
+                } else if (entryNext instanceof JXTreeRouteEnd) {
+                    
+                    if (routeThis.getRoute().getEndAddress() == null || !routeThis.getRoute().getEndAddress().equals(addressThis.getAddress())) {
+                        this.parent.Karte.deleteMapLines(routeThis.getMapLinesDot());
+                        routeThis.getRoute().setEndAddress(addressThis.getAddress());
+                        routeThis.updateLine();
+                        routeThis.getMapLinesDot().setColor(this.tour.getColor());
+                        this.parent.Karte.addMapLines(routeThis.getMapLinesDot());
+                        this.parent.Karte.updateUI();
+                        this.parent.Karte.setDisplayToFitMapMarkers();
+
+                    }
                 }
-            }
-            
-            /**
-             * Schaue, ob 2 Routen hintereinander kommen.
-             * Wenn, lösche die beide Route und gehe die Liste noch mal von vorne durch.
-             * danach verlasse die Liste (itteration)
-             */
-            if (entryPrev instanceof JXTreeRouteRoute && entryThis instanceof JXTreeRouteRoute) {
-                removeEntry(entryPrev);
-                removeEntry(entryThis);
-                
-                recreateRoute();
-                return;
-            }
-        
+            }             
         }
+        refreshTable();
     }
+//
+//            /**
+//             * Schaue, ob 2 Adressen hintereinander kommen.
+//             * Wenn, füge eine neue Route in die Mitte ein.
+//             */
+//            if (entryThis instanceof JXTreeRouteAddress && entryNext instanceof JXTreeRouteAddress) {
+//                JXTreeRouteRoute newRoute = new JXTreeRouteRoute(new MapRoute(((JXTreeRouteAddress) entryThis).getAddress(), ((JXTreeRouteAddress) entryNext).getAddress()));
+//                newRoute.setDuration(newRoute.getRoute().getDauer());
+//                addEntry(i + 1, newRoute);
+//                
+//                recreateRoute();
+//                return;
+//            }
+//            
+//            /**
+//             * Schaue, ob die Route zur vorigen und nächsten Adresse passt.
+//             * Wenn nicht, lösche die Route und gehe die Liste noch mal von vorne durch.
+//             * danach verlasse die Liste (itteration)
+//             */
+//            if (entryPrev instanceof JXTreeRouteAddress && entryThis instanceof JXTreeRouteRoute && entryNext instanceof JXTreeRouteAddress) {
+//                JXTreeRouteAddress addressPrev = (JXTreeRouteAddress) entryPrev;
+//                JXTreeRouteRoute routeThis = (JXTreeRouteRoute) entryThis;
+//                JXTreeRouteAddress addressNext = (JXTreeRouteAddress) entryNext;
+//
+//                if (!routeThis.getRoute().getStartAddress().equals(addressPrev.getAddress()) || !routeThis.getRoute().getEndAddress().equals(addressNext.getAddress())) {
+//                    removeEntry(entryThis);
+//                    
+//                    recreateRoute();
+//                    return;
+//                }
+//            }
+//            
+//            /**
+//             * Schaue, ob 2 Routen hintereinander kommen.
+//             * Wenn, lösche die beide Route und gehe die Liste noch mal von vorne durch.
+//             * danach verlasse die Liste (itteration)
+//             */
+//            if (entryPrev instanceof JXTreeRouteRoute && entryThis instanceof JXTreeRouteRoute) {
+//                removeEntry(entryPrev);
+//                removeEntry(entryThis);
+//                
+//                recreateRoute();
+//                return;
+//            }
+            
+//        }
+//        refreshTable();
+//    }
     
     /**
      * update Times and IDs
@@ -540,7 +581,7 @@ public class Route3 extends javax.swing.JPanel {
                     address.getDot().setID(ID);
             }
         }
-        this.tablePane.repaint();
+        this.tablePane.updateUI();
     }// </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Map Manipulation Operation">
@@ -741,7 +782,6 @@ public class Route3 extends javax.swing.JPanel {
         tablePane = new de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute();
         jBtn_ = new javax.swing.JButton();
 
-        tablePane.setDropMode(javax.swing.DropMode.ON_OR_INSERT_ROWS);
         tablePane.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 tablePaneComponentResized(evt);
@@ -803,23 +843,23 @@ public class Route3 extends javax.swing.JPanel {
             };
             this.tablePane.handleColumns(tableColumns);
 
-        } else if (tablePane.getWidth() > 500 && tablePane.getWidth() <= 800 && tableColumns.length != 6) {
+        } else if (tablePane.getWidth() > 300 && tablePane.getWidth() <= 800 && tableColumns.length != 6) {
             tableColumns =  new int[] {
                 JXNoRootTreeTableModelAddress.EMPTY,
                 JXNoRootTreeTableModelAddress.ID,
-                JXNoRootTreeTableModelAddress.NAME,
                 JXNoRootTreeTableModelAddress.TIME,
-                JXNoRootTreeTableModelAddress.APPOINTMENT,
-                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
+                JXNoRootTreeTableModelAddress.DURATION,
+                JXNoRootTreeTableModelAddress.APPOINTMENT_SHORT,
+                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV,
             };
             this.tablePane.handleColumns(tableColumns);
 
-        } else if (tablePane.getWidth() <= 500 && tableColumns.length != 4) {
+        } else if (tablePane.getWidth() <= 300 && tableColumns.length != 4) {
             tableColumns =  new int[] {
                 JXNoRootTreeTableModelAddress.EMPTY,
                 JXNoRootTreeTableModelAddress.ID,
                 JXNoRootTreeTableModelAddress.TIME,
-                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
+                JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV,
             };
             this.tablePane.handleColumns(tableColumns);
 

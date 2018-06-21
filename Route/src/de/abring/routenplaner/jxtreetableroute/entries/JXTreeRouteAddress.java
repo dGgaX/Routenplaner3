@@ -38,6 +38,15 @@ public class JXTreeRouteAddress extends JXTreeRouteEntry implements java.io.Seri
     }
 
     /**
+     * @return the end
+     */
+    public TimeOfDay getEnd() {
+        TimeOfDay end = new TimeOfDay(super.getStart());
+        end.addier(route.getDuration());
+        end.addier(super.getDuration());
+        return end;
+    }
+    /**
      * @return the address
      */
     public MapAddress getAddress() {
