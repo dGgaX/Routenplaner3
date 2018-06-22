@@ -5,8 +5,6 @@
  */
 package de.bring.tsp;
 
-import de.bring.helfer.*;
-import de.bring.treeTableRoute.entries.*;
 import de.bring.tsp.container.*;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
@@ -15,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
-import de.bring.helfer.gui.GetAddress;
-import de.bring.helfer.gui.LookupAddress;
 
 /**
  * programming the traveling SalesmanProblem by using OSM-based JMapView
