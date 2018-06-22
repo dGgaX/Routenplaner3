@@ -11,7 +11,6 @@ import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
 import de.abring.pdferkennung.gui.dialogues.JscanPDF;
 import de.abring.pdferkennung.gui.dialogues.showPDFPage;
-import de.abring.routenplaner.gui.Main;
 import de.abring.routenplaner.jxtreetableroute.entries.*;
 import de.abring.stringUtils.StringUtils;
 import java.awt.Rectangle;

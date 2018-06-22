@@ -5,7 +5,6 @@
  */
 package de.abring.routenplaner.gui.components;
 
-import de.abring.routenplaner.gui.Route;
 import de.abring.routenplaner.gui.Route3;
 import java.awt.Color;
 import javax.swing.JColorChooser;

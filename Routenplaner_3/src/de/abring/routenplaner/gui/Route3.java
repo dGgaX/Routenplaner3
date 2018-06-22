@@ -35,7 +35,7 @@ public class Route3 extends javax.swing.JPanel {
         return tour;
     }
     
-    private static final Logger LOGGER = LogManager.getLogger(Route.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Route3.class.getName());
     
     private int[] favSelection;
     private boolean currentStateSaved;

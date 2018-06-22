@@ -59,7 +59,7 @@ import org.openstreetmap.gui.jmapviewer.interfaces.TileSource;
  */
 public class Main3 extends javax.swing.JFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(Main.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Main3.class.getName());
     
     private final Routenplaner parent;
     private File FavoritenFile;
@@ -1368,9 +1368,9 @@ public class Main3 extends javax.swing.JFrame {
             for (Component c : this.jTbdPneDesktop.getComponents()) {
                 if (c instanceof Route3) {
                     Route3 tour = (Route3) c;
-                    if (evt.getOldValue() instanceof List)
-                        tour.getTablePane().addAllItems(tour.getTour().getEntryList().size() - 2, (List) evt.getOldValue());
                     if (tour.getTour() == ((JXTreeRouteTour) evt.getNewValue())) {
+                        if (evt.getOldValue() instanceof List)
+                            tour.getTablePane().addAllItems(tour.getTour().getEntryList().size() - 2, (List) evt.getOldValue());
                         ActionEvent event = new ActionEvent(tour.getTablePane(), 1, "ItemAdded");
                         tour.getTablePane().getActionListenerList().forEach((action) -> {
                             action.actionPerformed(event);
