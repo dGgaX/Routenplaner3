@@ -5,7 +5,7 @@
  */
 package de.abring.pdferkennung.gui;
 
-import de.abring.pdferkennung.PictureRecognition;
+import de.abring.pdferkennung.*;
 import de.abring.pdferkennung.gui.dialogues.FileIO;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,7 +31,7 @@ public class JPictureFrame extends javax.swing.JFrame {
     private int pages = 0;
     private int page = 0;
     private int resolution = 250;
-    
+    private Cell[] cells;
     /**
      * Creates new form NewJFrame
      */
@@ -55,8 +55,9 @@ public class JPictureFrame extends javax.swing.JFrame {
             renderer = new PDFRenderer(doc);
             pages = doc.getNumberOfPages();
             page = 0;
+            cells = new Cell[pages];
             this.jLabel1.setText("Page: " + String.valueOf(page + 1) + " / " + String.valueOf(pages));
-            showPage(page);
+            cells[page] = showPage(page);
             changeBtnState();
         } catch (IOException ex) {
             Logger.getLogger(JPictureFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,7 +70,7 @@ public class JPictureFrame extends javax.swing.JFrame {
         
     }
     
-    private void showPage(int page) {
+    private Cell showPage(int page) {
         BufferedImage image = null;
         try {
             image = renderer.renderImageWithDPI(page, resolution, ImageType.RGB);
@@ -77,15 +78,19 @@ public class JPictureFrame extends javax.swing.JFrame {
             Logger.getLogger(JPictureFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        image = PictureRecognition.frameFinder(image, 1, Math.round(resolution / 30.0f));
-            
-        if (image == null) {
+        Cell cell = new Cell(image);
+        cell.setShaddow(0.1f);
+        BufferedImage image2 = cell.getMaskedImage();
+        //image = PictureRecognition.frameFinder(image, 1, Math.round(resolution / 30.0f));
+        
+        if (image2 == null) {
             this.jLabel.setSize(this.jScrollPane.getSize());
             this.jLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/pdferkennung/image/red-x.png")));
         } else {
-            this.jLabel.setSize(new Dimension(image.getWidth(), image.getHeight()));
-            this.jLabel.setIcon(new ImageIcon(image));
+            this.jLabel.setSize(new Dimension(image2.getWidth(), image2.getHeight()));
+            this.jLabel.setIcon(new ImageIcon(image2));
         }
+        return cell;
     }
     
     private void changeBtnState() {
@@ -174,14 +179,14 @@ public class JPictureFrame extends javax.swing.JFrame {
     private void jBtnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLeftActionPerformed
         page--;
         this.jLabel1.setText("Page: " + String.valueOf(page + 1) + " / " + String.valueOf(pages));
-        showPage(page);
+        cells[page] = showPage(page);
         changeBtnState();
     }//GEN-LAST:event_jBtnLeftActionPerformed
 
     private void jBtnRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRightActionPerformed
         page++;
         this.jLabel1.setText("Page: " + String.valueOf(page + 1) + " / " + String.valueOf(pages));
-        showPage(page);
+        cells[page] = showPage(page);
         changeBtnState();
     }//GEN-LAST:event_jBtnRightActionPerformed
 

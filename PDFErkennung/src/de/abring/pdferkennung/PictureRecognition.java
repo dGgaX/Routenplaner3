@@ -172,40 +172,40 @@ public class PictureRecognition {
             int x = (int) rect.getCenterX();
             int y = (int) rect.getCenterY();
             System.out.println("TopLeftCorner as:" + String.valueOf(x) + " x " + String.valueOf(y));
-//            g2d.setColor(Color.red);
-//            g2d.fillOval(x-5, y-5, 10, 10);
-//            g2d.setColor(Color.black);
-//            g2d.drawOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.red);
+            g2d.fillOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.black);
+            g2d.drawOval(x-5, y-5, 10, 10);
         });
         TOP_RIGHT_CORNERS_TEMP.stream().filter((rect) -> (rect.getWidth() * rect.getHeight() >= pSize )).forEachOrdered((rect) -> {
             TOP_RIGHT_CORNERS.add(rect);
             int x = (int) rect.getCenterX();
             int y = (int) rect.getCenterY();
             System.out.println("TopRightCorner as:" + String.valueOf(x) + " x " + String.valueOf(y));
-//            g2d.setColor(Color.blue);
-//            g2d.fillOval(x-5, y-5, 10, 10);
-//            g2d.setColor(Color.black);
-//            g2d.drawOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.blue);
+            g2d.fillOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.black);
+            g2d.drawOval(x-5, y-5, 10, 10);
         });
         BOTTOM_LEFT_CORNERS_TEMP.stream().filter((rect) -> (rect.getWidth() * rect.getHeight() >= pSize )).forEachOrdered((rect) -> {
             BOTTOM_LEFT_CORNERS.add(rect);
             int x = (int) rect.getCenterX();
             int y = (int) rect.getCenterY();
             System.out.println("BottomLeftCorner as:" + String.valueOf(x) + " x " + String.valueOf(y));
-//            g2d.setColor(Color.green);
-//            g2d.fillOval(x-5, y-5, 10, 10);
-//            g2d.setColor(Color.black);
-//            g2d.drawOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.green);
+            g2d.fillOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.black);
+            g2d.drawOval(x-5, y-5, 10, 10);
         });
         BOTTOM_RIGHT_CORNERS_TEMP.stream().filter((rect) -> (rect.getWidth() * rect.getHeight() >= pSize )).forEachOrdered((rect) -> {
             BOTTOM_RIGHT_CORNERS.add(rect);
             int x = (int) rect.getCenterX();
             int y = (int) rect.getCenterY();
             System.out.println("BottomRightCorner as:" + String.valueOf(x) + " x " + String.valueOf(y));
-//            g2d.setColor(Color.yellow);
-//            g2d.fillOval(x-5, y-5, 10, 10);
-//            g2d.setColor(Color.black);
-//            g2d.drawOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.yellow);
+            g2d.fillOval(x-5, y-5, 10, 10);
+            g2d.setColor(Color.black);
+            g2d.drawOval(x-5, y-5, 10, 10);
         });
 
         g2d.dispose();

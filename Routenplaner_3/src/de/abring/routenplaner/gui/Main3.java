@@ -9,6 +9,7 @@ import de.abring.helfer.maproute.LookupAddress;
 import de.abring.helfer.primitives.Appointment;
 import de.abring.helfer.primitives.TimeOfDay;
 import de.abring.pdferkennung.gui.dialogues.JscanPDF;
+import de.abring.pdferkennung.gui.dialogues.JscanPDF3;
 import de.abring.routenplaner.Routenplaner;
 import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
 import de.abring.routenplaner.gui.components.mapTiles.MyTilehosterTileSource;
@@ -1412,8 +1413,13 @@ public class Main3 extends javax.swing.JFrame {
                 JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) this.FavoriteTable.getItem(this.FavoriteTable.getSelectedRows()[0]);
                 File file = de.abring.pdferkennung.gui.dialogues.FileIO.getOpenPDFFile(this, System.getProperty("user.home"));
                 if (file != null && file.exists()) {
-                    JscanPDF jscanPDF = new JscanPDF(this, true, route, fav, file, jCkbEinzelnachweiss.isSelected());
-                    jscanPDF.setVisible(true);
+                    int state = this.getState();
+                    this.setState(java.awt.Frame.ICONIFIED);
+        
+        
+                    JscanPDF3 jscanPDF3 = new JscanPDF3(null, true, route, fav, file, jCkbEinzelnachweiss.isSelected());
+                    jscanPDF3.setVisible(true);
+                    this.setState(state);
                 }
                 route.updateUI();
             }

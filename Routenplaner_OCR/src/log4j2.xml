@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <ScriptPatternSelector defaultPattern="%black{%d{HH:mm:ss.SSS}} %blue{[%t]} %red{%-5level:} %black{%msg%n%throwable}">
+                    <Script name="LevelSelector" language="JavaScript"><![CDATA[
+                        if (logEvent.getLevel() == org.apache.logging.log4j.Level.FATAL) {
+                            substitutor.replace("RED");
+                        }
+                        if (logEvent.getLevel() == org.apache.logging.log4j.Level.ERROR) {
+                            substitutor.replace("RED");
+                        }
+                        if (logEvent.getLevel() == org.apache.logging.log4j.Level.WARN) {
+                            substitutor.replace("YELLOW");
+                        }
+                        if (logEvent.getLevel() == org.apache.logging.log4j.Level.INFO) {
+                            substitutor.replace("GREEN");
+                        }
+                        if (logEvent.getLevel() == org.apache.logging.log4j.Level.DEBUG) {
+                            substitutor.replace("BLACK");
+                        }
+                        if (logEvent.getLevel() == org.apache.logging.log4j.Level.TRACE) {
+                            substitutor.replace("BLUE");
+                        }
+                        ]]>
+                    </Script>
+                    <PatternMatch key="GREEN"  pattern="%black{%d{HH:mm:ss.SSS}} %blue{[%t]} %green{%-5level:} %black{%msg%n%throwable}"/>
+                    <PatternMatch key="YELLOW" pattern="%black{%d{HH:mm:ss.SSS}} %blue{[%t]} %yellow{%-5level:} %black{%msg%n%throwable}"/>
+                    <PatternMatch key="RED"    pattern="%black{%d{HH:mm:ss.SSS}} %blue{[%t]} %red{%-5level:} %black{%class:}%red{%line} %black{%msg%n%throwable}"/>
+                    <PatternMatch key="BLUE"   pattern="%black{%d{HH:mm:ss.SSS}} %blue{[%t]} %blue{%-5level:} %black{%msg%n%throwable}"/>
+                    <PatternMatch key="BLACK"  pattern="%black{%d{HH:mm:ss.SSS}} %blue{[%t]} %black{%-5level:} %black{%msg%n%throwable}"/>
+                </ScriptPatternSelector>
+            </PatternLayout>
+        </Console> 
+    </Appenders>
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -6,6 +6,7 @@
 package de.abring.pdferkennung;
 
 import de.abring.pdferkennung.gui.JPictureFrame;
+import de.abring.pdferkennung.gui.JPictureFrameOCR;
 import java.io.File;
 
 /**
@@ -53,7 +54,8 @@ public class PDFErkennung {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     System.out.println((System.currentTimeMillis() - time1));
-                    JPictureFrame frame = new JPictureFrame(filename);
+//                    JPictureFrame frame = new JPictureFrame(filename);
+                    JPictureFrameOCR frame = new JPictureFrameOCR(filename);
                     frame.setVisible(true);
                 }
             });

@@ -550,7 +550,9 @@ public class Route3 extends javax.swing.JPanel {
             prevEnde = entry.getEnd();
             if (entry instanceof JXTreeRouteAddress) {
                 JXTreeRouteAddress address = (JXTreeRouteAddress) entry;
-                address.setID(++ID);
+                if (entry instanceof JXTreeRouteAddressClient) {
+                    address.setID(++ID);
+                }
                 if (address.getDot() != null)
                     address.getDot().setID(ID);
             }

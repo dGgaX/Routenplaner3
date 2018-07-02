@@ -195,6 +195,10 @@ public class SearchForAddress extends javax.swing.JDialog {
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         LOG.warn("Search succeed ...");
+        if (!mapAddress.isValid()) {
+            mapAddress.setSuchString(txt_search.getText());
+            search();
+        }
         this.dispose();
     }//GEN-LAST:event_btnOKActionPerformed
 

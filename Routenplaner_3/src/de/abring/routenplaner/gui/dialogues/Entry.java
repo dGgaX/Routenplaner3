@@ -68,8 +68,10 @@ public class Entry extends javax.swing.JDialog {
     public Entry(java.awt.Frame parent, boolean modal, MapAddress address, JXTreeRouteAddressFav favorite) {
         super(parent, modal);
         this.parent = parent;
-        this.parentState = this.parent.getState();
-        this.parent.setState(java.awt.Frame.ICONIFIED);
+        if (this.parent != null) {
+            this.parentState = this.parent.getState();
+            this.parent.setState(java.awt.Frame.ICONIFIED);
+        }
         initComponents();
     
         if (address == null) {
@@ -88,9 +90,10 @@ public class Entry extends javax.swing.JDialog {
     public Entry(java.awt.Frame parent, boolean modal, JXTreeRouteAddressFav favorite) {
         super(parent, modal);
         this.parent = parent;
-        this.parentState = this.parent.getState();
-        this.parent.setState(java.awt.Frame.ICONIFIED);
-        
+        if (this.parent != null) {
+            this.parentState = this.parent.getState();
+            this.parent.setState(java.awt.Frame.ICONIFIED);
+        }
         initComponents();
         
         MapAddress address = new MapAddress(jTxtSearchAddress.getText());
@@ -105,8 +108,10 @@ public class Entry extends javax.swing.JDialog {
     public Entry(java.awt.Frame parent, boolean modal, JXTreeRouteAddressClient _entry) {
         super(parent, modal);
         this.parent = parent;
-        this.parentState = this.parent.getState();
-        this.parent.setState(java.awt.Frame.ICONIFIED);
+        if (this.parent != null) {
+            this.parentState = this.parent.getState();
+            this.parent.setState(java.awt.Frame.ICONIFIED);
+        }
         
         initComponents();
         
@@ -463,7 +468,11 @@ public class Entry extends javax.swing.JDialog {
         
         entry.setExtras(this.jTextExtras.getText());
         this.setVisible(false);
-        this.parent.setState(this.parentState);
+        if (this.parent != null) {
+            this.parent.setState(this.parentState);
+        }
+        
+        
     }//GEN-LAST:event_jBtnOKActionPerformed
 
     private void jButtonSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSucheActionPerformed
@@ -494,7 +503,9 @@ public class Entry extends javax.swing.JDialog {
     private void jBtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelActionPerformed
         entry = null;
         this.setVisible(false);
-        this.parent.setState(this.parentState);
+        if (this.parent != null) {
+            this.parent.setState(this.parentState);
+        }
     }//GEN-LAST:event_jBtnCancelActionPerformed
 
     private void jTxtSearchAddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtSearchAddressKeyPressed

@@ -50,11 +50,12 @@ public class showPDFPage extends javax.swing.JDialog {
         }
     }
     
-    public showPDFPage(java.awt.Frame parent, boolean modal, BufferedImage image) {
+    public showPDFPage(java.awt.Frame parent, boolean modal, BufferedImage image, float scaleFactor) {
         super(parent, modal);
         initComponents();
         this.renderer = null;
-        this.image = scale(image, 1024, Math.round(1024.0f * image.getHeight()) / image.getWidth());
+        //this.image = scale(image, 1024, Math.round(1024.0f * image.getHeight()) / image.getWidth());
+        this.image = scale(image, Math.round((float) image.getWidth() * scaleFactor), Math.round((float) image.getHeight() * scaleFactor));
         if (this.image == null) {
             this.jLabel.setSize(this.jScrollPane.getSize());
             this.jLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/pdferkennung/image/red-x.png")));
@@ -103,13 +104,15 @@ public class showPDFPage extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();

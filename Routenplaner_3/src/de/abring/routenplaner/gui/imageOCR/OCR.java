@@ -141,7 +141,7 @@ public class OCR {
             }
             
             BufferedImage image = newImages.get(i);
-            showPDFPage showPage = new showPDFPage(null, false, image);
+            showPDFPage showPage = new showPDFPage(null, false, image, 0.5f);
             showPage.setVisible(true);
                         
             ImageOCR imageOCR = new ImageOCR(frame, modal, image);
