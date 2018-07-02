@@ -168,8 +168,8 @@ public class OCR3 {
                             } else {
                                 int x = frameParts.get(0).getPositionOnParent().x;
                                 int y = frameParts.get(0).getPositionOnParent().y;
-                                int w = 1850;//frameParts.get(frameParts.size() - 1).getPositionOnParent().x + frameParts.get(frameParts.size() - 1).getPositionOnParent().width;
-                                int h = frameParts.get(frameParts.size() - 1).getPositionOnParent().y + frameParts.get(frameParts.size() - 1).getPositionOnParent().height;
+                                int w = 1875;//frameParts.get(frameParts.size() - 1).getPositionOnParent().x + frameParts.get(frameParts.size() - 1).getPositionOnParent().width;
+                                int h = frameParts.get(frameParts.size() - 1).getPositionOnParent().y + frameParts.get(frameParts.size() - 1).getPositionOnParent().height + 25;
 
                                 BufferedImage fromParts = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
                                 Graphics2D g2d = fromParts.createGraphics();
@@ -193,7 +193,7 @@ public class OCR3 {
                         } else if (frameParts.size() > 17 && frameParts.size() < 20) {
                             int x = frameParts.get(0).getPositionOnParent().x;
                             int y = frameParts.get(0).getPositionOnParent().y;
-                            int w = 1850;//frameParts.get(frameParts.size() - 1).getPositionOnParent().x + frameParts.get(frameParts.size() - 1).getPositionOnParent().width;
+                            int w = 1900;//frameParts.get(frameParts.size() - 1).getPositionOnParent().x + frameParts.get(frameParts.size() - 1).getPositionOnParent().width;
                             int h = frameParts.get(frameParts.size() - 1).getPositionOnParent().y + frameParts.get(frameParts.size() - 1).getPositionOnParent().height;
 
                             BufferedImage fromParts = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

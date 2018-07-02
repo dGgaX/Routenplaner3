@@ -123,9 +123,9 @@ public class JComboBoxAppointment extends JComboBox<Appointment> {
     private void setAppointments() {
         addItem(new Appointment("Vormittag", "10:00", "15:00"));
         addItem(new Appointment("früher Vormittag", "10:00", "12:00"));
-        addItem(new Appointment("später Vormittag", "12:00", "14:00"));
-        addItem(new Appointment("Nachmittag", "14:00", "18:00"));
-        addItem(new Appointment("früher Nachmittag", "14:00", "16:00"));
+        addItem(new Appointment("später Vormittag", "12:00", "15:00"));
+        addItem(new Appointment("Nachmittag", "13:00", "18:00"));
+        addItem(new Appointment("früher Nachmittag", "13:00", "16:00"));
         addItem(new Appointment("später Nachmittag", "16:00", "18:00"));
         addItem(new Appointment("Öffnungszeit", "09:00", "18:00"));
         addItem(new Appointment("Ganztägig", "10:00", "18:00"));
