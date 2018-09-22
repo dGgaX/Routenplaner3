@@ -62,7 +62,7 @@ public class jxTreeTableTest extends javax.swing.JFrame {
     private void addTestItems() {
         entryList1.add(new JXTreeRouteStart(new TimeOfDay("09:00")));
         
-        JXTreeRouteTour tour = new JXTreeRouteTour("Herzogenrath", "AB", "CL", "AC-LC 110");
+        JXTreeRouteTour tour = new JXTreeRouteTour("Herzogenrath", "AB", "CL", "AC-LC 110", "Info");
         tour.setColor(Color.MAGENTA);
         entryList1.add(tour);
         

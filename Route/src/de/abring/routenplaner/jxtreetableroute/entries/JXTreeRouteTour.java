@@ -25,6 +25,7 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
     private String driver;
     private String coDriver;
     private String car;
+    private String info;
     private Color color;
     private final ImageIconFromColor icon;
     private boolean mapVisible = true;
@@ -36,6 +37,7 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
         this.driver = "";
         this.coDriver = "";
         this.car = "";
+        this.info = "";
         this.color = Color.WHITE;
         this.icon = new ImageIconFromColor(20, this.color, Color.DARK_GRAY);
     }
@@ -47,17 +49,19 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
         this.driver = master.getDriver();
         this.coDriver = master.getCoDriver();
         this.car = master.getCar();
+        this.info = master.getInfo();
         this.color = master.getColor();
         this.icon = new ImageIconFromColor(20, master.getColor(), Color.DARK_GRAY);
     }
     
-    public JXTreeRouteTour(String tourName, String driver, String coDriver, String car) {
+    public JXTreeRouteTour(String tourName, String driver, String coDriver, String car, String info) {
         super();
         setName(tourName);
         this.entryList = new ArrayList<>();
         this.driver = driver;
         this.coDriver = coDriver;
         this.car = car;
+        this.info = info;
         this.color = Color.WHITE;
         this.icon = new ImageIconFromColor(20, this.color, Color.DARK_GRAY);
     }
@@ -181,5 +185,19 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
      */
     public void setMapVisible(boolean mapVisible) {
         this.mapVisible = mapVisible;
+    }
+
+    /**
+     * @return the info
+     */
+    public String getInfo() {
+        return info;
+    }
+
+    /**
+     * @param info the info to set
+     */
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

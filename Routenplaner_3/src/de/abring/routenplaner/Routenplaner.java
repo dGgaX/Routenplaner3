@@ -46,7 +46,7 @@ public class Routenplaner {
                 splashScreen.dispose();
             }
         });
-//        splashThread.start();
+        splashThread.start();
         
         properties = new Properties();
         loadProperties();

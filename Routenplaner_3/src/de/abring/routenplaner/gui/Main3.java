@@ -14,6 +14,7 @@ import de.abring.routenplaner.Routenplaner;
 import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
 import de.abring.routenplaner.gui.components.mapTiles.MyTilehosterTileSource;
 import de.abring.routenplaner.gui.dialogues.FileIO;
+import de.abring.routenplaner.gui.dialogues.LoadRouteFromWeb;
 import de.abring.routenplaner.gui.dialogues.MSG;
 import de.abring.routenplaner.gui.dialogues.Print;
 import de.abring.routenplaner.gui.dialogues.Table;
@@ -873,6 +874,7 @@ public class Main3 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTB = new javax.swing.JToolBar();
         jTbBtnNew = new javax.swing.JButton();
@@ -954,9 +956,9 @@ public class Main3 extends javax.swing.JFrame {
         jPneNeueTour.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 50));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel1.setMaximumSize(new java.awt.Dimension(200, 134));
-        jPanel1.setMinimumSize(new java.awt.Dimension(200, 134));
-        jPanel1.setPreferredSize(new java.awt.Dimension(200, 134));
+        jPanel1.setMaximumSize(new java.awt.Dimension(220, 184));
+        jPanel1.setMinimumSize(new java.awt.Dimension(220, 184));
+        jPanel1.setPreferredSize(new java.awt.Dimension(220, 184));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 100, 30);
         flowLayout1.setAlignOnBaseline(true);
         jPanel1.setLayout(flowLayout1);
@@ -976,6 +978,14 @@ public class Main3 extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2);
+
+        jButton3.setText("Touren von der Homepage laden");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3);
 
         jPneNeueTour.add(jPanel1);
 
@@ -1001,6 +1011,11 @@ public class Main3 extends javax.swing.JFrame {
         jTbBtnNew.setFocusable(false);
         jTbBtnNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jTbBtnNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jTbBtnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTbBtnNewActionPerformed(evt);
+            }
+        });
         jTB.add(jTbBtnNew);
 
         jTbBtnOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/abring/routenplaner/gui/icons/Folder.png"))); // NOI18N
@@ -1437,6 +1452,27 @@ public class Main3 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBtnPDFScanActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        LoadRouteFromWeb loadRoute = new LoadRouteFromWeb(this, true);
+        loadRoute.setVisible(true);
+ 
+        for (JXTreeRouteTour tourProt : loadRoute.getTourList()) {
+            LOGGER.debug("create new Tour!");
+            Route3 tour = new Route3(tourProt, this);
+            tour.setTourColor(wavelength);
+            wavelength+=1.0;
+            tour.getTablePane().setComponentPopupMenu(jPopupMenuRoute);
+            this.RouteTable.addItem(tour.getTour());
+            this.jTbdPneDesktop.add(tour.getTitle(), tour);
+            this.RouteTable.updateUI();
+            Karte.setDisplayToFitMapMarkers();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTbBtnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTbBtnNewActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTbBtnNewActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     public de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute FavoriteTable;
@@ -1479,6 +1515,7 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JButton jBtnRemoveEntry;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jCBXKarteTile;
     private javax.swing.JCheckBox jCkbEinzelnachweiss;
     private javax.swing.JLabel jLabel1;
