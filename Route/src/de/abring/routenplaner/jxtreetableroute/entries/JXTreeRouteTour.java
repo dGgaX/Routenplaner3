@@ -127,8 +127,9 @@ public class JXTreeRouteTour extends JXTreeRouteEntry implements java.io.Seriali
      */
     @Override
     public TimeOfDay getEnd() {
-        super.getDuration();
-        return super.getEnd();
+//        super.getDuration();
+//        return super.getEnd();
+        return this.entryList.get(this.entryList.size() - 1).getEnd();
     }
 
     /**

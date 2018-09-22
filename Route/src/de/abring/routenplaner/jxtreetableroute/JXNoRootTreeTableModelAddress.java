@@ -28,6 +28,7 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
     public static final int CO_DRIVER           = 12;
     public static final int CAR                 = 13;
     public static final int MAP_VISIBLE         = 14;
+    public static final int INFO                = 17;
            
     
     private final List<JXTreeRouteEntry> entryList;
@@ -82,6 +83,8 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 return "Fahrzeug";
             case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
                 return "Auf Karte";
+            case JXNoRootTreeTableModelAddress.INFO:
+                return "Info";
         }
         return "";
     }
@@ -127,6 +130,7 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 case JXNoRootTreeTableModelAddress.CO_DRIVER:
                 case JXNoRootTreeTableModelAddress.CAR:
                 case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
+                case JXNoRootTreeTableModelAddress.INFO:
                     return true;
             }
         } else if (node instanceof JXTreeRouteItem) {
@@ -155,7 +159,9 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 }
                 return "";
             case JXNoRootTreeTableModelAddress.TIME:
-                if (node instanceof JXTreeRouteEntry) {
+                if (node instanceof JXTreeRouteTour) {
+                    return ((JXTreeRouteTour) node).getEnd().getTimeString();
+                } else if (node instanceof JXTreeRouteEntry) {
                     return ((JXTreeRouteEntry) node).getStart().getTimeString();
                 }
                 return "";
@@ -241,6 +247,10 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
             case JXNoRootTreeTableModelAddress.CAR:
                 if (node instanceof JXTreeRouteTour) {
                     return ((JXTreeRouteTour) node).getCar();
+                }            
+            case JXNoRootTreeTableModelAddress.INFO:
+                if (node instanceof JXTreeRouteTour) {
+                    return ((JXTreeRouteTour) node).getInfo();
                 }            
             case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
                 if (node instanceof JXTreeRouteTour) {
@@ -348,6 +358,10 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
                     if (value instanceof Boolean)
                         ((JXTreeRouteTour) node).setMapVisible((Boolean) value);
+                    break;
+                case JXNoRootTreeTableModelAddress.INFO:
+                    if (value instanceof String)
+                        ((JXTreeRouteTour) node).setInfo((String) value);
                     break;
             }
         } else if (node instanceof JXTreeRouteItem) {

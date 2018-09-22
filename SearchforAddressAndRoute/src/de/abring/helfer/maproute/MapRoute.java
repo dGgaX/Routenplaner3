@@ -162,11 +162,11 @@ public class MapRoute implements java.io.Serializable {
             this.Länge = Math.round(erdumfang * (Math.PI / 180) * temp * 1000) / 1000.0f;
             float kmh = 0.0f;
             if (this.Länge > 100)
-                kmh = 160.0f;
+                kmh = 130.0f;
             else if (this.Länge > 50)
-                kmh = 120.0f;
+                kmh = 100.0f;
             else if (this.Länge > 10)
-                kmh = 80.0f;
+                kmh = 70.0f;
             else if (this.Länge > 0)
                 kmh = 50.0f;
 

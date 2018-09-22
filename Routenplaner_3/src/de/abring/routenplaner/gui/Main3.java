@@ -120,9 +120,11 @@ public class Main3 extends javax.swing.JFrame {
             JXNoRootTreeTableModelAddress.EMPTY,
             JXNoRootTreeTableModelAddress.MAP_VISIBLE,
             JXNoRootTreeTableModelAddress.NAME,
+            JXNoRootTreeTableModelAddress.TIME,
             JXNoRootTreeTableModelAddress.DRIVER,
             JXNoRootTreeTableModelAddress.CO_DRIVER,
-            JXNoRootTreeTableModelAddress.CAR
+            JXNoRootTreeTableModelAddress.CAR,
+            JXNoRootTreeTableModelAddress.INFO
         };
         this.RouteTable.setKarte(Karte);
         this.RouteTable.setColor(Color.YELLOW);

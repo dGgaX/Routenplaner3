@@ -189,13 +189,13 @@ public class Route3 extends javax.swing.JPanel {
     public Route3(JXTreeRouteTour tour, Main3 parent) {
         super();
         
-        LOGGER.info("lege neue Route: {} an.", tour.getName());
+        LOGGER.info("lege neue Route: " + tour.getName() + " an.");
         
         this.parent = parent;
         this.markerVisible = true;
         this.currentStateSaved = false;
-        this.tour = tour;
         this.setTitle(tour.getName());
+        this.tour = tour;
         this.favSelection = new int[0];
         this.initComponents();
         this.jPaneTour = new JPanelTour(this);
@@ -233,16 +233,16 @@ public class Route3 extends javax.swing.JPanel {
         tableColumns =  new int[] {
             JXNoRootTreeTableModelAddress.EMPTY,
             JXNoRootTreeTableModelAddress.ID,
-            JXNoRootTreeTableModelAddress.NAME,
             JXNoRootTreeTableModelAddress.TIME,
             JXNoRootTreeTableModelAddress.DURATION,
             JXNoRootTreeTableModelAddress.APPOINTMENT,
-            JXNoRootTreeTableModelAddress.ITEMS,
             JXNoRootTreeTableModelAddress.ADDRESS_ROUTE,
-            JXNoRootTreeTableModelAddress.FAVORIT,
         };
         this.tablePane.handleColumns(tableColumns);
         
+        setTourColor(Color.RED);
+
+        addBasicEntries("Löschmann", new TimeOfDay("09:00"), new TimeOfDay("00:20"), new TimeOfDay("00:00"));
         for (JXTreeRouteEntry entry : this.tour.getEntryList()) {
             if (entry instanceof JXTreeRouteAddress)
                 addMapMarker(((JXTreeRouteAddress) entry).getDot());
