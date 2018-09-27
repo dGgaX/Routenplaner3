@@ -552,9 +552,15 @@ public class Route3 extends javax.swing.JPanel {
                 JXTreeRouteAddress address = (JXTreeRouteAddress) entry;
                 if (entry instanceof JXTreeRouteAddressClient) {
                     address.setID(++ID);
+                    if (address.getDot() != null) {
+                        address.getDot().setID(ID);
+                        //address.getDot().setName(address.getAddressName());
+                    }
+                } else {
+                    if (address.getDot() != null)
+                        address.getDot().setName(address.getName());
                 }
-                if (address.getDot() != null)
-                    address.getDot().setID(ID);
+                
             }
         }
         this.tablePane.updateUI();

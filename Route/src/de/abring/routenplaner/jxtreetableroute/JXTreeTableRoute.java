@@ -440,12 +440,12 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     break;
 
                 case JXNoRootTreeTableModelAddress.ITEMS:
-                    setColumnWidth(i, 120, true);
+                    setColumnWidth(i, 200, true);
                     break;
 
                 case JXNoRootTreeTableModelAddress.APPOINTMENT:
                     setColumnAlignment(i, JLabel.RIGHT);
-                    setColumnWidth(i, 160, false);
+                    setColumnWidth(i, 140, false);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAppointment);
                     break;
 
@@ -456,21 +456,22 @@ public final class JXTreeTableRoute extends JXTreeTable {
                     break;
 
                 case JXNoRootTreeTableModelAddress.ADDRESS:
-                    setColumnWidth(i, 160, true);
+                    setColumnWidth(i, 220, true);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAddress);
                     break;
 
                 case JXNoRootTreeTableModelAddress.ROUTE:
-                    setColumnWidth(i, 160, true);
+                    setColumnWidth(i, 220, true);
                     break;
 
                 case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE:
                 case JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV:
-                    setColumnWidth(i, 160, true);
+                    setColumnWidth(i, 220, true);
                     getColumnModel().getColumn(i).setCellEditor(myTreeTableCellEditorAddress);
                     break;
 
                 case JXNoRootTreeTableModelAddress.FAVORIT:
+                case JXNoRootTreeTableModelAddress.MARKT:
                     setColumnWidth(i, 120, true);
                     
                     break;

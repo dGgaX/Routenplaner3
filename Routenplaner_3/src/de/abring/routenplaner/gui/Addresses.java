@@ -4,17 +4,43 @@
  */
 package de.abring.routenplaner.gui;
 
+import de.abring.helfer.primitives.TimeOfDay;
+import de.abring.routenplaner.jxtreetableroute.JXNoRootTreeTableModelAddress;
+import de.abring.routenplaner.jxtreetableroute.JXTableRowTransferHandlerRoute;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddress;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressClient;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteEntry;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import static javax.swing.TransferHandler.MOVE;
+import javax.swing.event.TableModelEvent;
+import org.openstreetmap.gui.jmapviewer.JMapViewer;
+
 /**
  *
  * @author Andreas
  */
 public class Addresses extends javax.swing.JFrame {
 
+    private final Main3 parent;
+
     /**
      * Creates new form Addresses
+     * @param parent
+     * @param addressList
+     * @param map
      */
-    public Addresses() {
+    public Addresses(Main3 parent, List<JXTreeRouteAddress> addressList) {
         initComponents();
+        initOtherComponents(parent.Karte);
+        addressList.forEach((item) -> {
+            this.jTblAddress.addItem(item);
+        });
+        this.jTblAddress.updateUI();
+        this.parent = parent;
     }
 
     /**
@@ -26,22 +52,159 @@ public class Addresses extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jScl = new javax.swing.JScrollPane();
+        jTblAddress = new de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Adressen aus PDF");
+        setName("frame"); // NOI18N
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                formFocusLost(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+
+        jTblAddress.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jTblAddressMouseDragged(evt);
+            }
+        });
+        jTblAddress.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTblAddressMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTblAddressMouseReleased(evt);
+            }
+        });
+        jScl.setViewportView(jTblAddress);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScl, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jScl, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTblAddressMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblAddressMouseDragged
+        
+    }//GEN-LAST:event_jTblAddressMouseDragged
+
+    private void jTblAddressMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblAddressMouseReleased
+
+    }//GEN-LAST:event_jTblAddressMouseReleased
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        refreshTable();
+    }//GEN-LAST:event_formFocusGained
+
+    private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
+        refreshTable();
+    }//GEN-LAST:event_formFocusLost
+
+    private void jTblAddressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblAddressMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2)
+            if (parent.getjTbdPneDesktop().getSelectedComponent() != null && parent.getjTbdPneDesktop().getSelectedComponent() instanceof Route3) {
+                Route3 route = (Route3) parent.getjTbdPneDesktop().getSelectedComponent();
+                int[] selectedRows = this.jTblAddress.getSelectedRows();
+                for (int l = selectedRows.length - 1; l >= 0; l--) {
+                    int i = selectedRows[l];
+                    route.addEntry(route.getTour().getEntryList().size() - 2, this.jTblAddress.getItem(i));
+                    this.jTblAddress.removeItem(i);
+                }
+            }
+    }//GEN-LAST:event_jTblAddressMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        for (int i = this.jTblAddress.getJxTreeRouteEntryList().size() - 1; i >= 0; i--) {
+            this.jTblAddress.removeItem(i);
+        }
+    }//GEN-LAST:event_formWindowClosed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScl;
+    private de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute jTblAddress;
     // End of variables declaration//GEN-END:variables
+
+    private void initOtherComponents(JMapViewer map) {
+        int[] columns = {
+            JXNoRootTreeTableModelAddress.EMPTY,
+            JXNoRootTreeTableModelAddress.ADDRESS_ROUTE_REV,
+            JXNoRootTreeTableModelAddress.APPOINTMENT_SHORT,
+            JXNoRootTreeTableModelAddress.DURATION,
+            JXNoRootTreeTableModelAddress.ITEMS,
+            JXNoRootTreeTableModelAddress.MARKT,
+            JXNoRootTreeTableModelAddress.INFO
+        };
+        this.jTblAddress.setKarte(map);
+        this.jTblAddress.setColor(Color.RED);
+        this.jTblAddress.handleColumns(columns);
+        ((JXTableRowTransferHandlerRoute) this.jTblAddress.getTransferHandler()).setMoveOrCopy(MOVE);
+        this.jTblAddress.updateUI();
+        this.jTblAddress.addActionListener((java.awt.event.ActionEvent evt) -> {
+            if(evt.getSource() == this.jTblAddress) {
+                if (evt.getActionCommand().equals("ItemAdded") || evt.getActionCommand().equals("ItemRemoved") || evt.getActionCommand().equals("ItemAddressChanged")) {
+                    if (this.jTblAddress.listLength() > 0) {
+                        List<JXTreeRouteEntry> selectedEntries = new ArrayList<>();
+                        for (int i = this.jTblAddress.getSelectedRows().length - 1; i >= 0; i--) {
+                            selectedEntries.add(this.jTblAddress.getItem(this.jTblAddress.getSelectedRows()[i]));
+                        }
+
+                        this.jTblAddress.clearSelection();
+                        selectedEntries.forEach((entry) -> {
+                            int index = this.jTblAddress.getItemIndexOf(entry);
+                            this.jTblAddress.getSelectionModel().addSelectionInterval(index, index);
+                        });
+                    }
+                    refreshTable();
+                } else if (evt.getActionCommand().equals("ItemStartChanged") || evt.getActionCommand().equals("ItemDurationChanged")) {
+                    refreshTable();
+                }
+            }
+        });
+        
+        this.jTblAddress.getModel().addTableModelListener((TableModelEvent evt) -> {
+            if (evt.getType() == TableModelEvent.INSERT || evt.getType() == TableModelEvent.DELETE)
+            refreshTable();
+        });
+    }
+    /**
+     * update Times and IDs
+     */
+    public final void refreshTable() {
+//        TimeOfDay prevEnde = null;
+//        int ID = 0;
+//        for (JXTreeRouteEntry entry : this.jTblAddress.getItem(ID).getEntryList()) {
+//            if (entry instanceof JXTreeRouteAddress) {
+//                JXTreeRouteAddress address = (JXTreeRouteAddress) entry;
+//                if (entry instanceof JXTreeRouteAddressClient) {
+//                    address.setID(++ID);
+//                }
+//                if (address.getDot() != null)
+//                    address.getDot().setID(ID);
+//            }
+//        }
+        if (this.jTblAddress.listLength() == 0) {
+            this.dispose();
+        }
+        this.jTblAddress.updateUI();
+    }
 }

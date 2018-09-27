@@ -14,12 +14,14 @@ import de.abring.routenplaner.Routenplaner;
 import de.abring.routenplaner.gui.components.mapTiles.MapTileComboBoxModel;
 import de.abring.routenplaner.gui.components.mapTiles.MyTilehosterTileSource;
 import de.abring.routenplaner.gui.dialogues.FileIO;
+import de.abring.routenplaner.gui.dialogues.LoadAppointmentsFromWeb;
 import de.abring.routenplaner.gui.dialogues.LoadRouteFromWeb;
 import de.abring.routenplaner.gui.dialogues.MSG;
 import de.abring.routenplaner.gui.dialogues.Print;
 import de.abring.routenplaner.gui.dialogues.Table;
 import de.abring.routenplaner.jxtreetableroute.JXNoRootTreeTableModelAddress;
 import de.abring.routenplaner.jxtreetableroute.JXTableRowTransferHandlerRoute;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressClient;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteEntry;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteRoute;
@@ -894,6 +896,8 @@ public class Main3 extends javax.swing.JFrame {
         jCkbEinzelnachweiss = new javax.swing.JCheckBox();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jCBXKarteTile = new javax.swing.JComboBox<>();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        jBtnLoadAppointments = new javax.swing.JButton();
         jXPaneBack = new org.jdesktop.swingx.JXMultiSplitPane();
         jSclPneFavoriteTable = new javax.swing.JScrollPane();
         FavoriteTable = new de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute();
@@ -1089,6 +1093,18 @@ public class Main3 extends javax.swing.JFrame {
             }
         });
         jTB.add(jCBXKarteTile);
+        jTB.add(jSeparator3);
+
+        jBtnLoadAppointments.setText("lade L&C-Termine");
+        jBtnLoadAppointments.setFocusable(false);
+        jBtnLoadAppointments.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jBtnLoadAppointments.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jBtnLoadAppointments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnLoadAppointmentsActionPerformed(evt);
+            }
+        });
+        jTB.add(jBtnLoadAppointments);
 
         getContentPane().add(jTB, java.awt.BorderLayout.PAGE_START);
 
@@ -1430,13 +1446,18 @@ public class Main3 extends javax.swing.JFrame {
                 JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) this.FavoriteTable.getItem(this.FavoriteTable.getSelectedRows()[0]);
                 File file = de.abring.pdferkennung.gui.dialogues.FileIO.getOpenPDFFile(this, System.getProperty("user.home"));
                 if (file != null && file.exists()) {
-                    int state = this.getState();
-                    this.setState(java.awt.Frame.ICONIFIED);
+//                    int state = this.getState();
+//                    this.setState(java.awt.Frame.ICONIFIED);
         
         
-                    JscanPDF3 jscanPDF3 = new JscanPDF3(null, true, route, fav, file, jCkbEinzelnachweiss.isSelected());
+                    JscanPDF3 jscanPDF3 = new JscanPDF3(null, true, fav, file, jCkbEinzelnachweiss.isSelected());
                     jscanPDF3.setVisible(true);
-                    this.setState(state);
+                    
+                    Addresses addresses = new Addresses(this, jscanPDF3.getAddressList());
+                    addresses.setVisible(true);
+                    
+//                    this.setState(state);
+                    
                 }
                 route.updateUI();
             }
@@ -1475,6 +1496,20 @@ public class Main3 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTbBtnNewActionPerformed
 
+    private void jBtnLoadAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLoadAppointmentsActionPerformed
+        if (FavoriteTable.getRowCount() > 0 && FavoriteTable.getItem(0) instanceof JXTreeRouteAddressFav) {
+            JXTreeRouteAddressFav fav = (JXTreeRouteAddressFav) FavoriteTable.getItem(0);
+
+            LoadAppointmentsFromWeb loadAddresses = new LoadAppointmentsFromWeb(fav, this, true);
+            loadAddresses.setVisible(true);
+
+            Addresses addresses = new Addresses(this, loadAddresses.getAddressList());
+            addresses.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            addresses.setTitle("Adressen aus dem Web");
+            addresses.setVisible(true);
+        }
+    }//GEN-LAST:event_jBtnLoadAppointmentsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem About;
     public de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute FavoriteTable;
@@ -1512,6 +1547,7 @@ public class Main3 extends javax.swing.JFrame {
     private de.abring.routenplaner.jxtreetableroute.JXTreeTableRoute RouteTable;
     private javax.swing.JButton jBtnCalcRoute;
     private javax.swing.JButton jBtnCenterMap;
+    private javax.swing.JButton jBtnLoadAppointments;
     private javax.swing.JButton jBtnNewEntry;
     private javax.swing.JButton jBtnPDFScan;
     private javax.swing.JButton jBtnRemoveEntry;
@@ -1535,6 +1571,7 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jSclPneRouteTable;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jTB;
     private javax.swing.JToolBar.Separator jTBSeparator6;
     private javax.swing.JButton jTbBtnCalcRoute;
@@ -1550,5 +1587,12 @@ public class Main3 extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTbdPneDesktop;
     private org.jdesktop.swingx.JXMultiSplitPane jXPaneBack;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the jTbdPneDesktop
+     */
+    public javax.swing.JTabbedPane getjTbdPneDesktop() {
+        return jTbdPneDesktop;
+    }
 
 }

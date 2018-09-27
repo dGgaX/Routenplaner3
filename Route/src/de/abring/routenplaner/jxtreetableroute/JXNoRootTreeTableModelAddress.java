@@ -29,6 +29,7 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
     public static final int CAR                 = 13;
     public static final int MAP_VISIBLE         = 14;
     public static final int INFO                = 17;
+    public static final int MARKT               = 18;
            
     
     private final List<JXTreeRouteEntry> entryList;
@@ -85,6 +86,8 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                 return "Auf Karte";
             case JXNoRootTreeTableModelAddress.INFO:
                 return "Info";
+            case JXNoRootTreeTableModelAddress.MARKT:
+                return "Markt";
         }
         return "";
     }
@@ -249,9 +252,18 @@ public class JXNoRootTreeTableModelAddress extends AbstractTreeTableModel {
                     return ((JXTreeRouteTour) node).getCar();
                 }            
             case JXNoRootTreeTableModelAddress.INFO:
+                if (node instanceof JXTreeRouteAddressClient) {
+                    return ((JXTreeRouteAddressClient) node).getExtras();
+                }
                 if (node instanceof JXTreeRouteTour) {
                     return ((JXTreeRouteTour) node).getInfo();
-                }            
+                }
+                return "";
+            case JXNoRootTreeTableModelAddress.MARKT:
+                if (node instanceof JXTreeRouteAddressClient) {
+                    return ((JXTreeRouteAddressClient) node).getFavorite().getName();
+                }
+                return "";
             case JXNoRootTreeTableModelAddress.MAP_VISIBLE:
                 if (node instanceof JXTreeRouteTour) {
                     return ((JXTreeRouteTour) node).isMapVisible();

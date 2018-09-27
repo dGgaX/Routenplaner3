@@ -11,6 +11,7 @@ import de.abring.pdferkennung.gui.dialogues.FileIO;
 import de.abring.routenplaner.gui.Route3;
 import de.abring.routenplaner.gui.dialogues.Entry;
 import de.abring.routenplaner.gui.imageOCR.OCR;
+import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddress;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressClient;
 import de.abring.routenplaner.jxtreetableroute.entries.JXTreeRouteAddressFav;
 import java.awt.Dimension;
@@ -32,7 +33,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
  */
 public class JscanPDF extends javax.swing.JDialog {
 
-    private final Route3 route;
+    private final List<JXTreeRouteAddress> addressList;
     private final File file;
     private final JXTreeRouteAddressFav fav;
     private final java.awt.Frame parent;
@@ -49,15 +50,14 @@ public class JscanPDF extends javax.swing.JDialog {
      * Creates new form JscanPDF
      * @param parent
      * @param modal
-     * @param route
      * @param fav
      * @param file
      */
-    public JscanPDF(java.awt.Frame parent, boolean modal, Route3 route, JXTreeRouteAddressFav fav, File file, boolean showResults) {
+    public JscanPDF(java.awt.Frame parent, boolean modal, JXTreeRouteAddressFav fav, File file, boolean showResults) {
         super(parent, modal);
         this.parent = parent;
         initComponents();
-        this.route = route;
+        this.addressList = new ArrayList<>();
         this.fav = fav;
         this.file = file;
         this.showResults = showResults;
@@ -104,7 +104,7 @@ public class JscanPDF extends javax.swing.JDialog {
                     entry = entryFrame.getEntry();
                 }
                 if (entry != null) {
-                    route.addEntry(route.listLength() - 2, entry);
+                    addressList.add(entry);
                 }
             }
         }
@@ -258,7 +258,15 @@ public class JscanPDF extends javax.swing.JDialog {
     /**
      * @return the parent
      */
+    @Override
     public java.awt.Frame getParent() {
         return parent;
+    }
+
+    /**
+     * @return the addressList
+     */
+    public List<JXTreeRouteAddress> getAddressList() {
+        return addressList;
     }
 }

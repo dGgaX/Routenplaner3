@@ -140,7 +140,7 @@ public class OCR3 {
                         } else {
                             if (i < frames.size() - 1) {
                                 int combinedSize = frames.get(i + 1).getPartsList().size() + frame.getPartsList().size();
-                                if (combinedSize > 17 && combinedSize <= 20) {
+                                if (combinedSize > 17 && combinedSize <= 21) {
                                     frameParts.addAll(frame.getPartsList());
                                     frameParts.addAll(frames.get(++i).getPartsList());
                                 }
@@ -162,6 +162,44 @@ public class OCR3 {
                             images.add(frameParts.get(9).getImage());// Text 1
                             images.add(frameParts.get(11).getImage());// Text 2
                             images.add(frameParts.get(12).getImage());// Artikel
+                            JXTreeRouteAddressClient entry2 = fillEntry(parent, modal, entry, images);
+                            if (entry2 != null) {
+                                entries.add(entry2);
+                            } else {
+                                int x = frameParts.get(0).getPositionOnParent().x;
+                                int y = frameParts.get(0).getPositionOnParent().y;
+                                int w = 1875;//frameParts.get(frameParts.size() - 1).getPositionOnParent().x + frameParts.get(frameParts.size() - 1).getPositionOnParent().width;
+                                int h = frameParts.get(frameParts.size() - 1).getPositionOnParent().y + frameParts.get(frameParts.size() - 1).getPositionOnParent().height + 25;
+
+                                BufferedImage fromParts = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                                Graphics2D g2d = fromParts.createGraphics();
+                                g2d.setBackground(Color.BLACK);
+                                g2d.clearRect(0, 0, w, h);
+                                for (Cell part : frameParts) {
+                                    g2d.drawImage(part.getImage(), part.getPositionOnParent().x, part.getPositionOnParent().y, part.getPositionOnParent().width, part.getPositionOnParent().height, null);
+                                }
+
+                                showPDFPage showPage = new showPDFPage(null, false, fromParts, 0.5f);
+                                showPage.setVisible(true);
+
+                                Entry newEntry = new Entry(null, true, entry);
+                                newEntry.setVisible(true);
+                                if (newEntry.getEntry() != null && !newEntry.getEntry().getName().isEmpty() && newEntry.getEntry().getAddress() != null && newEntry.getEntry().getAddress().isValid() && !newEntry.getEntry().getAddress().getStraße().isEmpty()) {
+                                    LOGGER.trace("Neuer Eintrag!");
+                                    entries.add(newEntry.getEntry());
+                                }
+                                showPage.dispose();
+                            }
+                        } else if (frameParts.size() == 21) {
+                            List<BufferedImage> images = new ArrayList<>();
+
+                            images.add(frameParts.get(7).getImage()); // Lieferadresse
+                            images.add(frameParts.get(6).getImage()); // Kundenadresse
+                            images.add(frameParts.get(8).getImage()); // Hilfsgeschäft
+                            images.add(frameParts.get(9).getImage());// Text 1
+                            images.add(frameParts.get(11).getImage());// Text 2
+                            images.add(frameParts.get(12).getImage());// Artikel
+                            images.add(frameParts.get(13).getImage());// Artikel
                             JXTreeRouteAddressClient entry2 = fillEntry(parent, modal, entry, images);
                             if (entry2 != null) {
                                 entries.add(entry2);
@@ -307,6 +345,7 @@ public class OCR3 {
                     entry.setExtras(notizen);
                     break;
                 case 5:// Geräte
+                case 6:// Geräte
                     boolean isAuslass = false;
                     boolean isPaket = false;
                     boolean isSubPaket = false;
